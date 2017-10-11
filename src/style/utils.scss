@@ -1,0 +1,26 @@
+.hidden {
+  display: none !important;
+}
+
+// grid
+@include grid-system("col-width");
+
+@media (max-width: 1279px) {
+  @include grid-system("col-xs", 10px, 12);
+}
+
+@media (min-width: 1280px) {
+  @include grid-system("col-sm", 10px, 12);
+}
+
+@media (min-width: 1500px) {
+  @include grid-system("col-md", 10px, 12);
+}
+
+@media (min-width: 1920px) {
+  @include grid-system("col-lg", 10px, 12);
+}
+
+@media (min-width: 1921px) {
+  @include grid-system("col-xl", 10px, 12);
+}

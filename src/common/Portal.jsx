@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM, {
-  unstable_renderSubtreeIntoContainer,
-  unmountComponentAtNode
+import {
+  unstable_renderSubtreeIntoContainer as renderSubtreeIntoContainer,
+  unmountComponentAtNode,
 } from 'react-dom';
 import classNames from 'classnames';
 
@@ -44,22 +44,23 @@ class Portal extends React.Component {
   }
 
   renderInner() {
-    unstable_renderSubtreeIntoContainer(
+    renderSubtreeIntoContainer(
       this,
       React.cloneElement(
         this.props.children,
         {
           className: classNames(
             this.props.children.props.className,
-            this.props.className
-          )
-        }
+            this.props.className,
+          ),
+        },
       ),
-      this.container
+      this.container,
     );
   }
 
   render() {
+    /* eslint "class-methods-use-this": 0 */
     return null;
   }
 }
