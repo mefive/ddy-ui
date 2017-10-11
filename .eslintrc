@@ -1,0 +1,15 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb/base",
+  "plugins": ["react"],
+  "rules": {
+    "no-debugger": 0,
+    "no-console": 0,
+    "brace-style": [2, "stroustrup"],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
+  },
+  "env": {
+    "browser": true
+  }
+}
