@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './index.scss';
+import '../src/style/index.scss';
 
 ReactDOM.render(
   <div>
     123
   </div>,
-  document.querySelector('#main')
+  document.querySelector('#main'),
 );

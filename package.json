@@ -24,6 +24,7 @@
   "homepage": "https://github.com/mefive/d-ui#readme",
   "dependencies": {
     "classnames": "^2.2.5",
+    "compass-mixins": "^0.12.10",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2"
@@ -42,6 +43,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
+    "extract-text-webpack-plugin": "^3.0.1",
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
