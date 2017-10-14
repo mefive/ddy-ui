@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run test",
     "lint": "eslint ./src/**",
-    "demo": "webpack --config webpack.config.js"
+    "demo": "webpack --config ./demo/webpack.config.js"
   },
   "repository": {
     "type": "git",
