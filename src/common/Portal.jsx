@@ -10,9 +10,13 @@ const propTypes = {
   className: PropTypes.string,
   getContainer: PropTypes.func,
   onContainerChange: PropTypes.func,
+  children: PropTypes.node,
 };
 
 const defaultProps = {
+  className: null,
+  getContainer: null,
+  children: null,
   onContainerChange: () => null,
 };
 
@@ -32,15 +36,15 @@ class Portal extends React.Component {
     this.props.onContainerChange(this.container.parentNode);
   }
 
+  componentDidUpdate() {
+    this.renderInner();
+  }
+
   componentWillUnmount() {
     const { container } = this;
     unmountComponentAtNode(container);
     container.parentNode.removeChild(container);
     this.container = null;
-  }
-
-  componentDidUpdate() {
-    this.renderInner();
   }
 
   renderInner() {

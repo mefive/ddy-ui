@@ -1,13 +1,8 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb/base",
-  "plugins": ["react"],
+  "extends": "airbnb",
   "rules": {
-    "no-debugger": 0,
-    "no-console": 0,
-    "brace-style": [2, "stroustrup"],
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "brace-style": [2, "stroustrup"]
   },
   "env": {
     "browser": true

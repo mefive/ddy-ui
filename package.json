@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test",
-    "lint": "eslint ./src/**",
+    "lint": "eslint ./src/**/*.jsx ./src/**/*.js",
     "demo": "webpack --config ./demo/webpack.config.js"
   },
   "repository": {
@@ -25,6 +25,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "compass-mixins": "^0.12.10",
+    "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2"
