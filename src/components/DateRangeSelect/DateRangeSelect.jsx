@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
@@ -10,19 +10,23 @@ import Trigger from '../Trigger';
 import Popover from '../Popover';
 import Calendar from '../Calendar';
 
+const propTypes = {
+  start: PropTypes.string,
+  end: PropTypes.string,
+  onChange: PropTypes.func,
+};
+
+const defaultProps = {
+  start: null,
+  end: null,
+  onChange: () => null,
+};
+
 function getDate(diff = 0, unit = 'd') {
   return moment().add(diff, unit).format('YYYY-MM-DD');
 }
 
-class DateRangeSelect extends Component {
-  static propTypes = {
-    onChange: PropTypes.func,
-  }
-
-  static defaultProps = {
-    onChange: () => null,
-  }
-
+class DateRangeSelect extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -264,5 +268,8 @@ class DateRangeSelect extends Component {
     );
   }
 }
+
+DateRangeSelect.propTypes = propTypes;
+DateRangeSelect.defaultProps = defaultProps;
 
 export default DateRangeSelect;
