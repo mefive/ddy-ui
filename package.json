@@ -22,7 +22,7 @@
     "url": "https://github.com/mefive/d-ui/issues"
   },
   "homepage": "https://github.com/mefive/d-ui#readme",
-  "peerDependencies": {
+  "dependencies": {
     "classnames": "^2.2.5",
     "compass-mixins": "^0.12.10",
     "lodash": "^4.17.4",
