@@ -15,6 +15,8 @@ const defaultProps = {
   onTopChange: () => {},
   onLeftChange: () => {},
   children: null,
+  top: 0,
+  left: 0,
 };
 
 const defaultState = {
@@ -28,9 +30,9 @@ class Draggable extends Component {
     super(props);
     this.state = { ...defaultState };
 
-    this.startDragging = ::this.startDragging;
-    this.stopDragging = ::this.stopDragging;
-    this.move = ::this.move;
+    this.startDragging = this.startDragging.bind(this);
+    this.stopDragging = this.stopDragging.bind(this);
+    this.move = this.move.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {

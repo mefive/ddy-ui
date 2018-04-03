@@ -3,21 +3,23 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 
 const propTypes = {
-  candidates: PropTypes.array,
+  candidates: PropTypes.arrayOf(PropTypes.any),
   maxHeight: PropTypes.number,
   onChange: PropTypes.func,
   onSelect: PropTypes.func,
   placeholder: PropTypes.string,
   value: PropTypes.string,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func,
 };
 
 const defaultProps = {
   candidates: [],
   maxHeight: 200,
-  onBlur: () => null,
-  onChange: () => null,
-  onFocus: () => null,
-  onSelect: () => null,
+  onBlur: () => {},
+  onChange: () => {},
+  onFocus: () => {},
+  onSelect: () => {},
   placeholder: '',
   value: '',
 };
@@ -25,8 +27,8 @@ const defaultProps = {
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.fixScroll = ::this.fixScroll;
-    this.keyBindAction = ::this.keyBindAction;
+    this.fixScroll = this.fixScroll.bind(this);
+    this.keyBindAction = this.keyBindAction.bind(this);
     this.state = {
       display: false,
       overIndex: 0,
@@ -93,7 +95,7 @@ class Search extends React.Component {
         }}
       >
         <Input
-          ref={ref => this.textInpt = ref}
+          ref={(el) => { this.textInpt = el; }}
           placeholder={placeholder}
           onBlur={() => setTimeout(() => {
             onBlur();
@@ -118,7 +120,7 @@ class Search extends React.Component {
           onKeyDown={this.keyBindAction}
         />
         <ul
-          ref={ref => this.listElement = ref}
+          ref={(el) => { this.listElement = el; }}
           style={{
             position: 'absolute',
             maxHeight: `${maxHeight}px`,
@@ -135,7 +137,7 @@ class Search extends React.Component {
         >
           {candidates.map((element, index) => (
             <li
-              key={index}
+              key={`${index + 1}`}
               style={{
                 cursor: 'pointer',
                 padding: '4px 6px',
@@ -151,9 +153,16 @@ class Search extends React.Component {
                 onMouseOver={() => this.setState({
                   overIndex: index,
                 })}
+                onFocus={() => this.setState({
+                  overIndex: index,
+                })}
                 onMouseOut={() => this.setState({
                   overIndex: -1,
                 })}
+                onBlur={() => this.setState({
+                  overIndex: -1,
+                })}
+                aria-hidden
               >
                 {element.title}
               </div>

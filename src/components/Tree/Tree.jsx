@@ -6,16 +6,16 @@ import './style/index.scss';
 
 const propTypes = {
   checkable: PropTypes.bool,
-  checkedKeys: PropTypes.array,
-  dataSource: PropTypes.array,
+  checkedKeys: PropTypes.arrayOf(PropTypes.any),
+  dataSource: PropTypes.arrayOf(PropTypes.any),
   defaultExpandAll: PropTypes.bool,
-  defaultExpandedKeys: PropTypes.array,
-  defaultCheckedKeys: PropTypes.array,
+  defaultExpandedKeys: PropTypes.arrayOf(PropTypes.any),
+  defaultCheckedKeys: PropTypes.arrayOf(PropTypes.any),
   defaultSelectedKey: PropTypes.string,
-  expandedKeys: PropTypes.array,
+  expandedKeys: PropTypes.arrayOf(PropTypes.any),
   isProperSubset: PropTypes.bool,
   multiple: PropTypes.bool,
-  nodeWrap: PropTypes.object,
+  nodeWrap: PropTypes.shape({}),
   onCheck: PropTypes.func,
   onExpand: PropTypes.func,
   onSelect: PropTypes.func,
@@ -27,6 +27,10 @@ const propTypes = {
 const defaultProps = {
   checkable: true,
   dataSource: [],
+  checkedKeys: [],
+  expandedKeys: [],
+  selectedKey: [],
+  renderNode: null,
   defaultExpandAll: false,
   defaultExpandedKeys: [],
   defaultCheckedKeys: [],
@@ -43,36 +47,22 @@ const defaultProps = {
 class Tree extends React.Component {
   constructor(props) {
     super(props);
-    this.stretchBranch = ::this.stretchBranch;
-    this.getCheckedKeys = ::this.getCheckedKeys;
-    this.getExpandedKeys = ::this.getExpandedKeys;
-    this.getSelectedKey = ::this.getSelectedKey;
-    this.getFixedCheckedKeys = ::this.getFixedCheckedKeys;
-    this.getParentNodeByKey = ::this.getParentNodeByKey;
-    this.getBrotherKeysByKey = ::this.getBrotherKeysByKey;
-    this.key2Node = ::this.key2Node;
-    this.keys2Nodes = ::this.keys2Nodes;
-    this.checkboxIndeterminate = ::this.checkboxIndeterminate;
+    this.stretchBranch = this.stretchBranch.bind(this);
+    this.getCheckedKeys = this.getCheckedKeys.bind(this);
+    this.getExpandedKeys = this.getExpandedKeys.bind(this);
+    this.getSelectedKey = this.getSelectedKey.bind(this);
+    this.getFixedCheckedKeys = this.getFixedCheckedKeys.bind(this);
+    this.getParentNodeByKey = this.getParentNodeByKey.bind(this);
+    this.getBrotherKeysByKey = this.getBrotherKeysByKey.bind(this);
+    this.key2Node = this.key2Node.bind(this);
+    this.keys2Nodes = this.keys2Nodes.bind(this);
+    this.checkboxIndeterminate = this.checkboxIndeterminate.bind(this);
 
     this.state = {
-      checkedKeys: [],
-      expandedKeys: [],
-      hoverNode: '',
-      selectedKey: '',
+      checkedKeys: this.props.defaultCheckedKeys,
+      expandedKeys: this.props.defaultExpandedKeys,
+      selectedKey: this.props.defaultSelectedKey,
     };
-  }
-
-  componentDidMount() {
-    const {
-      defaultExpandedKeys,
-      defaultCheckedKeys,
-      defaultSelectedKey,
-    } = this.props;
-    this.setState({
-      checkedKeys: defaultCheckedKeys,
-      expandedKeys: defaultExpandedKeys,
-      selectedKey: defaultSelectedKey,
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,7 +78,8 @@ class Tree extends React.Component {
       const checkedKeysSet = new Set(this.getCheckedKeys());
       this.getCheckedKeys()
         .forEach((key) => {
-          const children = this.key2Node(key, dataSource).children;
+          const { children } = this.key2Node(key, dataSource);
+
           if (children) {
             checkedKeys = checkedKeys.concat(children.map((e, i) =>
               (checkedKeysSet.has(`${key}-${e.key || i}`) ?
@@ -133,7 +124,9 @@ class Tree extends React.Component {
       } else {
         checkedKeys = keys.concat(key);
       }
-      if (!this.props.isProperSubset && this.getBrotherKeysByKey(key).every(e => checkedKeys.indexOf(e) > -1)) {
+      if (!this.props.isProperSubset
+        && this.getBrotherKeysByKey(key).every(e => checkedKeys.indexOf(e) > -1)
+      ) {
         const parent = key.split('-').slice(0, -1).join('-');
 
         const backtrack = (parentKey, all) => {
@@ -286,6 +279,7 @@ class Tree extends React.Component {
               >
                 <i
                   {...arrowProperty}
+                  aria-hidden
                   onClick={(event) => {
                     event.persist();
                     event.stopPropagation();

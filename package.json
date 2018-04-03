@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "codemirror": "^5.36.0",
     "compass-mixins": "^0.12.10",
     "highcharts": "^6.0.7",
     "lodash": "^4.17.4",

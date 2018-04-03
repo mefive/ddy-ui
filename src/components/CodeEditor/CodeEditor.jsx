@@ -94,7 +94,7 @@ const excludedIntelliSenseTriggerKeys = {
 class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.onChange = ::this.onChange;
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
