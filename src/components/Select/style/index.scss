@@ -1,0 +1,120 @@
+@import "~compass-mixins";
+@import "../../style/theme";
+
+.select {
+  position: relative;
+
+  .select-trigger.active {
+    box-shadow: 0px 0px 3px 1px rgba(0, 128, 236, 0.34);
+    border-color: $primary-color;
+  }
+}
+
+.select-trigger {
+  line-height: 14px;
+  width: 100%;
+  text-align: left !important;
+  @include ellipsis();
+  padding: 7px 22px 7px 12px;
+  border: 1px solid $gray-color;
+  background-color: #f9fafc;
+  @include border-radius($border-radius-base);
+
+  .trigger-icon {
+    position: absolute;
+
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+
+    background-color: $white-color;
+    font-size: 18px;
+    border-radius: 0 2px 2px 0;
+    border-left: 1px solid $gray-color;
+
+    .icon {
+      color: #8797ab;
+      padding: 5px;
+      font-size: 18px;
+    }
+  }
+
+  cursor: pointer;
+  @include user-select(none);
+  // transition-property: box-shadow, border-color;
+  // transition-duration: .2s;
+  .icon {
+    transition: transform .2s;
+  }
+
+  &.active {
+    .icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.select.disabled {
+  .select-trigger {
+    cursor: not-allowed;
+  }
+}
+
+.select-popup {
+  background-color: $white-color;
+  border: 1px solid $gray-color;
+  z-index: 1;
+  @include border-radius($border-radius-base);
+
+  li {
+    padding: 6px 12px;
+    @include ellipsis();
+    position: relative;
+
+    cursor: pointer;
+    transition-property: color, background-color;
+    transition-duration: .1s;
+    text-align: left;
+
+    color: $text-light-color;
+
+    &:hover {
+      background-color: $primary-color;
+      color: $white-color;
+    }
+
+    &.active {
+      background-color: #F3F8FF;
+      color: $primary-color;
+    }
+
+    .icon-check {
+      position: absolute;
+      right: 12px;
+      top: 10px;
+    }
+  }
+
+  .wrapper {
+    overflow-y: auto;
+  }
+
+  .actions {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+
+    .btn {
+      width: 100%;
+      padding: 6px;
+    }
+  }
+
+  &.slide-down-out {
+    animation-duration: .25s;
+  }
+
+  &.slide-up-out {
+    animation-duration: .25s;
+  }
+}

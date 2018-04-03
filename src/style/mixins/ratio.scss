@@ -1,0 +1,35 @@
+@mixin ratio() {
+  .ratio {
+    display: inline-block;
+    color: $white-color;
+    background-color: #ff5b1a;
+    @include border-radius($border-radius-base);
+    padding: 4px 6px;
+    line-height: 1;
+    margin-top: 10px;
+
+    &.down {
+      background-color: #00ca6d;
+    }
+
+    .icon {
+      vertical-align: middle;
+      margin-top: -1px;
+    }
+  }
+
+  .lost {
+    line-height: 12px;
+    div {
+      width: 5px;
+      height: 2px;
+      background-color: $primary-color;
+      display: inline-block;
+      vertical-align: middle;
+
+      & + div {
+        margin-left: 5px;
+      }
+    }
+  }
+}

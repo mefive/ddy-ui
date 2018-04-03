@@ -1,0 +1,64 @@
+@import "../theme";
+
+@mixin data-table {
+  tr th {
+    background-color: #e6edf5;
+  }
+
+  thead,
+  th,
+  td {
+    border-radius: 0;
+    border: none;
+  }
+
+  thead {
+    border-bottom: 1px solid $gray-color;
+  }
+
+  .table-body {
+    border: 1px solid $gray-color;
+    border-top: none;
+  }
+
+  &.fix-header {
+    thead {
+      border-bottom: none;
+    }
+  }
+
+  .row-container {
+    td {
+      + td {
+        border-left: 1px solid $gray-color;
+      }
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
+    }
+  }
+
+  tr:nth-child(even) {
+    background-color: #f3f6f9;
+
+    &:hover {
+      background-color: #ebf6ff;
+    }
+  }
+
+  tbody tr {
+    &:last-child {
+      border-bottom: none;
+    }
+    &:first-child(odd) {
+      border-bottom: 1px solid $gray-color;
+    }
+  }
+
+  .table-header {
+    border: 1px solid $gray-color;
+
+    & + .table-body {
+      border-top: none !important;
+    }
+  }
+}
