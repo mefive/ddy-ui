@@ -37,6 +37,7 @@
     "highcharts": "^6.0.7",
     "lodash": "^4.17.4",
     "moment": "^2.22.0",
+    "odometer": "^0.4.8",
     "prop-types": "^15.6.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"
