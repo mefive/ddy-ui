@@ -3,57 +3,59 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './style/index.scss';
-import sleep from '../../utils/sleep';
 import Animate from '../Animate/Animate';
 
 const propTypes = {
+  wait: PropTypes.number,
+  onRemove: PropTypes.func,
   dataSource: PropTypes.arrayOf(PropTypes.shape({})),
+  className: PropTypes.string,
+  type: PropTypes.string,
+  message: PropTypes.string,
 };
 
 const defaultProps = {
+  wait: 3000,
   onRemove: () => {},
   dataSource: [],
+  className: null,
+  type: Notification.type.SUCC,
+  message: null,
 };
 
 export class Notification extends React.PureComponent {
   componentDidMount() {
-    this.hasMounted = true;
-    this.wait();
+    this.waitTimer = setTimeout(
+      () => this.props.onRemove(),
+      this.props.wait,
+    );
   }
 
   componentWillUnmount() {
-    this.hasMounted = false;
-  }
-
-  async wait() {
-    await sleep(this.props.wait);
-    if (this.hasMounted) {
-      this.props.onRemove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
     }
   }
 
   render() {
-    const { type = Notification.type.SUCC, message, className } = this.props;
-
     return (
       <div
         className={classNames(
           'notification',
-          { 'alert-success': type === Notification.type.SUCC },
-          { 'alert-error': type === Notification.type.ERROR },
-          { [className]: !!className },
+          { 'alert-success': this.props.type === Notification.type.SUCC },
+          { 'alert-error': this.props.type === Notification.type.ERROR },
+          this.props.className,
         )}
       >
-        {message}
+        {this.props.message}
       </div>
     );
   }
 }
 
-Notification.defaultProps = {
-  wait: 3000,
-  onRemove: () => {},
-};
+Notification.propTypes = propTypes;
+Notification.defaultProps = defaultProps;
 
 Notification.type = {
   ERROR: 'error',
