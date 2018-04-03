@@ -7,47 +7,23 @@ import './style/index.scss';
 
 const propTypes = {
   height: PropTypes.number.isRequired,
+  children: PropTypes.node,
 };
 
 const defaultProps = {
-  height: 0,
-};
-
-const defaultState = {
-  scrollTop: 0,
-  scrollHeight: 0,
-  thumbSize: 0,
-  thumbOffset: 0,
+  children: null,
 };
 
 class Scrollable extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...defaultState };
-    this.onWheel = ::this.onWheel;
-  }
-
-  componentDidMount() {
-    this.setState({
-      ...defaultState,
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { scrollTop } = this.state;
-    const { wrapper } = this;
-
-    if (prevState.scrollTop !== scrollTop) {
-      wrapper.scrollTop = scrollTop;
-      this.syncThumb();
-    } else {
-      const { scrollHeight } = wrapper;
-
-      if (scrollHeight !== this.state.scrollHeight) {
-        this.setState({ scrollHeight });
-        this.syncThumb();
-      }
-    }
+    this.state = {
+      scrollTop: 0,
+      scrollHeight: 0,
+      thumbSize: 0,
+      thumbOffset: 0,
+    };
+    this.onWheel = this.onWheel.bind(this);
   }
 
   onWheel(e) {
@@ -60,7 +36,43 @@ class Scrollable extends Component {
       e.stopPropagation();
     }
 
-    this.setState({ scrollTop: this.restrictScrollTop(scrollTop) });
+    this.setScrollTop(scrollTop);
+  }
+
+  setScrollTop(scrollTop) {
+    const prevScrollTop = this.state.scrollTop;
+
+    this.setState({
+      scrollTop: this.restrictScrollTop(scrollTop),
+    }, () => {
+      if (prevScrollTop !== this.state.scrollTop) {
+        this.wrapper.scrollTop = scrollTop;
+        this.syncThumb();
+      } else {
+        const { scrollHeight } = this.wrapper;
+
+        if (scrollHeight !== this.state.scrollHeight) {
+          this.setState({ scrollHeight });
+          this.syncThumb();
+        }
+      }
+    });
+  }
+
+  getRatio() {
+    const { wrapper } = this;
+    const { height } = this.props;
+
+    return height / wrapper.scrollHeight;
+  }
+
+  syncThumb() {
+    const ratio = this.getRatio();
+
+    const thumbSize = this.props.height * ratio;
+    const thumbOffset = this.state.scrollTop * ratio;
+
+    this.setState({ thumbSize, thumbOffset });
   }
 
   restrictScrollTop(scrollTop) {
@@ -75,22 +87,6 @@ class Scrollable extends Component {
     return top;
   }
 
-  syncThumb() {
-    const ratio = this.getRatio();
-
-    const thumbSize = this.props.height * ratio;
-    const thumbOffset = this.state.scrollTop * ratio;
-
-    this.setState({ thumbSize, thumbOffset });
-  }
-
-  getRatio() {
-    const { wrapper } = this;
-    const { height } = this.props;
-
-    return height / wrapper.scrollHeight;
-  }
-
   render() {
     const { wrapper } = this;
 
@@ -98,7 +94,7 @@ class Scrollable extends Component {
       <div className="scrollable">
         <div
           className="scrollable-wrapper"
-          ref={wrapper => this.wrapper = wrapper}
+          ref={(el) => { this.wrapper = el; }}
           style={{
             height: this.props.height,
           }}
