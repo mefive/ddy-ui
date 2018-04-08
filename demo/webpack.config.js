@@ -103,7 +103,10 @@ module.exports = function () {
   if (process.env.NODE_ENV === 'production') {
     config = merge(config, {
       plugins: [
-        new LodashWebpackPlugin(),
+        new LodashWebpackPlugin({
+          collections: true,
+          shorthands: true,
+        }),
 
         new CleanWebpackPlugin([
           '*.html', 'js/*.*', 'images/*.*', 'css/*.*',
