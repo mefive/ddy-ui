@@ -1,6 +1,23 @@
 const fs = require('fs');
 const path = require('path');
 
+function writeFile(filePath, components, componentPrefix = '') {
+  const codes = components.map(c => `import ${c} from './components${componentPrefix}/${c}';`);
+
+  codes.push(`\nexport {\n${components.map(c => `  ${c},`).join('\n')}\n};\n`);
+
+  console.log(codes);
+
+  fs.writeFile(filePath, codes.join('\n'), (errWrite) => {
+    if (errWrite) {
+      console.log('write err', errWrite);
+      return;
+    }
+
+    console.log('writing successful');
+  });
+}
+
 fs.readdir(path.join(__dirname, '../components'), (err, files) => {
   if (err) {
     console.log(err);
@@ -11,18 +28,17 @@ fs.readdir(path.join(__dirname, '../components'), (err, files) => {
     .filter(f => ['m', 'style'].indexOf(f) === -1)
     .map(f => f.replace(/\.jsx/, ''));
 
-  const codes = components.map(c => `import ${c} from './components/${c}';`);
+  writeFile(path.resolve(__dirname, '../index.js'), components);
+});
 
-  codes.push(`\nexport {\n${components.map(c => `  ${c},`).join('\n')}\n};\n`);
+fs.readdir(path.join(__dirname, '../components/m'), (err, files) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
 
-  console.log(codes);
+  const components = files
+    .map(f => f.replace(/\.jsx/, ''));
 
-  fs.writeFile(path.resolve(__dirname, '../index.js'), codes.join('\n'), (errWrite) => {
-    if (errWrite) {
-      console.log('write err', errWrite);
-      return;
-    }
-
-    console.log('writing successful');
-  });
+  writeFile(path.resolve(__dirname, '../m.js'), components, '/m');
 });
