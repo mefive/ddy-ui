@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import keycode from 'keycode';
 
 import Modal from '../Modal';
 
@@ -26,29 +25,6 @@ const defaultProps = {
 };
 
 class Alert extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.onKeyPress = this.onKeyPress.bind(this);
-  }
-
-  componentWillReceiveProps({ visible }) {
-    if (visible && !this.props.visible) {
-      document.addEventListener('keydown', this.onKeyPress);
-    } else if (!visible && this.props.visible) {
-      document.removeEventListener('keydown', this.onKeyPress);
-    }
-  }
-
-  onKeyPress(e) {
-    e.preventDefault();
-
-    const code = keycode(e);
-
-    if (code === 'enter' || code === 'esc') {
-      this.props.onClose();
-    }
-  }
-
   render() {
     const {
       confirmText,
@@ -63,6 +39,7 @@ class Alert extends React.PureComponent {
         title={title}
         visible={visible}
         className="alert"
+        onEnter={this.props.onClose}
       >
         <div className="dialog-content">
           {this.props.children}

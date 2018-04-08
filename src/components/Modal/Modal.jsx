@@ -1,4 +1,5 @@
 import React from 'react';
+import keycode from 'keycode';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -15,6 +16,7 @@ const propTypes = {
   hasCloseButton: PropTypes.bool,
   className: PropTypes.string,
   onClose: PropTypes.func,
+  onEnter: PropTypes.func,
   visible: PropTypes.bool,
   onResize: PropTypes.func,
   id: PropTypes.string,
@@ -26,7 +28,8 @@ const defaultProps = {
   className: null,
   renderTitle: null,
   bigHeader: false,
-  onClose: () => null,
+  onClose: () => {},
+  onEnter: () => {},
   hasCloseButton: true,
   visible: false,
   onResize: () => {},
@@ -45,6 +48,7 @@ class Modal extends React.PureComponent {
     };
 
     this.onResize = this.onResize.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
     this.pin = this.pin.bind(this);
   }
 
@@ -52,6 +56,14 @@ class Modal extends React.PureComponent {
     this.hasMounted = true;
     this.pin();
     window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillReceiveProps({ visible }) {
+    if (visible && !this.props.visible) {
+      document.addEventListener('keydown', this.onKeyPress);
+    } else if (!visible && this.props.visible) {
+      document.removeEventListener('keydown', this.onKeyPress);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -63,6 +75,19 @@ class Modal extends React.PureComponent {
   componentWillUnmount() {
     this.hasMounted = false;
     window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('keydown', this.onKeyPress);
+  }
+
+  onKeyPress(e) {
+    e.preventDefault();
+
+    const code = keycode(e);
+
+    if (code === 'esc') {
+      this.props.onClose();
+    } else if (code === 'enter') {
+      this.props.onEnter();
+    }
   }
 
   onResize() {
