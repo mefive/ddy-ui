@@ -45,13 +45,14 @@ class Popover extends Component {
       style: null,
     };
 
-    this.place = debounce(this.place.bind(this));
+    this.onResize = debounce(this.onResize.bind(this));
+    this.place = this.place.bind(this);
   }
 
   componentDidMount() {
     this.hasMounted = true;
+    window.addEventListener('resize', this.onResize);
     this.place();
-    window.addEventListener('resize', this.place);
   }
 
   componentDidUpdate({ container, anchor }) {
@@ -64,7 +65,11 @@ class Popover extends Component {
 
   componentWillUnmount() {
     this.hasMounted = false;
-    window.removeEventListener('resize', this.place);
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  onResize() {
+    this.place();
   }
 
   place() {

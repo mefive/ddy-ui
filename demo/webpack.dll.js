@@ -1,9 +1,9 @@
-var path = require('path');
-var webpack = require('webpack');
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-var BUILD_PATH = 'live';
+const BUILD_PATH = 'live';
 
 module.exports = {
   entry: {

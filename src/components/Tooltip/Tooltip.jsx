@@ -35,7 +35,7 @@ const defaultProps = {
   renderPopover: null,
 };
 
-class Tooltip extends React.Component {
+class Tooltip extends React.PureComponent {
   render() {
     if (this.props.disabled || (!this.props.title && this.props.renderPopover == null)) {
       return this.props.children;

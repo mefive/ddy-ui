@@ -13,7 +13,7 @@ const BUILD_PATH = 'live';
 let dllFiles;
 
 if (process.env.NODE_ENV === 'production') {
-  dllFiles = fs.readdirSync(`./${BUILD_PATH}/dll/`).map((file) => {
+  dllFiles = fs.readdirSync(path.resolve(__dirname, `./${BUILD_PATH}/dll/`)).map((file) => {
     if (file.indexOf('dll.') >= 0) {
       return `dll/${file}`;
     }
