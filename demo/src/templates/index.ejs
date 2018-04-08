@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>d-ui demo</title>
+</head>
+<body>
+  <div id="body-wrapper">
+    <div id="main"></div>
+  </div>
+  <% for (var i = 0; i < htmlWebpackPlugin.options.dllFiles.length; i += 1) { %>
+  <script type="text/javascript" src="<%= htmlWebpackPlugin.options.dllFiles[i] %>"></script>
+  <% } %>
+</body>
+</html>

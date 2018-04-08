@@ -1,0 +1,59 @@
+@import "../../../style/theme";
+@import "../../../../style/mixins/rem";
+
+:local(.hamburger) {
+  width: rem(17px);
+  height: rem(15px);
+  position: relative;
+
+  span {
+    display: block;
+    position: absolute;
+    height: rem(3px);
+    width: 100%;
+    background: $white-color;
+    border-radius: rem(3px);
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition-property: transform, left, top;
+    transition-duration: .25s;
+    transition-timing-function: ease-in-out;
+
+    &:nth-child(1) {
+      top: 0;
+      transform-origin: left center;
+    }
+
+    &:nth-child(2) {
+      top: rem(6px);
+      transform-origin: left center;
+    }
+
+    &:nth-child(3) {
+      top: rem(12px);
+      transform-origin: left center;
+    }
+  }
+
+  &.active {
+    span {
+      &:nth-child(1) {
+        transform: rotate(45deg);
+        top: 0;
+        left: 0px;
+      }
+
+      &:nth-child(2) {
+        width: 0%;
+        opacity: 0;
+      }
+
+      &:nth-child(3) {
+        transform: rotate(-45deg);
+        top: rem(12px);
+        left: 0px;
+      }
+    }
+  }
+}

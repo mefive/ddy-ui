@@ -1,0 +1,22 @@
+@import "~compass-mixins";
+@import "../../style/theme";
+
+:local(.container) {
+  & + :local(.container) {
+    margin-top: 20px;
+  }
+
+  padding: 30px 20px 20px 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: $white-color;
+  @include border-radius(1px);
+
+  & > h1 {
+    font-size: 26px;
+    color: #000;
+  }
+
+  .items {
+    margin-top: 20px;
+  }
+}

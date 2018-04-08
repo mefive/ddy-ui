@@ -1,0 +1,13 @@
+@import "../../style/theme";
+
+:local(.trigger) {
+  border: 1px solid $gray-color;
+  border-radius: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: inline-block;
+
+  & + :local(.trigger) {
+    margin-left: 10px;
+  }
+}

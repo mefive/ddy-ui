@@ -1,0 +1,39 @@
+@import "~compass-mixins";
+
+.clearfix {
+  @include clearfix();
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin col_width($num, $one-col){
+  width: $one-col * $num;
+}
+
+@mixin grid-system($class-prefix, $gutter: $grid-gutter, $cols: $grid-cols) {
+  .row {
+    margin-left:  -$gutter;
+    margin-right:  -$gutter;
+    @include clearfix();
+    &:before,
+    &:after {
+      content: " ";
+      display: table;
+      clear: both;
+    }
+  }
+
+  .col{
+    float: left;
+    padding: 0 $gutter;
+  }
+  @for $n from 1 through $cols {
+    .#{$class-prefix}-#{$n}{
+      @include col_width($n, 100% / $cols);
+    }
+  }
+}

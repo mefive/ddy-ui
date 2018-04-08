@@ -6,7 +6,7 @@ $font-size-xl: 18px !default;
 
 $font-weight-base: 300 !default;
 
-$font-family: Helvetica Neue,Helvetica,Segoe UI,DejaVu Sans,Arial,PingFang SC,Hiragino Sans GB,Source Han Sans,Microsoft Yahei,Heiti SC,sans-serif !default;
+$font-family: Helvetica Neue,Helvetica,Segoe UI,DejaVu Sans,Arial,PingFang SC,Hiragino Sans GB,Source Han Sans,Microsoft Yahei,Heiti SC,sans-serif;
 
 // colors
 $gray-color: #E0E7EB !default;
@@ -55,35 +55,41 @@ $border-radius-sm: 1px !default;
 $border-color-default: #D2D9DE !default;
 
 // container
-$container-width-base: 1180px !default;
-$container-width-sm: 960px !default;
+$container-width-base: 1280px;
+$container-width-sm: 960px;
 
 //main
-$container-width-main: 980px !default;
+$container-width-main: 1050px;
 
 //grid system
-$grid-cols: 12 !default;
-$grid-gutter: 10px !default;
+$grid-cols: 12;
+$grid-gutter: 10px;
 
 //shadows
-$button-hover-bg: #3375c7 !default;
-$outter-shadow:rgba(#001a77, 0.4) 0 3px 4px 0px !default;
-$int-shadow:rgba(#005ba7, 0.6) 0 3px 4px 0px !default;
-$outter-text-shadow:rgba(#001a77, 0.4) 0 3px 4px !default;
-$pillar-shadow-left:rgba(255,255,255,0.3) 0 0 6px 2px !default;
-$inner-shadow-blue: rgba($blue-color-home, 0.6) 0 0 4px 1px inset !default;
+$button-hover-bg: #3375c7;
+$outter-shadow:rgba(#001a77, 0.4) 0 3px 4px 0px;
+$int-shadow:rgba(#005ba7, 0.6) 0 3px 4px 0px;
+$outter-text-shadow:rgba(#001a77, 0.4) 0 3px 4px;
+$pillar-shadow-left:rgba(255,255,255,0.3) 0 0 6px 2px;
+$inner-shadow-blue: rgba($blue-color-home, 0.6) 0 0 4px 1px inset;
 
 // table
-$table-header-background-color: #f9fafc !default;
+$table-header-background-color: #f9fafc;
 
 // zindex
-$zindex-infinite: 999 !default;
-$zindex-xg: 4 !default;
-$zindex-lg: 3 !default;
-$zindex-base: 2 !default;
-$zindex-sm: 1 !default;
+$zindex-infinite: 999;
+$zindex-xg: 4;
+$zindex-lg: 3;
+$zindex-base: 2;
+$zindex-sm: 1;
 
 // form
-$form-line-height: 30px !default;
+$form-line-height: 30px;
 
-
+//center position
+@mixin centerPositon($width,$height){
+  width: $width;
+  height: $height;
+  margin-left: -$width/2;
+  margin-top: -$height/2;
+}
