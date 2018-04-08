@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import keycode from 'keycode';
 
 import Modal from '../Modal';
 
 import './style/index.scss';
+import Clickable from '../Clickable';
 
 const propTypes = {
   onClose: PropTypes.func,
@@ -11,6 +13,7 @@ const propTypes = {
   hasCloseButton: PropTypes.bool,
   title: PropTypes.string,
   visible: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 const defaultProps = {
@@ -19,14 +22,35 @@ const defaultProps = {
   hasCloseButton: true,
   visible: false,
   title: '提示',
+  children: null,
 };
 
-class Alert extends Component {
+class Alert extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.onKeyPress = this.onKeyPress.bind(this);
+  }
+
+  componentWillReceiveProps({ visible }) {
+    if (visible && !this.props.visible) {
+      document.addEventListener('keydown', this.onKeyPress);
+    } else if (!visible && this.props.visible) {
+      document.removeEventListener('keydown', this.onKeyPress);
+    }
+  }
+
+  onKeyPress(e) {
+    e.preventDefault();
+
+    const code = keycode(e);
+
+    if (code === 'enter' || code === 'esc') {
+      this.props.onClose();
+    }
+  }
+
   render() {
     const {
-      onClose,
-      hasCloseButton,
-      children,
       confirmText,
       title,
       visible,
@@ -34,23 +58,24 @@ class Alert extends Component {
 
     return (
       <Modal
-        onClose={onClose}
-        hasCloseButton={hasCloseButton}
+        onClose={this.props.onClose}
+        hasCloseButton={this.props.hasCloseButton}
         title={title}
         visible={visible}
         className="alert"
       >
         <div className="dialog-content">
-          {children}
+          {this.props.children}
         </div>
 
         <div className="dialog-actions">
-          <div
-            className="btn btn-primary"
-            onClick={onClose}
+          <Clickable
+            onClick={this.props.onClose}
           >
-            {confirmText}
-          </div>
+            <div className="btn btn-primary">
+              {confirmText}
+            </div>
+          </Clickable>
         </div>
       </Modal>
     );

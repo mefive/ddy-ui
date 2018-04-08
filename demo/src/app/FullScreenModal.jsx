@@ -1,6 +1,7 @@
 import React from 'react';
 import { FullScreenModal } from '../../../src';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
+import Clickable from '../../../src/components/Clickable';
 
 class ShowcaseFullScreenModal extends React.PureComponent {
   constructor(props) {
@@ -15,13 +16,15 @@ class ShowcaseFullScreenModal extends React.PureComponent {
     return (
       <ShowcaseContainer title="Full Screen Modal">
         <div>
-          <div
-            aria-hidden
-            className="btn btn-primary"
+          <Clickable
             onClick={() => this.setState({ show: true })}
           >
-            Show
-          </div>
+            <div
+              className="btn btn-primary"
+            >
+              Show
+            </div>
+          </Clickable>
         </div>
 
         <FullScreenModal

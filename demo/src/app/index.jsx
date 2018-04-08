@@ -23,6 +23,7 @@ import Portal from './Portal';
 import Spinner from './Spinner';
 import Select from './Select';
 import NumberFlip from './NumberFlip/index';
+import Dialog from './Dialog';
 
 const Port = props => (
   <div className="p-3">
@@ -101,6 +102,13 @@ const Port = props => (
                 Number Flip
               </Link>
             </li>
+
+
+            <li>
+              <Link to="dialog">
+                Dialog
+              </Link>
+            </li>
           </ul>
         )
       }
@@ -127,6 +135,7 @@ ReactDOM.render(
       <Route path="spinner" component={Spinner} />
       <Route path="select" component={Select} />
       <Route path="numberFlip" component={NumberFlip} />
+      <Route path="dialog" component={Dialog} />
     </Route>
   </Router>,
   document.getElementById('main'),

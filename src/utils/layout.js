@@ -1,4 +1,4 @@
-export function getPopoverContainer(selector = '#main', isPrepend = false) {
+export function getPopoverContainer(selector = '#main') {
   const containerParent = selector instanceof Node
     ? selector
     : document.querySelector(selector);

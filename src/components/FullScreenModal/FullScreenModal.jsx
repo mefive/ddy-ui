@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import keycode from 'keycode';
 
 import style from './style/index.scss';
 import Portal from '../Portal';
@@ -18,6 +19,29 @@ const defaultProps = {
 };
 
 class FullScreenModal extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.onKeyPress = this.onKeyPress.bind(this);
+  }
+
+  componentWillReceiveProps({ visible }) {
+    if (visible && !this.props.visible) {
+      document.addEventListener('keydown', this.onKeyPress);
+    } else if (!visible && this.props.visible) {
+      document.removeEventListener('keydown', this.onKeyPress);
+    }
+  }
+
+  onKeyPress(e) {
+    e.preventDefault();
+
+    const code = keycode(e);
+
+    if (code === 'esc') {
+      this.props.onClose();
+    }
+  }
+
   render() {
     return (
       <Animate>

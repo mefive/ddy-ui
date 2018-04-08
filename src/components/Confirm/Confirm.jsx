@@ -1,28 +1,60 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import keycode from 'keycode';
 
 import Modal from '../Modal';
 
 import './style/index.scss';
+import Clickable from '../Clickable';
 
 const propTypes = {
-  onClose: PropTypes.func,
   confirmText: PropTypes.string,
+  cancelText: PropTypes.string,
   hasCloseButton: PropTypes.bool,
   title: PropTypes.string,
   visible: PropTypes.bool,
+  onClose: PropTypes.func,
+  onConfirm: PropTypes.func,
+  children: PropTypes.node,
 };
 
 const defaultProps = {
-  onClose: () => null,
-  onConfirm: () => null,
+  onClose: () => {},
+  onConfirm: () => {},
   confirmText: '确定',
   cancelText: '取消',
   hasCloseButton: true,
   visible: false,
+  title: null,
+  children: null,
 };
 
-class Confirm extends Component {
+class Confirm extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.onKeyPress = this.onKeyPress.bind(this);
+  }
+
+  componentWillReceiveProps({ visible }) {
+    if (visible && !this.props.visible) {
+      document.addEventListener('keydown', this.onKeyPress);
+    } else if (!visible && this.props.visible) {
+      document.removeEventListener('keydown', this.onKeyPress);
+    }
+  }
+
+  onKeyPress(e) {
+    e.preventDefault();
+
+    const code = keycode(e);
+
+    if (code === 'enter') {
+      this.props.onConfirm();
+    } else if (code === 'esc') {
+      this.props.onClose();
+    }
+  }
+
   render() {
     return (
       <Modal
@@ -35,19 +67,21 @@ class Confirm extends Component {
         </div>
 
         <div className="dialog-actions">
-          <div
-            className="btn btn-primary"
+          <Clickable
             onClick={this.props.onConfirm}
           >
-            {this.props.confirmText}
-          </div>
+            <div className="btn btn-primary">
+              {this.props.confirmText}
+            </div>
+          </Clickable>
 
-          <div
-            className="btn btn-default"
+          <Clickable
             onClick={this.props.onClose}
           >
-            {this.props.cancelText}
-          </div>
+            <div className="btn btn-default">
+              {this.props.cancelText}
+            </div>
+          </Clickable>
         </div>
       </Modal>
     );

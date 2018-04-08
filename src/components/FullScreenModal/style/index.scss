@@ -1,3 +1,5 @@
+@import "~compass-mixins";
+@import "~compass-mixins/lib/animation/core";
 @import "../../style/theme";
 
 @mixin full-screen {
@@ -15,15 +17,29 @@
 
   &.enter {
     :local(.body) {
-      animation-name: scaleIn;
-      animation-duration: .2s;
+      @include animation-name(scaleIn);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
+    }
+    :local(.mask),
+    :local(.close) {
+      @include animation-name(fadeIn);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
     }
   }
 
   &.leave {
     :local(.body) {
-      animation-name: scaleOut;
-      animation-duration: .2s;
+      @include animation-name(scaleOut);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
+    }
+    :local(.mask),
+    :local(.close) {
+      @include animation-name(fadeOut);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
     }
   }
 }

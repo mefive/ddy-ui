@@ -36,6 +36,7 @@
     "codemirror": "^5.36.0",
     "compass-mixins": "^0.12.10",
     "highcharts": "^6.0.7",
+    "keycode": "^2.2.0",
     "lodash": "^4.17.4",
     "moment": "^2.22.0",
     "odometer": "^0.4.8",
