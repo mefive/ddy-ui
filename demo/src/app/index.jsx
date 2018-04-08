@@ -18,6 +18,7 @@ import DatePicker from './DatePicker';
 import DateRangePicker from './DateRangePicker';
 import FullScreenModal from './FullScreenModal';
 import Trigger from './Trigger';
+import Tooltip from './Tooltip';
 import Portal from './Portal';
 import Spinner from './Spinner';
 import Select from './Select';
@@ -72,6 +73,12 @@ const Port = props => (
             </li>
 
             <li>
+              <Link to="tooltip">
+                Tooltip
+              </Link>
+            </li>
+
+            <li>
               <Link to="portal">
                 Portal
               </Link>
@@ -115,6 +122,7 @@ ReactDOM.render(
       <Route path="dateRangePicker" component={DateRangePicker} />
       <Route path="fullScreenModal" component={FullScreenModal} />
       <Route path="trigger" component={Trigger} />
+      <Route path="tooltip" component={Tooltip} />
       <Route path="portal" component={Portal} />
       <Route path="spinner" component={Spinner} />
       <Route path="select" component={Select} />
