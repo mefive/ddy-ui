@@ -30,37 +30,13 @@ const defaultProps = {
 };
 
 class Confirm extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.onKeyPress = this.onKeyPress.bind(this);
-  }
-
-  componentWillReceiveProps({ visible }) {
-    if (visible && !this.props.visible) {
-      document.addEventListener('keydown', this.onKeyPress);
-    } else if (!visible && this.props.visible) {
-      document.removeEventListener('keydown', this.onKeyPress);
-    }
-  }
-
-  onKeyPress(e) {
-    e.preventDefault();
-
-    const code = keycode(e);
-
-    if (code === 'enter') {
-      this.props.onConfirm();
-    } else if (code === 'esc') {
-      this.props.onClose();
-    }
-  }
-
   render() {
     return (
       <Modal
         {...this.props}
         className="confirm"
         title="提示"
+        onEnter={this.props.onConfirm}
       >
         <div className="dialog-content">
           {this.props.children}
