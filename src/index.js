@@ -12,7 +12,7 @@ import DoubleBounce from './components/DoubleBounce';
 import Draggable from './components/Draggable';
 import FileUploader from './components/FileUploader';
 import FlexWrapper from './components/FlexWrapper';
-import Form from './components/Form';
+import Form from './components/Form/index';
 import FullScreenModal from './components/FullScreenModal';
 import ImagesUploader from './components/ImagesUploader';
 import Input from './components/Input';

@@ -9,10 +9,6 @@ class Spinner extends React.PureComponent {
         <div className="bold">Double Bounce</div>
         <div className="mt-1">
           <Tooltip title='点击去"服务中心"订阅节点'>
-            <div className="ml-3 d-inline-block align-middle" style={{ width: 40, height: 40 }} />
-          </Tooltip>
-
-          <Tooltip title='点击去"服务中心"订阅节点'>
             <div className="d-inline-block">
               <DoubleBounce className="align-middle" />
             </div>

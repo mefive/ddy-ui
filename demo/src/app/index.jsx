@@ -24,6 +24,51 @@ import Spinner from './Spinner';
 import Select from './Select';
 import NumberFlip from './NumberFlip/index';
 import Dialog from './Dialog';
+import Form from './Form';
+
+const links = [{
+  url: 'table',
+  title: 'Table',
+}, {
+  url: 'odometerNumber',
+  title: 'OdometerNumber',
+}, {
+  url: 'codeEditor',
+  title: 'CodeEditor',
+}, {
+  url: 'datePicker',
+  title: 'DatePicker',
+}, {
+  url: 'dateRangePicker',
+  title: 'DateRangePicker',
+}, {
+  url: 'fullScreenModal',
+  title: 'FullScreenModal',
+}, {
+  url: 'trigger',
+  title: 'Trigger',
+}, {
+  url: 'tooltip',
+  title: 'Tooltip',
+}, {
+  url: 'portal',
+  title: 'Portal',
+}, {
+  url: 'spinner',
+  title: 'Spinner',
+}, {
+  url: 'select',
+  title: 'Select',
+}, {
+  url: 'numberFlip',
+  title: 'NumberFlip',
+}, {
+  url: 'dialog',
+  title: 'Dialog',
+}, {
+  url: 'form',
+  title: 'Form',
+}];
 
 const Port = props => (
   <div className="p-3">
@@ -31,84 +76,13 @@ const Port = props => (
         ? props.children
         : (
           <ul className={style.navs}>
-            <li>
-              <Link to="table">
-                Table
-              </Link>
-            </li>
-
-            <li>
-              <Link to="odometerNumber">
-                OdometerNumber
-              </Link>
-            </li>
-
-            <li>
-              <Link to="codeEditor">
-                CodeEditor
-              </Link>
-            </li>
-
-            <li>
-              <Link to="datePicker">
-                DatePicker
-              </Link>
-            </li>
-
-            <li>
-              <Link to="dateRangePicker">
-                DateRangePicker
-              </Link>
-            </li>
-
-            <li>
-              <Link to="fullScreenModal">
-                FullScreenModal
-              </Link>
-            </li>
-
-            <li>
-              <Link to="trigger">
-                Trigger
-              </Link>
-            </li>
-
-            <li>
-              <Link to="tooltip">
-                Tooltip
-              </Link>
-            </li>
-
-            <li>
-              <Link to="portal">
-                Portal
-              </Link>
-            </li>
-
-            <li>
-              <Link to="spinner">
-                Spinner
-              </Link>
-            </li>
-
-            <li>
-              <Link to="select">
-                Select
-              </Link>
-            </li>
-
-            <li>
-              <Link to="numberFlip">
-                Number Flip
-              </Link>
-            </li>
-
-
-            <li>
-              <Link to="dialog">
-                Dialog
-              </Link>
-            </li>
+            {links.map(({ url, title }) => (
+              <li key={url}>
+                <Link to={url}>
+                  {title}
+                </Link>
+              </li>
+            ))}
           </ul>
         )
       }
@@ -136,6 +110,7 @@ ReactDOM.render(
       <Route path="select" component={Select} />
       <Route path="numberFlip" component={NumberFlip} />
       <Route path="dialog" component={Dialog} />
+      <Route path="form" component={Form} />
     </Route>
   </Router>,
   document.getElementById('main'),
