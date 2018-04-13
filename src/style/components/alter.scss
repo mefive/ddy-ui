@@ -1,0 +1,37 @@
+@import "../variables";
+@import "~compass-mixins";
+
+@mixin alert() {
+  font-size: 12px;
+  border-radius: $border-radius-base;
+  border: 1px solid;
+  line-height: 25px;
+  padding: 0 10px;
+}
+
+.alert-info {
+  @include alert();
+  color: $info-color;
+  background-color: $info-light-color;
+  border-color: $info-color;
+}
+
+.alert-error {
+  @include alert();
+  color: $error-color;
+  background-color: $error-light-color;
+  border-color: $error-dark-color;
+}
+
+.alert-success {
+  @include alert();
+  color: #3c763d;
+  background-color: #DEF1D6;
+  border-color: #3c763d;
+}
+
+.alert-warning {
+  @include alert();
+  background-color: #fffaec;
+  border-color: #fff3cf;
+}

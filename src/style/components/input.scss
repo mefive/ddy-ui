@@ -1,0 +1,46 @@
+@import "../variables";
+@import "~compass-mixins";
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+textarea {
+  width: 100%;
+  outline: none;
+  transition-property: border-color;
+  transition-duration: .2s;
+  line-height: 14px; // fix to the minimum limited of Chrome
+  background-color: $white-color;
+  resize: none;
+
+  @include appearance(none);
+
+  border: 1px solid $gray-color;
+
+  &[readonly] {
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    border-color: $primary-color;
+    &[readonly] {
+      border-color: $gray-color;
+    }
+  }
+
+  @include border-radius($border-radius-base);
+
+  @include input-placeholder {
+    color: #b5b5b5;
+  }
+
+  padding: 7px 8px;
+}
+
+textarea {
+  height: 160px;
+}
+
+.code {
+  font-family: 'courier', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}

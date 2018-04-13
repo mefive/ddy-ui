@@ -134,10 +134,10 @@ module.exports = function () {
           filename: 'index.html',
         }),
 
-        new UglifyJsPlugin({
-          parallel: true,
-          cache: true,
-        }),
+        // new UglifyJsPlugin({
+        //   parallel: true,
+        //   cache: true,
+        // }),
       ],
     });
   } else {

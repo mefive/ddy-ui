@@ -1,0 +1,123 @@
+@import "~compass-mixins";
+@import "../variables";
+
+.btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 8px 15px;
+  border: 1px solid $gray-color;
+  border-radius: $border-radius-base;
+  text-align: center;
+  cursor: pointer;
+  @include user-select(none);
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  transition-property: background-color color box-shadow;
+  transition-duration: .2s;
+
+  &:active {
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  }
+}
+
+.btn-link {
+  display: inline-block;
+  line-height: $line-height-base !important;
+  cursor: pointer;
+  @include user-select(none);
+
+  &.disabled {
+    color: $gray-color;
+    cursor: not-allowed;
+  }
+}
+
+.btn-lg {
+  font-size: $font-size-lg !important;
+  padding: 12px 24px;
+  border-radius: $border-radius-lg;
+}
+
+.btn-sm {
+  font-size: $font-size-sm !important;
+  padding: 6px 6px;
+}
+
+.btn-default {
+  color: $text-color;
+  background-color: #f7f7f7;
+
+  &:hover {
+    background-color: darken(#f7f7f7, 4%);
+  }
+}
+
+.btn-primary {
+  color: $white-color;
+  background-color: $primary-color;
+  border-color: $primary-color;
+
+  &:hover {
+    background-color: darken($primary-color, 4%);
+  }
+
+  // &.disabled {
+  //   background-color: lighten($primary-color, 10%) !important;
+  // }
+}
+
+.btn-succ {
+  color: $white-color;
+  background-color: $success-color;
+  border-color: $success-color;
+
+  &:hover {
+    background-color: darken($success-color, 4%);
+  }
+
+  // &.disabled {
+  //   background-color: lighten($error-color, 10%) !important;
+  // }
+}
+
+.btn-error {
+  color: $white-color;
+  background-color: $error-dark-color;
+  border-color: $error-dark-color;
+
+  &:hover {
+    background-color: darken($error-color, 4%);
+  }
+
+  // &.disabled {
+  //   background-color: lighten($error-color, 10%) !important;
+  // }
+}
+
+.btn-outline-primary {
+  color: $primary-color;
+  background-color: $white-color;
+  border: 1px solid $primary-color;
+  border-radius: $border-radius-base;
+
+  &:hover {
+    color: $white-color;
+    background-color: $primary-color;
+  }
+}
+
+.btn-outline-error {
+  color: $error-color;
+  background-color: $white-color;
+  border: 1px solid $error-color;
+  border-radius: $border-radius-base;
+
+  &:hover {
+    color: $white-color;
+    background-color: $error-color;
+  }
+}

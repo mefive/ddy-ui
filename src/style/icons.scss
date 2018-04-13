@@ -1,3 +1,16 @@
+.icon {
+  display: inline-block;
+}
+
+.icon.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #e0eeff;
+  position: relative;
+}
+
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
