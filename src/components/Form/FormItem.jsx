@@ -10,6 +10,19 @@ const propTypes = {
   children: PropTypes.node,
   onClearError: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.any]),
+
+  validate: PropTypes.func,
+  validateOnBlur: PropTypes.bool,
+
+  /* eslint-disable */
+  required: PropTypes.bool,
+  max: PropTypes.number,
+  min: PropTypes.number,
+  maxLength: PropTypes.number,
+  minLength: PropTypes.number,
+  regex: PropTypes.string,
+  getError: PropTypes.func,
+  /* eslint-enable */
 };
 
 const defaultProps = {
@@ -19,6 +32,17 @@ const defaultProps = {
   error: null,
   value: null,
   onClearError: () => {},
+
+  validate: () => {},
+  validateOnBlur: false,
+
+  required: false,
+  max: null,
+  min: null,
+  maxLength: null,
+  minLength: null,
+  regex: null,
+  getError: null,
 };
 
 class FormItem extends React.PureComponent {
@@ -39,6 +63,9 @@ class FormItem extends React.PureComponent {
                 this.props.onChange(this.props.keyName, value);
                 this.props.onClearError();
               },
+              onBlur: this.props.validateOnBlur
+                ? () => this.props.validate(this.props.keyName)
+                : null,
               value: this.props.value,
             },
           ))}

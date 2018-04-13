@@ -119,11 +119,11 @@ a, u {
 
 .btn-succ {
   color: $white-color;
-  background-color: $succ-color;
-  border-color: $succ-color;
+  background-color: $success-color;
+  border-color: $success-color;
 
   &:hover {
-    background-color: darken($succ-color, 4%);
+    background-color: darken($success-color, 4%);
   }
 
   // &.disabled {
@@ -257,7 +257,7 @@ textarea {
   color: $error-color !important;
 }
 .text-succ {
-  color: $succ-color !important;
+  color: $success-color !important;
 }
 .text-light {
   color: $text-light-color !important;
@@ -276,7 +276,7 @@ textarea {
   background: $black-color;
 }
 .bg-success {
-  background-color: $succ-color;
+  background-color: $success-color;
 }
 
 @mixin alert() {

@@ -114,12 +114,6 @@
         font-size: $font-size-sm;
         text-align: left;
         padding: 10px;
-        // @include ellipsis();
-
-        // &.wrap {
-        //   white-space: initial;
-        //   word-break: break-word;
-        // }
       }
 
       tr {
@@ -152,14 +146,6 @@
       padding: 0;
     }
 
-    // tr.expanded {
-    //   .detail-trigger-cell {
-    //     .icon {
-    //       @include transform(rotate(180deg));
-    //     }
-    //   }
-    // }
-
     td.detail-cell {
       padding: 10px 20px;
       background-color: #EEEEEE;
@@ -180,7 +166,7 @@
 
     .detail {
       text-align: left;
-      @include inline-block();
+      display: inline-block;
       width: 50%;
       vertical-align: top;
 
@@ -189,7 +175,7 @@
       }
 
       label {
-        @include inline-block();
+        display: inline-block;
       }
     }
   }
@@ -199,7 +185,7 @@
 
     th {
       line-height: 30px;
-      background-color: $table-header-background-color;
+      background-color: #f9fafc;
       color: $text-color;
 
       &:first-child {
@@ -223,13 +209,13 @@
       }
 
       &:first-child {
-        @include border-top-left-radius($border-radius-base);
-        @include border-bottom-left-radius($border-radius-base);
+        border-top-left-radius: $border-radius-base;
+        border-bottom-left-radius: $border-radius-base;
       }
 
       &:last-child {
-        @include border-top-right-radius($border-radius-base);
-        @include border-bottom-right-radius($border-radius-base);
+        border-top-right-radius: $border-radius-base;
+        border-bottom-right-radius: $border-radius-base;
       }
     }
   }
@@ -274,24 +260,7 @@
     .table-body {
       overflow-y: hidden;
     }
-    // .table-header {
-    //   z-index: 2;
-    // }
-    // .table-body-fixHeader,.table-body-flowHeader{
-    //   overflow-x: scroll;
-    //   overflow-y: hidden;
-    // }
-  }
 
-  .table-column-flow {
-    // .table-header{
-    //   z-index:2;
-    //   overflow-x: hidden !important;
-    //   overflow-y: auto !important;
-    // }
-    // .table-body-fixHeader,.table-body-flowHeader{
-    //   overflow: auto;
-    // }
   }
 
   &.flexible {

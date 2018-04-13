@@ -9,15 +9,13 @@ import './style/index.scss';
 const propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
-  vertical: PropTypes.bool,
   labelWidth: PropTypes.number,
 };
 
 const defaultProps = {
   className: null,
   children: null,
-  vertical: false,
-  labelWidth: 120,
+  labelWidth: null,
 };
 
 class Form extends React.PureComponent {
@@ -25,7 +23,7 @@ class Form extends React.PureComponent {
     return (
       <div
         className={classNames(
-          'form text-sm',
+          'form',
           this.props.className,
         )}
       >
@@ -37,7 +35,6 @@ class Form extends React.PureComponent {
                 return React.cloneElement(
                   child,
                   {
-                    vertical: this.props.vertical,
                     labelWidth: this.props.labelWidth,
                   },
                 );

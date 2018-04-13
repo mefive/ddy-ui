@@ -5,7 +5,6 @@ import classNames from 'classnames';
 const propTypes = {
   className: PropTypes.string,
   labelWidth: PropTypes.number,
-  vertical: PropTypes.bool,
   label: PropTypes.string,
   required: PropTypes.bool,
   children: PropTypes.node,
@@ -15,8 +14,7 @@ const propTypes = {
 const defaultProps = {
   label: null,
   className: null,
-  labelWidth: 120,
-  vertical: false,
+  labelWidth: null,
   required: false,
   children: null,
   helpBlock: null,
@@ -24,20 +22,17 @@ const defaultProps = {
 
 class FormGroup extends React.PureComponent {
   render() {
-    const marginLeft = (this.props.vertical || this.props.label == null)
-      ? null : this.props.labelWidth;
-
     return (
       <div
         className={classNames(
           'form-group',
           this.props.className,
+          { inline: this.props.labelWidth != null },
         )}
       >
         {this.props.label && (
           <label
-            style={{ width: this.props.vertical ? null : this.props.labelWidth }}
-            className={classNames({ vertical: !!this.props.vertical })}
+            style={{ width: this.props.labelWidth }}
           >
             {this.props.required && (
               <span className="required">*</span>
@@ -46,14 +41,14 @@ class FormGroup extends React.PureComponent {
           </label>
         )}
 
-        <div style={{ marginLeft }}>
+        <div style={{ marginLeft: this.props.labelWidth }}>
           {this.props.children}
         </div>
 
         {this.props.helpBlock && (
           <div
             className="help-block"
-            style={{ marginLeft }}
+            style={{ marginLeft: this.props.labelWidth }}
           >
             {this.props.helpBlock}
           </div>

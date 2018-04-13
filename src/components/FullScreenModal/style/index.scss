@@ -11,7 +11,7 @@
 }
 
 :local(.modal) {
-  z-index: $zindex-base;
+  z-index: $z-index-base;
   @include full-screen;
   padding: 0 200px;
 

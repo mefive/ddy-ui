@@ -1,0 +1,7 @@
+//center position
+@mixin center-positon($width,$height) {
+  width: $width;
+  height: $height;
+  margin-left: -$width/2;
+  margin-top: -$height/2;
+}

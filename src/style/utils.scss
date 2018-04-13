@@ -8,7 +8,7 @@
   color: $error-color !important;
 }
 .text-succ {
-  color: $succ-color !important;
+  color: $success-color !important;
 }
 .text-light {
   color: $text-light-color !important;
@@ -57,7 +57,7 @@
 }
 
 .bg-success {
-  background-color: $succ-color;
+  background-color: $success-color;
 }
 
 .bg-white {
@@ -101,7 +101,7 @@
 }
 
 .border-success {
-  border-color: $succ-color !important;
+  border-color: $success-color !important;
 }
 
 .border-0 {

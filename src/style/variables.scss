@@ -3,9 +3,7 @@ $font-size-base: 14px !default;
 $font-size-sm: 12px !default;
 $font-size-lg: 16px !default;
 $font-size-xl: 18px !default;
-
 $font-weight-base: 300 !default;
-
 $font-family: Helvetica Neue,Helvetica,Segoe UI,DejaVu Sans,Arial,PingFang SC,Hiragino Sans GB,Source Han Sans,Microsoft Yahei,Heiti SC,sans-serif;
 
 // colors
@@ -31,7 +29,7 @@ $error-dark-color: #df5650 !default;
 $error-color: #e15854 !default;
 $error-light-color: #ffedec !default;
 
-$succ-color: $green-color !default;
+$success-color: $green-color !default;
 
 $text-color: #59616e !default;
 $text-dark-color: #535353 !default;
@@ -40,11 +38,6 @@ $text-error-color: #df5650 !default;
 
 $body-background-color: #f9fafc !default;
 
-//home colors
-$footer-bg-color: #273351 !default;
-$footer-text-color: #6e8fdb !default;
-$vision-color: #0581ea !default;
-$dashed-color: #959595 !default;
 // text
 $line-height-base: 1.5 !default;
 
@@ -52,44 +45,23 @@ $line-height-base: 1.5 !default;
 $border-radius-base: 3px !default;
 $border-radius-lg: 5px !default;
 $border-radius-sm: 1px !default;
-$border-color-default: #D2D9DE !default;
 
-// container
-$container-width-base: 1280px;
-$container-width-sm: 960px;
-
-//main
-$container-width-main: 1050px;
 
 //grid system
 $grid-cols: 12;
 $grid-gutter: 10px;
 
-//shadows
-$button-hover-bg: #3375c7;
-$outter-shadow:rgba(#001a77, 0.4) 0 3px 4px 0px;
-$int-shadow:rgba(#005ba7, 0.6) 0 3px 4px 0px;
-$outter-text-shadow:rgba(#001a77, 0.4) 0 3px 4px;
-$pillar-shadow-left:rgba(255,255,255,0.3) 0 0 6px 2px;
-$inner-shadow-blue: rgba($blue-color-home, 0.6) 0 0 4px 1px inset;
+// z-index
+$z-index-infinite: 999;
+$z-index-xg: 4;
+$z-index-lg: 3;
+$z-index-base: 2;
+$z-index-sm: 1;
 
-// table
-$table-header-background-color: #f9fafc;
-
-// zindex
-$zindex-infinite: 999;
-$zindex-xg: 4;
-$zindex-lg: 3;
-$zindex-base: 2;
-$zindex-sm: 1;
-
-// form
-$form-line-height: 30px;
-
-//center position
-@mixin centerPositon($width,$height){
-  width: $width;
-  height: $height;
-  margin-left: -$width/2;
-  margin-top: -$height/2;
-}
+// screen
+$screen-xs: 480px;
+$screen-sm: 576px;
+$screen-md: 768px;
+$screen-lg: 992px;
+$screen-xl: 1200px;
+$screen-xxl: 1600px;

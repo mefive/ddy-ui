@@ -2,6 +2,8 @@
 @import "../../../style/mixins/triangle";
 @import "../../style/theme";
 
+$form-line-height: 30px;
+
 .form {
   .form-group {
     width: 100%;
@@ -13,12 +15,11 @@
     position: relative;
 
     & > label {
-      float: left;
-      padding-right: 15px;
-      text-align: right;
-      color: $text-dark-color;
-      line-height: $form-line-height;
-      vertical-align: middle;
+      display: block;
+      float: none;
+      text-align: left;
+      margin-bottom: 10px;
+      font-weight: bold;
 
       .required {
         color: $error-color;
@@ -26,13 +27,15 @@
         margin-right: 10px;
         vertical-align: middle;
       }
+    }
 
-      &.vertical {
-        display: block;
-        float: none;
-        text-align: left;
-        margin-bottom: 10px;
-      }
+    &.inline > label {
+      float: left;
+      padding-right: 15px;
+      text-align: left;
+      color: $text-dark-color;
+      line-height: $form-line-height;
+      vertical-align: middle;
     }
 
     + .form-group {
@@ -134,11 +137,9 @@
     line-height: 1.5;
     color: #646464;
   }
-  .form-control-static {
-    padding-top: 8px;
-    margin-bottom: 30px;
-    color: #b5b5b5;
 
+  .form-control-static {
+    line-height: $form-line-height;
     strong {
       color: $text-dark-color;
       margin-right: 14px;
