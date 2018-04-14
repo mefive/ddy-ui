@@ -61,4 +61,10 @@ $form-line-height: 32px;
     color: $error-color;
     font-size: $font-size-sm;
   }
+
+  @media (max-width: $screen-xs) {
+    .label-col {
+      text-align: left !important;
+    }
+  }
 }
