@@ -6,9 +6,10 @@ import style from './style/index.scss';
 const GUTTER = 20;
 
 class Grid extends React.PureComponent {
-  renderCol() {
+  renderCol(key) {
     return (
       <Col
+        key={key}
         className="mt-2"
         gutter={GUTTER}
         xs={{ span: 12 }}
@@ -27,7 +28,15 @@ class Grid extends React.PureComponent {
     return (
       <ShowcaseContainer title="Grid">
         <Row gutter={GUTTER}>
-          {Array(20).fill(0).map(() => this.renderCol())}
+          {(() => {
+            const cols = [];
+
+            for (let i = 0; i < 20; i += 1) {
+              cols.push(this.renderCol(i));
+            }
+
+            return cols;
+          })()}
         </Row>
       </ShowcaseContainer>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import ShowcaseContainer from '../ShowcaseContainer';
 import TestForm from './TestForm';
+import { Alert } from '../../../../src/components';
 
 class ShowcaseForm extends React.PureComponent {
   constructor(props) {
@@ -13,6 +14,7 @@ class ShowcaseForm extends React.PureComponent {
         birthDate: '1985-12-20',
         age: 32,
       },
+      alert: false,
     };
   }
 
@@ -36,8 +38,16 @@ class ShowcaseForm extends React.PureComponent {
                 },
               });
             }}
+            onSubmit={() => this.setState({ alert: true })}
           />
         </div>
+
+        <Alert
+          visible={this.state.alert}
+          onClose={() => this.setState({ alert: false })}
+        >
+          成功!
+        </Alert>
       </ShowcaseContainer>
     );
   }

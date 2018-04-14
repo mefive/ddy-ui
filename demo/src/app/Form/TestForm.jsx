@@ -16,11 +16,23 @@ const defaultProps = {
 };
 
 class TestForm extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit() {
+    if (this.props.validate()) {
+      this.props.onSubmit();
+    }
+  }
+
   render() {
     const { getFieldDecorator, dataSource } = this.props;
 
     return (
-      <Form>
+      <Form onSubmit={this.onSubmit}>
         <FormGroup label="Name" required>
           {getFieldDecorator((
             <FormItem
@@ -46,13 +58,7 @@ class TestForm extends React.PureComponent {
         </FormGroup>
 
         <div className="mt-2">
-          <Clickable
-            onClick={() => {
-              if (this.props.validate()) {
-                this.props.onSubmit();
-              }
-            }}
-          >
+          <Clickable onClick={this.onSubmit}>
             <div className="btn btn-primary">
               提交
             </div>

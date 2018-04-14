@@ -10,22 +10,28 @@ const propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   labelWidth: PropTypes.number,
+  onSubmit: PropTypes.func,
 };
 
 const defaultProps = {
   className: null,
   children: null,
   labelWidth: null,
+  onSubmit: () => {},
 };
 
 class Form extends React.PureComponent {
   render() {
     return (
-      <div
+      <form
         className={classNames(
           'form',
           this.props.className,
         )}
+        onSubmit={(e) => {
+          e.preventDefault();
+          this.props.onSubmit();
+        }}
       >
         <div className="form-group-container">
           {React.Children.map(
@@ -44,7 +50,9 @@ class Form extends React.PureComponent {
             },
           )}
         </div>
-      </div>
+
+        <input type="submit" className="hidden" />
+      </form>
     );
   }
 }

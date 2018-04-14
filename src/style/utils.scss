@@ -1,6 +1,10 @@
 @import "~compass-mixins";
 @import "variables";
 
+.hidden {
+  display: none;
+}
+
 .text-primary {
   color: $primary-color !important;
 }
