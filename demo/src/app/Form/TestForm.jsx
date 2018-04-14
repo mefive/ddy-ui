@@ -43,7 +43,7 @@ class TestForm extends React.PureComponent {
   }
 
   render() {
-    const { getFieldDecorator, dataSource } = this.props;
+    const { getFieldDecorator, dataSource, validate } = this.props;
 
     return (
       <Form onSubmit={this.onSubmit}>
@@ -54,11 +54,22 @@ class TestForm extends React.PureComponent {
           wrapperCol={wrapperCol}
         >
           {getFieldDecorator('name', {
-            rules: {
+            rules: [{
               required: true,
-            },
+              message: '需要 name 啊！！！',
+            }, {
+              validator: v => v !== 'mefive',
+              message: '不能是 mefive !',
+            }, {
+              validator: v => v.indexOf('m') === -1,
+              message: '不能有 m',
+            }, {
+              maxLength: 20,
+            }, {
+              minLength: 3,
+            }],
           })((
-            <Input id="name" />
+            <Input id="name" onBlur={() => validate('name')} />
           ))}
         </FormItem>
 

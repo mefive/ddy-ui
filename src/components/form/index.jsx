@@ -56,62 +56,57 @@ const withForm = (WrappedComponent) => {
       };
     }
 
-    validate(fields) {
+    validate(field) {
       const errors = {};
 
-      let fieldList;
+      let fields;
 
-      if (typeof fields === 'string') {
-        fieldList = [fields];
+      if (field == null) {
+        fields = Object.keys(this.rules);
+      } else if (typeof field === 'string') {
+        fields = [field];
       } else {
-        fieldList = fields;
+        fields = field;
       }
 
-      Object.keys(this.rules).forEach((keyName) => {
-        const value = this.props.dataSource[keyName];
-
-        const {
-          required, maxLength, minLength, regex, getError,
-        } = this.rules[keyName];
-
-        const error = [];
-
-        if (!fieldList || fieldList.indexOf(keyName) !== -1) {
-          if (isFunction(getError)) {
-            const customError = getError(value);
-
-            if (customError) {
-              error.push(customError);
-            }
-          } else {
-            if (!value) {
-              if (required) {
-                error.push('必填项不能为空');
-              }
-            } else if (typeof value === 'string' && !value.trim()) {
-              if (required) {
-                error.push('必填项不能为空');
-              }
-            } else {
-              if (maxLength != null && value.length > maxLength) {
-                error.push(`不得大于${maxLength}个字符`);
-              }
-
-              if (minLength != null && value.length < minLength) {
-                error.push(`不得小于${minLength}个字符`);
-              }
-            }
-
-            if (value && value.length > 0 && regex && !regex.test(value)) {
-              error.push('格式不正确');
-            }
-          }
-
-          if (error.length > 0) {
-            errors[keyName] = error.join(',');
-          }
+      const addToError = (name, message) => {
+        if (name in errors) {
+          errors[name] = `${errors[name]}, ${message}`;
         } else {
-          delete errors[keyName];
+          errors[name] = message;
+        }
+      };
+
+      fields.forEach((name) => {
+        const rules = this.rules[name];
+
+        if (rules) {
+          const value = this.props.dataSource[name];
+
+          for (let i = 0; i < rules.length; i += 1) {
+            const rule = rules[i];
+
+            if (rule.required
+              && (
+                value == null || value === '' || (typeof value === 'string' && value.trim() === '')
+              )
+            ) {
+              errors[name] = rule.message || '必填项不能为空';
+              break;
+            }
+
+            if (isFunction(rule.validator)) {
+              if (!rule.validator(value)) {
+                addToError(name, rule.message || '不符合自定义规则');
+              }
+            } else if (rule.maxLength != null && value.length > rule.maxLength) {
+              addToError(name, rule.message || `不得大于${rule.maxLength}个字符`);
+            } else if (rule.minLength != null && value.length < rule.minLength) {
+              addToError(name, rule.message || `不得少于${rule.minLength}个字符`);
+            } else if (rules.regex != null && !rules.regex.test(value)) {
+              addToError(name, rule.message || '格式不正确');
+            }
+          }
         }
       });
 
