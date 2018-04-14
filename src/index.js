@@ -12,7 +12,6 @@ import DoubleBounce from './components/DoubleBounce';
 import Draggable from './components/Draggable';
 import FileUploader from './components/FileUploader';
 import FlexWrapper from './components/FlexWrapper';
-import Form from './components/Form/index';
 import FullScreenModal from './components/FullScreenModal';
 import ImagesUploader from './components/ImagesUploader';
 import Input from './components/Input';
@@ -35,6 +34,8 @@ import ToggleButton from './components/ToggleButton';
 import Tooltip from './components/Tooltip';
 import Tree from './components/Tree';
 import Trigger from './components/Trigger';
+import form from './components/form';
+import grid from './components/grid';
 
 export {
   Alert,
@@ -51,7 +52,6 @@ export {
   Draggable,
   FileUploader,
   FlexWrapper,
-  Form,
   FullScreenModal,
   ImagesUploader,
   Input,
@@ -74,4 +74,6 @@ export {
   Tooltip,
   Tree,
   Trigger,
+  form,
+  grid,
 };

@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-function writeFile(filePath, components, componentPrefix = '') {
-  const codes = components.map(c => `import ${c} from './components${componentPrefix}/${c}';`);
+function writeFile(filePath, components) {
+  const codes = components.map(c => `import ${c} from './${c}';`);
 
   codes.push(`\nexport {\n${components.map(c => `  ${c},`).join('\n')}\n};\n`);
 
@@ -25,10 +25,10 @@ fs.readdir(path.join(__dirname, '../components'), (err, files) => {
   }
 
   const components = files
-    .filter(f => ['m', 'style'].indexOf(f) === -1)
+    .filter(f => ['index.js', 'm', 'style'].indexOf(f) === -1)
     .map(f => f.replace(/\.jsx/, ''));
 
-  writeFile(path.resolve(__dirname, '../index.js'), components);
+  writeFile(path.resolve(__dirname, '../components/index.js'), components);
 });
 
 fs.readdir(path.join(__dirname, '../components/m'), (err, files) => {
@@ -38,7 +38,8 @@ fs.readdir(path.join(__dirname, '../components/m'), (err, files) => {
   }
 
   const components = files
+    .filter(f => ['index.js', 'style'].indexOf(f) === -1)
     .map(f => f.replace(/\.jsx/, ''));
 
-  writeFile(path.resolve(__dirname, '../m.js'), components, '/m');
+  writeFile(path.resolve(__dirname, '../components/m/index.js'), components);
 });
