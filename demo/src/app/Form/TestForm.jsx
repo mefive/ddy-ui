@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormItem, FormGroup, withForm } from '../../../../src/components/form';
+import { Form, FormItem, withForm } from '../../../../src/components/form';
 import { DatePicker, Input, Clickable } from '../../../../src/components';
+import { Row, Col } from '../../../../src/components/grid';
 
 const propTypes = {
   getFieldDecorator: PropTypes.func.isRequired,
@@ -13,6 +14,19 @@ const propTypes = {
 const defaultProps = {
   onSubmit: () => {},
   dataSource: {},
+};
+
+const labelCol = {
+  xs: {
+    span: 4,
+  },
+  alignRight: true,
+};
+
+const wrapperCol = {
+  xs: {
+    span: 8,
+  },
 };
 
 class TestForm extends React.PureComponent {
@@ -33,36 +47,51 @@ class TestForm extends React.PureComponent {
 
     return (
       <Form onSubmit={this.onSubmit}>
-        <FormGroup label="Name" required>
-          {getFieldDecorator((
-            <FormItem
-              keyName="name"
-              required
-              validateOnBlur
-            >
-              <Input />
-            </FormItem>
+        <FormItem
+          label="Name"
+          required
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
+        >
+          {getFieldDecorator('name', {
+            rules: {
+              required: true,
+            },
+          })((
+            <Input id="name" />
           ))}
-        </FormGroup>
+        </FormItem>
 
-        <FormGroup label="Birth Date">
-          {getFieldDecorator((
-            <FormItem keyName="birthDate">
-              <DatePicker />
-            </FormItem>
+        <FormItem
+          label="Birth Date"
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
+        >
+          {getFieldDecorator('birthDate')((
+            <DatePicker />
           ))}
-        </FormGroup>
+        </FormItem>
 
-        <FormGroup label="Age">
-          <div className="form-control-static">{dataSource.age}</div>
-        </FormGroup>
+        <FormItem
+          label="Age"
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
+        >
+          <div className="form-item-line-height">
+            {dataSource.age}
+          </div>
+        </FormItem>
 
         <div className="mt-2">
-          <Clickable onClick={this.onSubmit}>
-            <div className="btn btn-primary">
-              提交
-            </div>
-          </Clickable>
+          <Row>
+            <Col xs={{ span: 8, offset: 4 }}>
+              <Clickable onClick={this.onSubmit}>
+                <div className="btn btn-primary">
+                  提交
+                </div>
+              </Clickable>
+            </Col>
+          </Row>
         </div>
       </Form>
     );

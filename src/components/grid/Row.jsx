@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const propTypes = {
+  className: PropTypes.string,
   gutter: PropTypes.number,
   children: PropTypes.node,
 };
 
 const defaultProps = {
+  className: null,
   gutter: null,
   children: null,
 };
@@ -17,7 +20,7 @@ class Row extends React.PureComponent {
 
     return (
       <div
-        className="row"
+        className={classNames('row', this.props.className)}
         style={{
           marginLeft: gutter == null ? null : gutter / -2,
           marginRight: gutter == null ? null : gutter / -2,

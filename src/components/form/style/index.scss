@@ -2,185 +2,63 @@
 @import "../../../style/mixins/triangle";
 @import "../../style/theme";
 
-$form-line-height: 30px;
+$form-line-height: 32px;
 
 .form {
-  .form-group {
-    width: 100%;
-    display: block;
-    padding: 0;
-    margin: 0;
-    line-height: 14px;
-
-    position: relative;
-
-    & > label {
-      display: block;
-      float: none;
-      text-align: left;
-      margin-bottom: 10px;
-      font-weight: bold;
-
-      .required {
-        color: $error-color;
-        font-size: 16px;
-        margin-right: 10px;
-        vertical-align: middle;
-      }
-    }
-
-    &.inline > label {
-      float: left;
-      padding-right: 15px;
-      text-align: left;
-      color: $text-dark-color;
-      line-height: $form-line-height;
-      vertical-align: middle;
-    }
-
-    + .form-group {
-      margin-top: 20px;
-    }
-
-    &.last {
-      margin-bottom: 0;
-    }
-
-    &.has-error {
-      & > .form-control > input,
-      & > .form-control > textarea {
-        border-color: $error-color !important;
-        box-shadow: 0px 0px 3px 1px rgba(238, 68, 16, 0.5);
-      }
-    }
-
-    .form-control.has-error {
-      > input,
-      > textarea {
-        border-color: $error-color !important;
-        box-shadow: 0px 0px 3px 1px rgba(238, 68, 16, 0.5);
-      }
-
-      .select-trigger {
-        border-color: $error-color;
-      }
-    }
-
-    .error-tip {
-      margin-top: 10px;
-      color: $error-color;
-      font-size: $font-size-sm;
-    }
-
-    .icon-times-circle-o {
-      position: absolute;
-      color: $error-color;
-      font-size: 20px;
-      top: -4px;
-      left: 0;
-      display: none;
-    }
-
-    .form-static {
-      line-height: $form-line-height;
-    }
+  .required {
+    color: $error-color;
+    font-size: 16px;
+    margin-right: 10px;
+    vertical-align: middle;
   }
 
-  .form-group > label {
-    text-align: left;
+  .form-item-line-height {
+    line-height: $form-line-height;
   }
 
-  & > .form-header {
-    margin-bottom: 30px;
-
-    label {
-      color: $primary-color;
-      cursor: pointer;
-      @include user-select(none);
-
-      i {
-        margin-right: 20px;
-        vertical-align: middle;
-        font-size: 15px;
-        line-height: $font-size-base;
-      }
-    }
-  }
-
-  .form-control {
-    .counter {
+  .label-col {
+    &.right {
       text-align: right;
     }
-
-    .radio-group {
-      line-height: $form-line-height;
-    }
   }
 
-  .form-control-group {
-    &.inline {
-      & > div > .form-group {
-        @include inline-block();
-        width: auto;
-
-        margin-right: 15px;
-      }
-
-      margin-bottom: -15px;
-    }
-  }
-
-  .help-block {
-    padding-top: 10px;
-    margin-bottom: 10px;
-    font-size: 12px;
-    line-height: 1.5;
-    color: #646464;
-  }
-
-  .form-control-static {
+  label {
     line-height: $form-line-height;
-    strong {
-      color: $text-dark-color;
-      margin-right: 14px;
+
+    &:after {
+      content: ":";
+      margin: 0 8px 0 2px;
     }
   }
-}
 
-.form-actions {
-  margin-top: $form-line-height;
-  text-align: center;
-  font-size: $font-size-base;
-}
-
-.popover.form-error-popover {
-  padding: 6px 12px;
-  color: $error-color;
-  background-color: #FFFBEE;
-  border-color: #F8D05A;
-  font-size: 12px;
-  @include border-radius(3px);
-
-  i {
-    margin-right: 3px;
+  .form-item + .form-item {
+    margin-top: 10px;
   }
 
-  &:before {
-    @include triangle(bottom, #F8D05A, 0.5em);
-    position: absolute;
-    left: 50%;
-    margin-left: -7px;
-    top: 100%;
-    z-index: 2;
-    margin-top: 1px;
+  .form-item {
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"] {
+      line-height: $form-line-height - (1 * 2) - (7 * 2);
+    }
   }
 
-  &:after {
-    @include triangle(bottom, #FFFBEE, 0.5em);
-    position: absolute;
-    left: 50%;
-    margin-left: -7px;
-    top: 100%;
-    z-index: 3;
+  .has-error {
+    input,
+    textarea {
+      border-color: $error-color !important;
+      box-shadow: 0px 0px 3px 1px rgba(238, 68, 16, 0.5);
+    }
+
+    .select-trigger {
+      border-color: $error-color;
+    }
+  }
+
+  .error {
+    margin-top: 10px;
+    color: $error-color;
+    font-size: $font-size-sm;
   }
 }

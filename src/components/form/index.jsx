@@ -39,31 +39,21 @@ const withForm = (WrappedComponent) => {
       return this.wrappedInstance;
     }
 
-    getFieldDecorator(formItem) {
-      const { keyName } = formItem.props;
+    getFieldDecorator(name, options = {}) {
+      return (Item) => {
+        const error = this.state.errors[name];
+        this.rules[name] = options.rules;
 
-      const error = this.state.errors[keyName];
-
-      const rule = pick(
-        formItem.props,
-        ['required', 'max', 'min', 'maxLength', 'minLength', 'regex', 'getError'],
-      );
-
-      if (Object.keys(rule).length > 0) {
-        this.rules[keyName] = rule;
-      }
-
-      return React.cloneElement(
-        formItem,
-        {
-          onChange: this.props.onChange,
-          value: this.props.dataSource[keyName],
+        return React.cloneElement(Item, {
+          ...Item.props,
+          value: this.props.dataSource[name],
+          onChange: (value) => {
+            this.setState({ errors: omit(this.state.errors, [name]) });
+            this.props.onChange(name, value);
+          },
           error,
-          validate: this.validate,
-          onClearError: () =>
-            this.setState({ errors: omit(this.state.errors, [keyName]) }),
-        },
-      );
+        });
+      };
     }
 
     validate(fields) {

@@ -3,6 +3,7 @@ import moment from 'moment';
 import ShowcaseContainer from '../ShowcaseContainer';
 import TestForm from './TestForm';
 import { Alert } from '../../../../src/components';
+import { Row, Col } from '../../../../src/components/grid';
 
 class ShowcaseForm extends React.PureComponent {
   constructor(props) {
@@ -21,26 +22,28 @@ class ShowcaseForm extends React.PureComponent {
   render() {
     return (
       <ShowcaseContainer title="Form">
-        <div className="mt-3" style={{ width: 500 }}>
-          <TestForm
-            dataSource={this.state.dataSource}
-            onChange={(key, value) => {
-              const diff = { [key]: value };
+        <Row className="mt-3">
+          <Col xs={{ span: 8 }}>
+            <TestForm
+              dataSource={this.state.dataSource}
+              onChange={(key, value) => {
+                const diff = { [key]: value };
 
-              if (key === 'birthDate') {
-                diff.age = Math.floor(moment.duration(moment() - moment(value)).asYears());
-              }
+                if (key === 'birthDate') {
+                  diff.age = Math.floor(moment.duration(moment() - moment(value)).asYears());
+                }
 
-              this.setState({
-                dataSource: {
-                  ...this.state.dataSource,
-                  ...diff,
-                },
-              });
-            }}
-            onSubmit={() => this.setState({ alert: true })}
-          />
-        </div>
+                this.setState({
+                  dataSource: {
+                    ...this.state.dataSource,
+                    ...diff,
+                  },
+                });
+              }}
+              onSubmit={() => this.setState({ alert: true })}
+            />
+          </Col>
+        </Row>
 
         <Alert
           visible={this.state.alert}

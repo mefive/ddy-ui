@@ -2,83 +2,87 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { Row, Col } from '../../../src/components/grid';
+
 const propTypes = {
-  errorClass: PropTypes.string,
-  onChange: PropTypes.func,
-  error: PropTypes.string,
-  keyName: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  id: PropTypes.string,
   children: PropTypes.node,
-  onClearError: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.any]),
-
-  validate: PropTypes.func,
-  validateOnBlur: PropTypes.bool,
-
-  /* eslint-disable */
   required: PropTypes.bool,
-  max: PropTypes.number,
-  min: PropTypes.number,
-  maxLength: PropTypes.number,
-  minLength: PropTypes.number,
-  regex: PropTypes.string,
-  getError: PropTypes.func,
-  /* eslint-enable */
+
+  labelCol: PropTypes.shape({
+    alignRight: PropTypes.bool,
+  }),
+  wrapperCol: PropTypes.shape({}),
 };
 
 const defaultProps = {
+  label: '',
+  id: null,
   children: null,
-  errorClass: 'has-error',
-  onChange: () => null,
-  error: null,
-  value: null,
-  onClearError: () => {},
-
-  validate: () => {},
-  validateOnBlur: false,
-
   required: false,
-  max: null,
-  min: null,
-  maxLength: null,
-  minLength: null,
-  regex: null,
-  getError: null,
+
+  labelCol: {
+    alignRight: false,
+    xs: {
+      span: 12,
+    },
+  },
+  wrapperCol: {
+    xs: {
+      span: 12,
+    },
+  },
 };
 
 class FormItem extends React.PureComponent {
-  render() {
-    return (
-      <div
-        className={classNames(
-          'form-control',
-          { [this.props.errorClass]: this.props.error != null },
-        )}
-        data-key={this.props.keyName}
-      >
-        {React.Children.map(this.props.children, child =>
-          React.cloneElement(
-            child,
-            {
-              onChange: (value) => {
-                this.props.onChange(this.props.keyName, value);
-                this.props.onClearError();
-              },
-              onBlur: this.props.validateOnBlur
-                ? () => this.props.validate(this.props.keyName)
-                : null,
-              value: this.props.value,
-            },
-          ))}
+  getChildrenField(field) {
+    const child = React.Children.only(this.props.children);
+    return child.props[field];
+  }
 
-        {this.props.error && (
-          <div
-            className="error-tip"
+  getLabelFor() {
+    return this.props.id || this.getChildrenField('id');
+  }
+
+  render() {
+    const error = this.getChildrenField('error');
+
+    return (
+      <Row
+        className={classNames('form-item', {
+          'has-error': error != null,
+        })}
+      >
+        {this.props.label != null && (
+          <Col
+            {...this.props.labelCol}
+            className={classNames(
+              'label-col',
+              { right: this.props.labelCol.alignRight },
+            )}
           >
-            {this.props.error}
-            <i className="icon icon-times-circle-o" />
-          </div>
+            <label
+              htmlFor={this.getLabelFor()}
+            >
+              {this.props.required && (
+                <span className="required">*</span>
+              )}
+              {this.props.label}
+            </label>
+          </Col>
         )}
-      </div>
+
+        <Col {...this.props.wrapperCol} className="form-item">
+          {this.props.children}
+
+          {error && (
+            <div className="error">
+              {error}
+            </div>
+          )}
+        </Col>
+      </Row>
     );
   }
 }
