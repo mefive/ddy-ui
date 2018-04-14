@@ -1,11 +1,9 @@
 import React from 'react';
 import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
-import pick from 'lodash/pick';
 import omit from 'lodash/omit';
 
 import Form from './Form';
-import FormGroup from './FormGroup';
 import FormItem from './FormItem';
 
 const withForm = (WrappedComponent) => {
@@ -137,6 +135,5 @@ const withForm = (WrappedComponent) => {
 export {
   withForm,
   Form,
-  FormGroup,
   FormItem,
 };
