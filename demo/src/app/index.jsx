@@ -25,10 +25,15 @@ import Select from './Select';
 import NumberFlip from './NumberFlip/index';
 import Dialog from './Dialog';
 import Form from './Form';
+import Grid from './Grid';
 
 const links = [{
   url: 'table',
   title: 'Table',
+}, {
+  url: 'grid',
+  title: 'Grid',
+}, {
 }, {
   url: 'odometerNumber',
   title: 'OdometerNumber',
@@ -111,6 +116,7 @@ ReactDOM.render(
       <Route path="numberFlip" component={NumberFlip} />
       <Route path="dialog" component={Dialog} />
       <Route path="form" component={Form} />
+      <Route path="grid" component={Grid} />
     </Route>
   </Router>,
   document.getElementById('main'),
