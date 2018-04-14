@@ -18,14 +18,14 @@ const defaultProps = {
 
 const labelCol = {
   xs: {
-    span: 4,
+    span: 6,
   },
   alignRight: true,
 };
 
 const wrapperCol = {
   xs: {
-    span: 8,
+    span: 6,
   },
 };
 
@@ -95,7 +95,7 @@ class TestForm extends React.PureComponent {
 
         <div className="mt-2">
           <Row>
-            <Col xs={{ span: 8, offset: 4 }}>
+            <Col xs={{ span: 6, offset: 6 }}>
               <Clickable onClick={this.onSubmit}>
                 <div className="btn btn-primary">
                   提交
