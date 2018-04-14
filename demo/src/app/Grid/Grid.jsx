@@ -16,7 +16,7 @@ class Grid extends React.PureComponent {
         md={{ span: 4 }}
         lg={{ span: 3 }}
         xl={{ span: 2 }}
-        xxl={{ span: 1}}
+        xxl={{ span: 1 }}
       >
         <div className={style.col}>col</div>
       </Col>

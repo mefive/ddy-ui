@@ -46,6 +46,7 @@ class Col extends React.PureComponent {
 
       if (breakPoint != null) {
         classes[`col-${key}-${breakPoint.span}`] = breakPoint.span != null;
+        classes[`col-${key}-offset-${breakPoint.offset}`] = breakPoint.offset != null;
       }
     });
 

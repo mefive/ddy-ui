@@ -17,6 +17,10 @@
       padding-right: $gutter / 2;
       width: ($i / $cols) * 100%;
     }
+
+    .col-#{$prefix}-offset-#{$i} {
+      margin-left: ($i / $cols) * 100%;
+    }
   }
 }
 
