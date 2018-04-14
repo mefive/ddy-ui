@@ -1,5 +1,5 @@
 import React from 'react';
-import { OdometerNumber } from '../../../../src';
+import { OdometerNumber } from '../../../../src/components';
 import calendarBackgoundImage from './images/calendar.png';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
 

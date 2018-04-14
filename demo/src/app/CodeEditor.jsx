@@ -1,5 +1,5 @@
 import React from 'react';
-import { CodeEditor } from '../../../src';
+import { CodeEditor } from '../../../src/components';
 import ShowcaseContainer from './ShowcaseContainer';
 
 const defaultState = {

@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { form } from '../../../../';
-import Input from '../../../../src/components/Input';
-import Clickable from '../../../../src/components/Clickable';
-import DatePicker from '../../../../src/components/DatePicker/DatePicker';
-
-const {
-  Form, FormItem, FormGroup, withForm,
-} = form;
+import { Form, FormItem, FormGroup, withForm } from '../../../../src/components/form';
+import { DatePicker, Input, Clickable } from '../../../../src/components';
 
 const propTypes = {
   getFieldDecorator: PropTypes.func.isRequired,

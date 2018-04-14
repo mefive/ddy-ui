@@ -1,5 +1,5 @@
 import React from 'react';
-import { FullScreenModal } from '../../../src';
+import { FullScreenModal } from '../../../src/components';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
 import Clickable from '../../../src/components/Clickable';
 
