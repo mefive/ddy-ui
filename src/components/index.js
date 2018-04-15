@@ -3,7 +3,6 @@ import Animate from './Animate';
 import Calendar from './Calendar';
 import Chart from './Chart';
 import Clickable from './Clickable';
-import CodeEditor from './CodeEditor';
 import Confirm from './Confirm';
 import DatePicker from './DatePicker';
 import DateRangePicker from './DateRangePicker';
@@ -43,7 +42,6 @@ export {
   Calendar,
   Chart,
   Clickable,
-  CodeEditor,
   Confirm,
   DatePicker,
   DateRangePicker,
