@@ -18,6 +18,8 @@ const propTypes = {
   xxl: layoutTypes,
   /* eslint-enable */
 
+  span: PropTypes.number,
+  offset: PropTypes.number,
   className: PropTypes.string,
   gutter: PropTypes.number,
   children: PropTypes.node,
@@ -31,6 +33,8 @@ const defaultProps = {
   xl: null,
   xxl: null,
 
+  span: null,
+  offset: null,
   className: null,
   gutter: null,
   children: null,
@@ -41,15 +45,23 @@ class Col extends React.PureComponent {
     const breakPoints = pick(this.props, ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']);
     const classes = {};
 
-    Object.keys(breakPoints).forEach((key) => {
-      const breakPoint = breakPoints[key];
+    const { span, offset } = this.props;
 
-      if (breakPoint != null) {
-        classes[`col-${key}-${breakPoint.span}`] = breakPoint.span != null;
-        classes[`col-${key}-offset-${breakPoint.offset}`] = breakPoint.offset != null;
-      }
-    });
+    if (span != null || offset != null) {
+      classes[`col-md-${span}`] = span != null;
+      classes[`col-md-offset-${offset}`] = offset != null;
+    } else {
+      Object.keys(breakPoints).forEach((key) => {
+        const breakPoint = breakPoints[key];
 
+        if (typeof breakPoint === 'number') {
+          classes[`col-${key}-${breakPoint}`] = true;
+        } else if (breakPoint != null) {
+          classes[`col-${key}-${breakPoint.span}`] = breakPoint.span != null;
+          classes[`col-${key}-offset-${breakPoint.offset}`] = breakPoint.offset != null;
+        }
+      });
+    }
     return classNames(classes);
   }
 

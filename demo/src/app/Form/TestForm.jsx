@@ -17,16 +17,12 @@ const defaultProps = {
 };
 
 const labelCol = {
-  xs: {
-    span: 6,
-  },
+  xs: 6,
   alignRight: true,
 };
 
 const wrapperCol = {
-  xs: {
-    span: 6,
-  },
+  xs: 6,
 };
 
 class TestForm extends React.PureComponent {

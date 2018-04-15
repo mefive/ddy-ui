@@ -23,7 +23,7 @@ class ShowcaseForm extends React.PureComponent {
     return (
       <ShowcaseContainer title="Form">
         <Row className="mt-3">
-          <Col xs={{ span: 8 }}>
+          <Col span={8}>
             <TestForm
               dataSource={this.state.dataSource}
               onChange={(key, value) => {
