@@ -1,27 +1,12 @@
-import Alert from './Alert';
-import Calendar from './Calendar';
-import Confirm from './Confirm';
-import DatePicker from './DatePicker';
-import Hamburger from './Hamburger';
-import Modal from './Modal';
-import Select from './Select';
-import SideNav from './SideNav';
-import SidePopover from './SidePopover';
-import SlideDownConfirm from './SlideDownConfirm';
-import SlideDownPopover from './SlideDownPopover';
-import Tabs from './Tabs';
-
-export {
-  Alert,
-  Calendar,
-  Confirm,
-  DatePicker,
-  Hamburger,
-  Modal,
-  Select,
-  SideNav,
-  SidePopover,
-  SlideDownConfirm,
-  SlideDownPopover,
-  Tabs,
-};
+export { default as Alert } from './Alert';
+export { default as Calendar } from './Calendar';
+export { default as Confirm } from './Confirm';
+export { default as DatePicker } from './DatePicker';
+export { default as Hamburger } from './Hamburger';
+export { default as Modal } from './Modal';
+export { default as Select } from './Select';
+export { default as SideNav } from './SideNav';
+export { default as SidePopover } from './SidePopover';
+export { default as SlideDownConfirm } from './SlideDownConfirm';
+export { default as SlideDownPopover } from './SlideDownPopover';
+export { default as Tabs } from './Tabs';

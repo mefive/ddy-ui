@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormItem, withForm } from '../../../../src/components/form';
-import { DatePicker, Input, Clickable } from '../../../../src/components';
-import { Row, Col } from '../../../../src/components/grid';
+import { DatePicker, Input, Clickable, Row, Col } from '../../../../src/components';
 
 const propTypes = {
   getFieldDecorator: PropTypes.func.isRequired,

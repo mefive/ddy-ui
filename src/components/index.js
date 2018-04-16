@@ -1,77 +1,38 @@
-import Alert from './Alert';
-import Animate from './Animate';
-import Calendar from './Calendar';
-import Chart from './Chart';
-import Clickable from './Clickable';
-import Confirm from './Confirm';
-import DatePicker from './DatePicker';
-import DateRangePicker from './DateRangePicker';
-import DateRangeSelect from './DateRangeSelect';
-import DoubleBounce from './DoubleBounce';
-import Draggable from './Draggable';
-import FileUploader from './FileUploader';
-import FlexWrapper from './FlexWrapper';
-import FullScreenModal from './FullScreenModal';
-import ImagesUploader from './ImagesUploader';
-import Input from './Input';
-import Loading from './Loading';
-import Modal from './Modal';
-import NotificationBar from './NotificationBar';
-import NumberFlip from './NumberFlip';
-import OdometerNumber from './OdometerNumber';
-import Pagination from './Pagination';
-import Popover from './Popover';
-import Portal from './Portal';
-import RadioGroup from './RadioGroup';
-import Scrollable from './Scrollable';
-import Search from './Search';
-import Select from './Select';
-import Table from './Table';
-import Tabs from './Tabs';
-import TextArea from './TextArea';
-import ToggleButton from './ToggleButton';
-import Tooltip from './Tooltip';
-import Tree from './Tree';
-import Trigger from './Trigger';
-import form from './form';
-import grid from './grid';
-
-export {
-  Alert,
-  Animate,
-  Calendar,
-  Chart,
-  Clickable,
-  Confirm,
-  DatePicker,
-  DateRangePicker,
-  DateRangeSelect,
-  DoubleBounce,
-  Draggable,
-  FileUploader,
-  FlexWrapper,
-  FullScreenModal,
-  ImagesUploader,
-  Input,
-  Loading,
-  Modal,
-  NotificationBar,
-  NumberFlip,
-  OdometerNumber,
-  Pagination,
-  Popover,
-  Portal,
-  RadioGroup,
-  Scrollable,
-  Search,
-  Select,
-  Table,
-  Tabs,
-  TextArea,
-  ToggleButton,
-  Tooltip,
-  Tree,
-  Trigger,
-  form,
-  grid,
-};
+export { default as Alert } from './Alert';
+export { default as Animate } from './Animate';
+export { default as Calendar } from './Calendar';
+export { default as Chart } from './Chart';
+export { default as Clickable } from './Clickable';
+export { default as CodeEditor } from './CodeEditor';
+export { default as Confirm } from './Confirm';
+export { default as DatePicker } from './DatePicker';
+export { default as DateRangePicker } from './DateRangePicker';
+export { default as DateRangeSelect } from './DateRangeSelect';
+export { default as DoubleBounce } from './DoubleBounce';
+export { default as Draggable } from './Draggable';
+export { default as FileUploader } from './FileUploader';
+export { default as FlexWrapper } from './FlexWrapper';
+export { default as FullScreenModal } from './FullScreenModal';
+export { default as ImagesUploader } from './ImagesUploader';
+export { default as Input } from './Input';
+export { default as Loading } from './Loading';
+export { default as Modal } from './Modal';
+export { default as NotificationBar } from './NotificationBar';
+export { default as NumberFlip } from './NumberFlip';
+export { default as OdometerNumber } from './OdometerNumber';
+export { default as Pagination } from './Pagination';
+export { default as Popover } from './Popover';
+export { default as Portal } from './Portal';
+export { default as RadioGroup } from './RadioGroup';
+export { default as Scrollable } from './Scrollable';
+export { default as Search } from './Search';
+export { default as Select } from './Select';
+export { default as Table } from './Table';
+export { default as Tabs } from './Tabs';
+export { default as TextArea } from './TextArea';
+export { default as ToggleButton } from './ToggleButton';
+export { default as Tooltip } from './Tooltip';
+export { default as Tree } from './Tree';
+export { default as Trigger } from './Trigger';
+export { FormItem, Form, withForm } from './form';
+export { Col, Row } from './grid';

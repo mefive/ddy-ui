@@ -2,11 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 function writeFile(filePath, components) {
-  const codes = components.map(c => `import ${c} from './${c}';`);
-
-  codes.push(`\nexport {\n${components.map(c => `  ${c},`).join('\n')}\n};\n`);
-
-  console.log(codes);
+  const codes = components.map(c => `export ${c[0].toUpperCase() === c[0] ? `{ default as ${c} }` : '*'} from './${c}';`);
 
   fs.writeFile(filePath, codes.join('\n'), (errWrite) => {
     if (errWrite) {
