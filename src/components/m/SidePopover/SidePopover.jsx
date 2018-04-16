@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './style/index.scss';
-import Animate from '../../../components/Animate/Animate';
+import Animate from '../../Animate';
 import Portal from '../../Portal';
 
 const propTypes = {

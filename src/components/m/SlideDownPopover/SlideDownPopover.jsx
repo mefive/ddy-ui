@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './style/index.scss';
-import Portal from '../../../components/Portal';
+import Portal from '../../Portal';
 
 const propTypes = {
   visible: PropTypes.bool,

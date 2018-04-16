@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { Row, Col } from '../../../src/components/grid';
+import { Row, Col } from '../grid';
 
 const propTypes = {
   label: PropTypes.string,
