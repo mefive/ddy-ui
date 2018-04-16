@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import pick from 'lodash/pick';
 
-const layoutTypes = PropTypes.shape({
-  span: PropTypes.number,
-  offset: PropTypes.number,
-});
+const layoutTypes = PropTypes.oneOfType([
+  PropTypes.shape({
+    span: PropTypes.number,
+    offset: PropTypes.number,
+  }),
+  PropTypes.number,
+]);
 
 const propTypes = {
   /* eslint-disable */

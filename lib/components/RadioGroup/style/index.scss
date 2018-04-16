@@ -1,0 +1,14 @@
+.radio-group {
+  input[type="radio"] {
+    margin-right: 5px;
+  }
+  label + label {
+    margin-left: 10px;
+  }
+
+  label > * {
+    vertical-align: middle;
+  }
+
+  line-height: 30px;
+}

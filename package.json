@@ -2,11 +2,11 @@
   "name": "d-ui",
   "version": "0.0.1",
   "description": "React components for common use",
-  "main": "./build/index.js",
+  "main": "./lib/components/index.js",
   "scripts": {
     "test": "npm run test",
     "lint": "eslint ./src/**/*.jsx ./src/**/*.js",
-    "build": "NODE_ENV=production webpack --config ./webpack.config.js",
+    "build": "rm -rf ./lib && babel src -d lib --copy-files",
     "demo:dev": "NODE_ENV=development webpack-dev-server --config ./demo/webpack.config.js",
     "demo:build": "NODE_ENV=production webpack --config ./demo/webpack.dll.js && NODE_ENV=production webpack --config ./demo/webpack.config.js"
   },
@@ -46,6 +46,7 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
