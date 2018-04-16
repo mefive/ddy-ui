@@ -1,6 +1,6 @@
 import React from 'react';
 import random from 'lodash/random';
-import { NumberFlip } from '../../../../src/components';
+import { NumberFlip } from '../../../../src';
 
 import style from './style/index.scss';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';

@@ -1,7 +1,6 @@
 import React from 'react';
-import { FullScreenModal } from '../../../src/components';
+import { FullScreenModal, Clickable } from '../../../src';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
-import Clickable from '../../../src/components/Clickable';
 
 class ShowcaseFullScreenModal extends React.PureComponent {
   constructor(props) {

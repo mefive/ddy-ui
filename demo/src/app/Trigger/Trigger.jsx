@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { Popover, Trigger } from '../../../../src/components';
+import { Popover, Trigger } from '../../../../src';
 import { getPopoverContainer } from '../../../../src/utils/layout';
 import ShowcaseContainer from '../ShowcaseContainer';
 

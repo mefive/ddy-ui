@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover, Tooltip } from '../../../../src/components';
+import { Popover, Tooltip } from '../../../../src';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
 
 import style from './style/index.scss';

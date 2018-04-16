@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from '../../../src/components';
+import { Table } from '../../../src';
 import ShowcaseContainer from './ShowcaseContainer';
 
 const columns = ['原始渠道号', '周编号', '周新增', '0周广告点击', '0周广告收益', '1周广告点击', '1周广告收益', '新增成本'];

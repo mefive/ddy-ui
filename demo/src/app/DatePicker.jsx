@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { DatePicker } from '../../../src/components';
+import { DatePicker } from '../../../src';
 
 import ShowcaseContainer from './ShowcaseContainer';
 

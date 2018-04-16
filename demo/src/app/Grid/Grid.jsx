@@ -1,6 +1,6 @@
 import React from 'react';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
-import { Row, Col } from '../../../../src/components/grid';
+import { Row, Col } from '../../../../src';
 import style from './style/index.scss';
 
 const GUTTER = 20;
