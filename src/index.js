@@ -34,5 +34,5 @@ export { default as ToggleButton } from './ToggleButton';
 export { default as Tooltip } from './Tooltip';
 export { default as Tree } from './Tree';
 export { default as Trigger } from './Trigger';
-export * from './form';
-export * from './grid';
+export { withForm, FormItem, Form } from './form';
+export { Col, Row } from './grid';
