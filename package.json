@@ -2,7 +2,7 @@
   "name": "ddy-ui",
   "version": "0.0.4",
   "description": "React components for common use",
-  "main": "./lib/index.js",
+  "main": "./lib",
   "scripts": {
     "test": "npm run test",
     "lint": "eslint ./src/**/*.jsx ./src/**/*.js",
