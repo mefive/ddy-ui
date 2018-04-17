@@ -9,7 +9,10 @@ import './style/index.scss';
 
 const propTypes = {
   title: PropTypes.string,
-  placement: PropTypes.string,
+  placement: PropTypes.shape({
+    vertical: PropTypes.string,
+    horizontal: PropTypes.string,
+  }),
   disabled: PropTypes.bool,
   className: PropTypes.string,
   style: PropTypes.shape({}),
@@ -23,7 +26,10 @@ const propTypes = {
 
 const defaultProps = {
   title: null,
-  placement: Popover.placement.TOP,
+  placement: {
+    vertical: Popover.PLACEMENT_TOP,
+    horizontal: Popover.PLACEMENT_CENTER,
+  },
   disabled: false,
   className: null,
   style: null,

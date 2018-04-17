@@ -23,7 +23,10 @@ const propTypes = {
   width: PropTypes.number,
   optionsHeight: PropTypes.number,
   getPopoverContainer: PropTypes.func,
-  placement: PropTypes.string,
+  placement: PropTypes.shape({
+    vertical: PropTypes.string,
+    horizontal: PropTypes.string,
+  }),
   title: PropTypes.string,
   defaultTitle: PropTypes.string,
   onChange: PropTypes.func,
@@ -41,7 +44,10 @@ const defaultProps = {
   optionsHeight: 200,
   defaultTitle: '请选择',
   onChange: () => null,
-  placement: 'bottom',
+  placement: {
+    vertical: Popover.PLACEMENT_BOTTOM,
+    horizontal: Popover.PLACEMENT_CENTER,
+  },
   getPopoverContainer: null,
   value: null,
   options: [],
@@ -168,9 +174,9 @@ class Select extends React.PureComponent {
         active={this.state.active}
         disabled={this.props.disabled}
         getPopoverContainer={this.props.getPopoverContainer}
-        enterClassName={this.props.placement === 'bottom'
+        enterClassName={this.props.placement.vertical === Popover.PLACEMENT_BOTTOM
           ? 'slide-down-in' : 'slide-up-in'}
-        leaveClassName={this.props.placement === 'bottom'
+        leaveClassName={this.props.placement.vertical === Popover.PLACEMENT_BOTTOM
           ? 'slide-down-out' : 'slide-up-out'}
         popover={
           <Popover

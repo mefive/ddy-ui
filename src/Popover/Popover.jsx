@@ -5,9 +5,22 @@ import debounce from 'lodash/debounce';
 
 import './style/index.scss';
 
+const PLACEMENT_TOP = 'top';
+const PLACEMENT_TOP_ALIGN = 'top-align';
+const PLACEMENT_BOTTOM = 'bottom';
+const PLACEMENT_BOTTOM_ALIGN = 'bottom-align';
+const PLACEMENT_LEFT = 'left';
+const PLACEMENT_LEFT_ALIGN = 'left-align';
+const PLACEMENT_RIGHT = 'right';
+const PLACEMENT_RIGHT_ALIGN = 'right-align';
+const PLACEMENT_CENTER = 'center';
+
 const propTypes = {
   className: PropTypes.string,
-  placement: PropTypes.string,
+  placement: PropTypes.shape({
+    vertical: PropTypes.string,
+    horizontal: PropTypes.string,
+  }),
   container: PropTypes.instanceOf(Node),
   anchor: PropTypes.instanceOf(Node),
   offset: PropTypes.number,
@@ -19,7 +32,10 @@ const defaultProps = {
   className: null,
   container: null,
   anchor: null,
-  placement: 'top',
+  placement: {
+    vertical: PLACEMENT_TOP,
+    horizontal: PLACEMENT_CENTER,
+  },
   offset: 10,
   children: null,
   style: {},
@@ -72,6 +88,16 @@ class Popover extends Component {
     this.place();
   }
 
+  // getPlacement() {
+  //   let { placement } = this.props;
+  //
+  //   if (this.node == null) {
+  //     return placement;
+  //   }
+  //
+  //
+  // }
+
   place() {
     if (!this.hasMounted || this.props.container == null || this.props.anchor == null) {
       return;
@@ -92,70 +118,32 @@ class Popover extends Component {
     let marginLeft = 0;
     let marginTop = 0;
 
-    switch (this.props.placement) {
-      case placement.TOP: {
-        left = (anchorRect.left + (anchorWidth / 2)) - containerRect.left;
-        marginLeft = -(popoverWidth / 2);
-        marginTop = -this.props.offset;
-        top = anchorRect.top - popoverHeight - 0 - containerRect.top;
-        break;
-      }
-
-      case placement.TOP_RIGHT: {
-        left = (anchorRect.left + anchorWidth) - popoverWidth - containerRect.left;
+    switch (this.props.placement.vertical) {
+      case PLACEMENT_TOP: {
         marginTop = -this.props.offset;
         top = anchorRect.top - popoverHeight - containerRect.top;
         break;
       }
 
-      case placement.TOP_LEFT: {
-        left = anchorRect.left - containerRect.left;
-        marginTop = -this.props.offset;
-        top = anchorRect.top - popoverHeight - containerRect.top;
-        break;
-      }
-
-      case placement.BOTTOM: {
-        left = (anchorRect.left + (anchorWidth / 2)) - containerRect.left;
-        marginLeft = -(popoverWidth / 2);
-        marginTop = this.props.offset;
-        top = (anchorRect.top + anchorHeight) - containerRect.top;
-        break;
-      }
-
-      case placement.BOTTOM_LEFT: {
-        left = anchorRect.left - containerRect.left;
-        marginTop = this.props.offset;
-        top = (anchorRect.top + anchorHeight) - containerRect.top;
-        break;
-      }
-
-      case placement.BOTTOM_RIGHT: {
-        left = (anchorRect.left + anchorWidth) - popoverWidth - containerRect.left;
-        marginTop = this.props.offset;
-        top = (anchorRect.top + anchorHeight) - containerRect.top;
-        break;
-      }
-
-      case placement.RIGHT: {
-        left = anchorRect.left + anchorWidth + this.props.offset;
-        marginLeft = 0;
-        marginTop = 0;
-        top = (anchorRect.top - containerRect.top - (popoverHeight / 2)) + (anchorHeight / 2);
-        break;
-      }
-
-      case placement.RIGHT_TOP: {
-        left = (anchorRect.left + anchorWidth + this.props.offset) - containerRect.left;
-        marginLeft = 0;
+      case PLACEMENT_TOP_ALIGN: {
         marginTop = 0;
         top = anchorRect.top - containerRect.top;
         break;
       }
 
-      case placement.LEFT: {
-        left = anchorRect.left - this.props.offset - popoverWidth - containerRect.left;
-        marginLeft = 0;
+      case PLACEMENT_BOTTOM: {
+        marginTop = this.props.offset;
+        top = (anchorRect.top + anchorHeight) - containerRect.top;
+        break;
+      }
+
+      case PLACEMENT_BOTTOM_ALIGN: {
+        marginTop = this.props.offset;
+        top = (anchorRect.top + anchorHeight) - containerRect.top;
+        break;
+      }
+
+      case PLACEMENT_CENTER: {
         marginTop = 0;
         top = (anchorRect.top - containerRect.top - (popoverHeight / 2)) + (anchorHeight / 2);
         break;
@@ -164,6 +152,42 @@ class Popover extends Component {
       default:
         break;
     }
+
+    switch (this.props.placement.horizontal) {
+      case PLACEMENT_LEFT: {
+        left = anchorRect.left - this.props.offset - popoverWidth - containerRect.left;
+        marginLeft = 0;
+        break;
+      }
+
+      case PLACEMENT_LEFT_ALIGN: {
+        left = anchorRect.left - containerRect.left;
+        marginLeft = 0;
+        break;
+      }
+
+      case PLACEMENT_RIGHT: {
+        left = anchorRect.left + anchorWidth + this.props.offset;
+        marginLeft = 0;
+        break;
+      }
+
+      case PLACEMENT_RIGHT_ALIGN: {
+        left = (anchorRect.left + anchorWidth) - popoverWidth - containerRect.left;
+        marginLeft = 0;
+        break;
+      }
+
+      case PLACEMENT_CENTER: {
+        left = (anchorRect.left + (anchorWidth / 2)) - containerRect.left;
+        marginLeft = -(popoverWidth / 2);
+        break;
+      }
+
+      default:
+        break;
+    }
+
 
     if (this.props.container !== document.body) {
       top += this.props.container.scrollTop;
@@ -191,7 +215,8 @@ class Popover extends Component {
         className={
           classNames(
             'popover',
-            `place-${this.props.placement}`,
+            `place-${this.props.placement.vertical}`,
+            `place-${this.props.placement.horizontal}`,
             { [this.props.className]: this.props.className != null },
           )
         }
@@ -210,7 +235,16 @@ class Popover extends Component {
   }
 }
 
-Popover.placement = placement;
+Popover.PLACEMENT_TOP = PLACEMENT_TOP;
+Popover.PLACEMENT_TOP_ALIGN = PLACEMENT_TOP_ALIGN;
+Popover.PLACEMENT_BOTTOM = PLACEMENT_BOTTOM;
+Popover.PLACEMENT_BOTTOM_ALIGN = PLACEMENT_BOTTOM_ALIGN;
+Popover.PLACEMENT_LEFT = PLACEMENT_LEFT;
+Popover.PLACEMENT_LEFT_ALIGN = PLACEMENT_LEFT_ALIGN;
+Popover.PLACEMENT_RIGHT = PLACEMENT_RIGHT;
+Popover.PLACEMENT_RIGHT_ALIGN = PLACEMENT_RIGHT_ALIGN;
+Popover.PLACEMENT_CENTER = PLACEMENT_CENTER;
+
 Popover.propTypes = propTypes;
 Popover.defaultProps = defaultProps;
 

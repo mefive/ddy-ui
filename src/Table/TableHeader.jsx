@@ -118,9 +118,12 @@ class TableHeader extends React.PureComponent {
 
           return (
             <Popover
-              placement={(this.props.columns.length - 1) === index
-                ? Popover.placement.BOTTOM_RIGHT
-                : Popover.placement.BOTTOM_LEFT}
+              placement={{
+                vertical: Popover.PLACEMENT_BOTTOM,
+                horizontal: this.props.columns.length - 1 === index
+                  ? Popover.PLACEMENT_RIGHT_ALIGN
+                  : Popover.PLACEMENT_LEFT_ALIGN,
+              }}
               className="table-filter-popover"
               ref={(el) => { this.popover = el; }}
             >

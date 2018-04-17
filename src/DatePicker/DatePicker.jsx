@@ -120,7 +120,10 @@ class DatePicker extends Component {
           getPopoverContainer={this.props.getPopoverContainer}
           popover={(
             <Popover
-              placement="bottom"
+              placement={{
+                vertical: Popover.PLACEMENT_BOTTOM,
+                horizontal: Popover.PLACEMENT_CENTER,
+              }}
               className="date-picker-popover"
               offset={10}
             >

@@ -19,7 +19,10 @@ const propTypes = {
   getPopoverContainer: PropTypes.func,
   max: PropTypes.string,
   min: PropTypes.string,
-  placement: PropTypes.string,
+  placement: PropTypes.shape({
+    vertical: PropTypes.string,
+    horizontal: PropTypes.string,
+  }),
   defaultTitle: PropTypes.string,
   dateRender: PropTypes.func,
   onActiveChange: PropTypes.func,
@@ -35,7 +38,10 @@ const defaultProps = {
   getPopoverContainer: null,
   max: null,
   min: null,
-  placement: Popover.placement.BOTTOM,
+  placement: {
+    vertical: Popover.PLACEMENT_BOTTOM,
+    horizontal: Popover.PLACEMENT_CENTER,
+  },
   type: Calendar.TYPE_DATE,
   defaultTitle: null,
   dateRender: null,
