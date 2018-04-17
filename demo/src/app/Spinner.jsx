@@ -1,6 +1,7 @@
 import React from 'react';
-import { DoubleBounce, Tooltip } from '../../../src';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
+import DoubleBounce from '../../../src/DoubleBounce/DoubleBounce';
+import Tooltip from '../../../src/Tooltip';
 
 class Spinner extends React.PureComponent {
   render() {

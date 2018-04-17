@@ -1,6 +1,8 @@
 import React from 'react';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
-import { Clickable, Alert, Confirm } from '../../../src';
+import Clickable from '../../../src/Clickable';
+import Alert from '../../../src/Alert/Alert';
+import Confirm from '../../../src/Confirm/Confirm';
 
 class ShowcaseDialog extends React.PureComponent {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import random from 'lodash/random';
-import { Select } from '../../../src';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
+import Select from '../../../src/Select/Select';
 
 class SelectShowcase extends React.PureComponent {
   constructor(props) {

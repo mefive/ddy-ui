@@ -34,7 +34,6 @@ const links = [{
   url: 'grid',
   title: 'Grid',
 }, {
-}, {
   url: 'odometerNumber',
   title: 'OdometerNumber',
 }, {

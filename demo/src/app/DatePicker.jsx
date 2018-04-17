@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import { DatePicker } from '../../../src';
 
 import ShowcaseContainer from './ShowcaseContainer';
+import DatePicker from '../../../src/DatePicker/DatePicker';
 
 class ShowcaseDatePicker extends React.Component {
   constructor(props) {

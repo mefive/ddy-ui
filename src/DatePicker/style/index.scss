@@ -1,6 +1,6 @@
 @import "~compass-mixins";
-@import "../../style/theme";
-@import "../../../style/mixins/triangle";
+@import "../../style/variables";
+@import "../../style/mixins/triangle";
 
 .date-picker {
   input {
