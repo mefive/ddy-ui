@@ -1,0 +1,116 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+
+.calendar {
+  @include user-select(none);
+  width: 226px;
+  font-size: $font-size-sm;
+}
+
+.calendar-year {
+  .switcher {
+    position: relative;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+
+    .icon {
+      position: absolute;
+      line-height: 30px;
+      text-align: center;
+      width: 30px;
+
+      &:hover {
+        background-color: $gray-color;
+        border-radius: 2px;
+      }
+
+      &.disable {
+        cursor: not-allowed !important;
+      }
+    }
+
+    .icon-angle-left {
+      top: 0;
+      left: 0;
+    }
+
+    .icon-angle-right {
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .month {
+    text-align: center;
+    line-height: 30px;
+    border-radius: 2px;
+
+    &.active {
+      color: #fff;
+      background-color: $primary-color;
+    }
+    &.disable {
+      cursor: not-allowed !important;
+    }
+    &:hover {
+      background-color: $gray-color;
+    }
+  }
+}
+
+.calendar-month {
+  .month-switcher,
+  .month-table {
+    thead th,
+    .day {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+    }
+
+    thead th {
+      font-weight: bold;
+    }
+  }
+
+  .month-switcher {
+    width: 100%;
+
+    .action {
+      &:hover {
+        background-color: $gray-color;
+        @include border-radius(2px);
+      }
+      cursor: pointer;
+    }
+  }
+
+  .month-table {
+    .day {
+      font-size: 12px;
+
+      &.enable {
+        &:hover {
+          background-color: $gray-color;
+          @include border-radius(2px);
+        }
+        cursor: pointer;
+      }
+
+      &.current {
+        background-color: $primary-color;
+        color: $white-color;
+        @include border-radius(2px);
+        &:hover {
+          background-color: $primary-color !important;
+        }
+      }
+
+      &.disable {
+        color: $gray-color;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

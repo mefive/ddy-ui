@@ -3,6 +3,9 @@
   "version": "0.0.5",
   "description": "React components for common use",
   "main": "./lib",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "npm run test",
     "lint": "eslint ./src/**/*.jsx ./src/**/*.js",

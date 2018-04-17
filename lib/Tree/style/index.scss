@@ -1,0 +1,52 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+
+.node-wrap {
+  cursor: pointer;
+  &:hover {
+    background-color: #9FDCFF;
+  }
+}
+
+.arrow-property {
+  cursor: pointer;
+  transition: transform .2s ease;
+  transform: rotate(90deg);
+}
+
+.arrow-expanded {
+  transform: rotate(180deg);
+}
+
+.node-property {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 2px;
+  padding: 0 4px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #9FDCFF;
+  }
+}
+
+.selected-node {
+  color: #fff;
+  background: $primary-color;
+
+  &:hover {
+    background-color: $primary-color;
+  }
+}
+
+.parent-node {
+  margin-left: 20px;
+  overflow-y: auto;
+  transition: all .2s ease;
+  transform-origin: 0 0;
+}
+
+.empty-icon {
+  width: 1em;
+  height: 1em;
+}

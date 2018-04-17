@@ -1,0 +1,34 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+
+.scrollable {
+  position: relative;
+  @include box-sizing(border-box);
+
+  .scrollable-wrapper {
+    overflow: hidden;
+  }
+
+  .scrollable-track {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+
+    .scrollable-thumb {
+      position: relative;
+      width: 100%;
+      height: 10px;
+      background-color: $gray-color; //#C1C1C1;
+      @include border-radius(3px);
+      transition-property: background-color;
+      transition-duration: .2s;
+      &:hover,
+      &.dragging {
+        background-color: darken($gray-color, 10%);
+        transform: scaleX(1.2);
+      }
+    }
+  }
+}

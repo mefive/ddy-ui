@@ -1,0 +1,35 @@
+@import "../../../style/variables";
+
+:local(.side-nav) {
+  .side-nav-item,
+  .side-nav-group-name {
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  .side-nav-group-children {
+    display: none;
+  }
+
+  .side-nav-group-name {
+    .icon-caret-up {
+      transform: rotate(90deg);
+    }
+  }
+
+  .side-nav-group {
+    border-bottom: 1px solid $gray-color;
+
+    &.expanded {
+      .side-nav-group-name {
+        .icon-caret-up {
+          transform: rotate(180deg);
+        }
+      }
+
+      .side-nav-group-children {
+        display: block;
+      }
+    }
+  }
+}

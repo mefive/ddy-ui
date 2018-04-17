@@ -1,0 +1,9 @@
+@import "../../../style/variables";
+
+select {
+  border: 1px solid $gray-color;
+  border-radius: 3px;
+  padding: 4px 6px;
+  width: 100%;
+  outline: none;
+}

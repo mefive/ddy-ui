@@ -1,0 +1,37 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+
+.chart {
+  padding-bottom: 30px;
+  .chart-legend {
+    text-align: center;
+
+    @include user-select(none);
+
+    .checkbox {
+      width: 6px;
+      height: 6px;
+      margin-right: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      background-color: #dadada;
+      border-radius: 50%;
+    }
+
+    .label {
+      cursor: pointer;
+      font-size: $font-size-sm;
+      display: inline-block;
+
+      & + .label {
+        margin-left: 30px;
+      }
+
+      color: #dadada;
+
+      &[data-visible="true"] {
+        color: $text-color;
+      }
+    }
+  }
+}

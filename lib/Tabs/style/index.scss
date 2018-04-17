@@ -1,0 +1,18 @@
+@import "../../style/variables";
+
+.ui-tabs {
+  .ui-tabs-item {
+    display: inline-block;
+    cursor: pointer;
+    padding-bottom: 3px;
+
+    &:hover {
+      color: $primary-color;
+    }
+
+    &.current {
+      color: $primary-color;
+      border-bottom: 3px solid $primary-color;
+    }
+  }
+}

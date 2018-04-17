@@ -1,0 +1,109 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+@import "../../style/mixins/triangle";
+
+.popover.tooltip {
+  $background-color: rgba(0, 0, 0, 0.8);
+  background-color: $background-color;
+  color: $white-color;
+  padding: 5px 8px;
+  @include border-radius($border-radius-lg);
+  font-size: $font-size-sm;
+
+  &.place-top {
+    &:before {
+      @include triangle(bottom, $background-color, 5px, 1);
+      position: absolute;
+      left: 50%;
+      margin-left: -5px;
+      top: 100%;
+      z-index: 2;
+    }
+  }
+
+  &.place-top-left {
+    &:before {
+      @include triangle(bottom, $background-color, 5px, 1);
+      position: absolute;
+      left: 8px;
+      top: 100%;
+      z-index: 2;
+    }
+  }
+
+  &.place-top-right {
+    &:before {
+      @include triangle(bottom, $background-color, 5px, 1);
+      position: absolute;
+      right: 5px;
+      top: 100%;
+      z-index: 2;
+    }
+  }
+
+  &.place-bottom {
+    &:before {
+      @include triangle(top, $background-color, 5px, 1);
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      z-index: 2;
+      margin-left: -5px;
+    }
+  }
+
+  &.place-bottom-left {
+    &:before {
+      @include triangle(top, $background-color, 5px, 1);
+      position: absolute;
+      left: 8px;
+      bottom: 100%;
+      z-index: 2;
+    }
+  }
+
+  &.place-bottom-right {
+    &:before {
+      @include triangle(top, $background-color, 5px, 1);
+      position: absolute;
+      right: 8px;
+      bottom: 100%;
+      z-index: 2;
+    }
+  }
+
+  &.place-right {
+    &:before {
+      @include triangle(left, $background-color, 5px, 1);
+      position: absolute;
+      left: 0;
+      top: 50%;
+      z-index: 2;
+      margin-left: -5px;
+      margin-top: -5px;
+    }
+  }
+
+  &.place-left {
+    &:before {
+      @include triangle(right, $background-color, 5px, 1);
+      position: absolute;
+      right: 0;
+      top: 50%;
+      z-index: 2;
+      margin-right: -5px;
+      margin-top: -5px;
+    }
+  }
+
+  &.place-right-top {
+    &:before {
+      @include triangle(left, $background-color, 5px, 1);
+      position: absolute;
+      left: 0;
+      top: 8px;
+      z-index: 2;
+      margin-left: -7px;
+    }
+  }
+}

@@ -1,0 +1,7 @@
+@import "../../style/variables";
+
+.ui-code-editor {
+  .CodeMirror {
+    border: 1px solid $gray-color;
+  }
+}
