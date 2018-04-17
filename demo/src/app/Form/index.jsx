@@ -2,7 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import ShowcaseContainer from '../ShowcaseContainer';
 import TestForm from './TestForm';
-import { Alert, Row, Col } from '../../../../src';
+import { Row, Col } from '../../../../src/grid';
+import Alert from '../../../../src/Alert/Alert';
 
 class ShowcaseForm extends React.PureComponent {
   constructor(props) {

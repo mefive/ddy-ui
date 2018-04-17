@@ -1,8 +1,9 @@
 import React from 'react';
-import { Popover, Tooltip } from '../../../../src';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
 
 import style from './style/index.scss';
+import Tooltip from '../../../../src/Tooltip/Tooltip';
+import Popover from '../../../../src/Popover';
 
 class ShowcaseTooltip extends React.PureComponent {
   render() {

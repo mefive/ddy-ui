@@ -1,7 +1,7 @@
 import React from 'react';
 import Test from './Test';
-import { Portal } from '../../../../src';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
+import Portal from '../../../../src/Portal';
 
 class PortalShowcase extends React.PureComponent {
   constructor(props) {
