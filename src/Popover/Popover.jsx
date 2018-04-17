@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
@@ -41,19 +41,8 @@ const defaultProps = {
   style: {},
 };
 
-const placement = {
-  TOP: 'top',
-  TOP_RIGHT: 'top-right',
-  TOP_LEFT: 'top-left',
-  BOTTOM: 'bottom',
-  BOTTOM_LEFT: 'bottom-left',
-  BOTTOM_RIGHT: 'bottom-right',
-  RIGHT: 'right',
-  RIGHT_TOP: 'right-top',
-  LEFT: 'left',
-};
 
-class Popover extends Component {
+class Popover extends React.PureComponent {
   constructor(props) {
     super(props);
 
