@@ -1,10 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 
-function writeFile(filePath, components, prefix = '') {
-  const codes = components.map(c => `export ${c[0].toUpperCase() === c[0] ? `{ default as ${c} }` : '*'} from './components/${prefix}${c}';`);
+const exclude = ['style', 'm', 'index.js', 'm.js', 'utils', 'fonts', 'script'];
 
-  fs.writeFile(filePath, codes.join('\n'), (errWrite) => {
+function writeFile(filePath, components, prefix = '') {
+  const codes = components.map(c => `export ${c[0].toUpperCase() === c[0] ? `{ default as ${c} }` : '*'} from './${prefix}${c}';`);
+
+  fs.writeFile(filePath, `${codes.join('\n')}\n`, (errWrite) => {
     if (errWrite) {
       console.log('write err', errWrite);
       return;
@@ -14,27 +16,27 @@ function writeFile(filePath, components, prefix = '') {
   });
 }
 
-fs.readdir(path.join(__dirname, '../components'), (err, files) => {
+fs.readdir(path.join(__dirname, '../'), (err, files) => {
   if (err) {
     console.log(err);
     return;
   }
 
   const components = files
-    .filter(f => ['index.js', 'm', 'style'].indexOf(f) === -1)
+    .filter(f => exclude.indexOf(f) === -1)
     .map(f => f.replace(/\.jsx/, ''));
 
   writeFile(path.resolve(__dirname, '../index.js'), components);
 });
 
-fs.readdir(path.join(__dirname, '../components/m'), (err, files) => {
+fs.readdir(path.join(__dirname, '../m'), (err, files) => {
   if (err) {
     console.log(err);
     return;
   }
 
   const components = files
-    .filter(f => ['index.js', 'style'].indexOf(f) === -1)
+    .filter(f => exclude.indexOf(f) === -1)
     .map(f => f.replace(/\.jsx/, ''));
 
   writeFile(path.resolve(__dirname, '../m.js'), components, 'm/');
