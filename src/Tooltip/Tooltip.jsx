@@ -55,7 +55,7 @@ class Tooltip extends React.PureComponent {
           <Popover
             className={classNames('tooltip', this.props.className)}
             style={this.props.style}
-            placement={this.props.placement}
+            defaultPlacement={this.props.placement}
           >
             {this.props.renderPopover == null
               ? (

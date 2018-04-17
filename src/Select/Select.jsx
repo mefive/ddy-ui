@@ -45,7 +45,8 @@ const defaultProps = {
   defaultTitle: '请选择',
   onChange: () => null,
   placement: {
-    vertical: Popover.PLACEMENT_BOTTOM,
+    // vertical: Popover.PLACEMENT_BOTTOM,
+    vertical: Popover.PLACEMENT_TOP,
     horizontal: Popover.PLACEMENT_CENTER,
   },
   getPopoverContainer: null,
@@ -68,6 +69,7 @@ class Select extends React.PureComponent {
       active: false,
       triggerWidth: 0,
       multipleSelection: [],
+      placement: this.props.placement,
     };
 
     this.confirmSelection = this.confirmSelection.bind(this);
@@ -174,17 +176,18 @@ class Select extends React.PureComponent {
         active={this.state.active}
         disabled={this.props.disabled}
         getPopoverContainer={this.props.getPopoverContainer}
-        enterClassName={this.props.placement.vertical === Popover.PLACEMENT_BOTTOM
+        enterClassName={this.state.placement.vertical === Popover.PLACEMENT_BOTTOM
           ? 'slide-down-in' : 'slide-up-in'}
-        leaveClassName={this.props.placement.vertical === Popover.PLACEMENT_BOTTOM
+        leaveClassName={this.state.placement.vertical === Popover.PLACEMENT_BOTTOM
           ? 'slide-down-out' : 'slide-up-out'}
         popover={
           <Popover
-            placement={this.props.placement}
+            placement={this.state.placement}
+            onPlacementChange={placement => this.setState({ placement })}
             offset={5}
             className={classNames(
               'select-popup text-sm',
-              { [this.props.popoverClassName]: !!this.props.popoverClassName },
+              { [this.props.popoverClassName]: !!this.props.popoverClassNme },
             )}
           >
             <div
