@@ -9,7 +9,7 @@ class ShowcaseTooltip extends React.PureComponent {
   render() {
     return (
       <ShowcaseContainer title="Tooltip">
-        <div className="mt-2">
+        <div className="mt-2" style={{ width: 2000 }}>
           <Tooltip title="top">
             <div className={style.trigger}>Top</div>
           </Tooltip>

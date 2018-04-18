@@ -225,7 +225,7 @@ class Popover extends React.PureComponent {
       }
 
       case PLACEMENT_RIGHT: {
-        left = anchorRect.left + anchorWidth + this.props.offset;
+        left = anchorRect.left + anchorWidth + this.props.offset - containerRect.left;
         marginLeft = 0;
         break;
       }
