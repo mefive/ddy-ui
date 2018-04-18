@@ -27,6 +27,11 @@ body {
   }
 }
 
+#body-wrapper {
+  position: relative;
+  z-index: $z-index-base;
+}
+
 th {
   font-weight: normal;
 }

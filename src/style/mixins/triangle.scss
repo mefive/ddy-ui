@@ -1,6 +1,6 @@
 /// Triangle helper mixin
 /// @param {Direction} $direction - Triangle direction, either `top`, `right`, `bottom` or `left`
-/// @param {Color} $color [currentcolor] - Triangle color 
+/// @param {Color} $color [currentcolor] - Triangle color
 /// @param {Length} $size [1em] - Triangle size
 @mixin triangle($direction, $color: currentcolor, $size: 1em, $ratio: 1.5) {
   @if not index(top right bottom left, $direction) {
@@ -10,11 +10,10 @@
   width: 0;
   height: 0;
   content: '';
-  z-index: 2;
   border-#{opposite-position($direction)}: ($size * $ratio) solid $color;
-  
+
   $perpendicular-borders: $size solid transparent;
-  
+
   @if $direction == top or $direction == bottom {
     border-left:   $perpendicular-borders;
     border-right:  $perpendicular-borders;

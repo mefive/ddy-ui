@@ -282,7 +282,6 @@ class Popover extends React.PureComponent {
         }
         style={{
           ...this.state.style,
-          zIndex: 2,
           ...this.props.style,
         }}
         ref={(el) => { this.node = el; }}

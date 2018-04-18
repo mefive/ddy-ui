@@ -46,6 +46,10 @@ const withForm = (WrappedComponent) => {
           ...Item.props,
           value: this.props.dataSource[name],
           onChange: (value) => {
+            if (isFunction(Item.props.onChange)) {
+              Item.props.onChange(value);
+            }
+
             this.setState({ errors: omit(this.state.errors, [name]) });
             this.props.onChange(name, value);
           },

@@ -2,7 +2,7 @@ import React from 'react';
 import keycode from 'keycode';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
+import { addClass, removeClass } from 'dom-helpers/class';
 
 import Portal from '../Portal';
 import Animate from '../Animate';
@@ -66,9 +66,12 @@ class Modal extends React.PureComponent {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.visible !== this.props.visible) {
-      setTimeout(this.pin);
+  componentDidUpdate({ visible }) {
+    if (!visible && this.props.visible) {
+      this.pin();
+      addClass(document.body, 'has-modal');
+    } else if (visible && !this.props.visible) {
+      removeClass(document.body, 'has-modal');
     }
   }
 

@@ -5,6 +5,7 @@ import { Row, Col } from '../../../../src/grid';
 import Clickable from '../../../../src/Clickable';
 import Input from '../../../../src/Input';
 import DatePicker from '../../../../src/DatePicker/DatePicker';
+import FileInput from '../../../../../ottobock-web-fe-pc/source/js/components/FileInput';
 
 const propTypes = {
   getFieldDecorator: PropTypes.func.isRequired,
@@ -89,6 +90,26 @@ class TestForm extends React.PureComponent {
           <div className="form-item-line-height">
             {dataSource.age}
           </div>
+        </FormItem>
+
+        <FormItem
+          label="Pic"
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
+        >
+          {getFieldDecorator('pic', {
+            rules: [{
+              validator: (file) => {
+                if (file) {
+                  console.log(file.type);
+                }
+
+                return null;
+              },
+            }],
+          })((
+            <FileInput onChange={() => setTimeout(() => validate('pic'))} />
+          ))}
         </FormItem>
 
         <div className="mt-2">

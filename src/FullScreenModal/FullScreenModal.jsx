@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import keycode from 'keycode';
+import { addClass, removeClass } from 'dom-helpers/class';
 
 import style from './style/index.scss';
 import Portal from '../Portal';
@@ -29,6 +30,14 @@ class FullScreenModal extends React.PureComponent {
       document.addEventListener('keydown', this.onKeyPress);
     } else if (!visible && this.props.visible) {
       document.removeEventListener('keydown', this.onKeyPress);
+    }
+  }
+
+  componentDidUpdate({ visible }) {
+    if (!visible && this.props.visible) {
+      addClass(document.body, 'has-modal');
+    } else if (visible && !this.props.visible) {
+      removeClass(document.body, 'has-modal');
     }
   }
 

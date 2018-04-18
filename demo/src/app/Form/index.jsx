@@ -14,6 +14,7 @@ class ShowcaseForm extends React.PureComponent {
         name: 'mefive',
         birthDate: '1985-12-20',
         age: 32,
+        pic: null,
       },
       alert: false,
     };
