@@ -14,13 +14,15 @@ class ShowcaseDateRangePicker extends React.Component {
 
   render() {
     return (
-      <ShowcaseContainer title="DatePicker">
-        <DateRangePicker
-          start={this.state.start}
-          end={this.state.end}
-          onChange={({ start, end }) =>
-            this.setState({ start, end })}
-        />
+      <ShowcaseContainer title="DateRangePicker">
+        <div>
+          <DateRangePicker
+            start={this.state.start}
+            end={this.state.end}
+            onChange={({ start, end }) =>
+              this.setState({ start, end })}
+          />
+        </div>
       </ShowcaseContainer>
     );
   }

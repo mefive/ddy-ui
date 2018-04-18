@@ -26,6 +26,7 @@ const propTypes = {
     vertical: PropTypes.string,
     horizontal: PropTypes.string,
   }),
+  adjustPlacement: PropTypes.bool,
   onPlacementChange: PropTypes.func,
   container: PropTypes.instanceOf(Node),
   anchor: PropTypes.instanceOf(Node),
@@ -43,6 +44,7 @@ const defaultProps = {
     horizontal: PLACEMENT_CENTER,
   },
   placement: null,
+  adjustPlacement: true,
   onPlacementChange: () => {},
   offset: 10,
   children: null,
@@ -66,20 +68,23 @@ class Popover extends React.PureComponent {
   componentDidMount() {
     this.hasMounted = true;
     window.addEventListener('resize', this.onResize);
-    this.place();
+
+    if (this.props.adjustPlacement) {
+      const adjustPlacement = this.getAdjustedPlacement();
+
+      if (!isEqual(adjustPlacement, this.getPlacement())) {
+        this.setPlacement(adjustPlacement, this.place);
+      } else {
+        this.place();
+      }
+    } else {
+      this.place();
+    }
   }
 
   componentWillReceiveProps({ placement }) {
     if (placement !== this.props.placement) {
-      this.setState({ placement: { ...placement } });
-    }
-  }
-
-  componentDidUpdate({ container, anchor }) {
-    if (container !== this.props.container
-      || anchor !== this.props.anchor
-    ) {
-      this.place();
+      this.setState({ placement: { ...placement } }, this.place);
     }
   }
 
@@ -104,11 +109,11 @@ class Popover extends React.PureComponent {
     return this.state.placement;
   }
 
-  setPlacement(placement) {
+  setPlacement(placement, callback = () => {}) {
     if (this.props.placement != null) {
       this.props.onPlacementChange(placement);
     } else {
-      this.setState({ placement });
+      this.setState({ placement }, callback);
     }
   }
 
@@ -169,9 +174,9 @@ class Popover extends React.PureComponent {
     let marginLeft = 0;
     let marginTop = 0;
 
-    const adjustedPlacement = this.getAdjustedPlacement();
+    const placement = this.getPlacement();
 
-    switch (adjustedPlacement.vertical) {
+    switch (placement.vertical) {
       case PLACEMENT_TOP: {
         marginTop = -this.props.offset;
         top = anchorRect.top - popoverHeight - containerRect.top;
@@ -206,7 +211,7 @@ class Popover extends React.PureComponent {
         break;
     }
 
-    switch (adjustedPlacement.horizontal) {
+    switch (placement.horizontal) {
       case PLACEMENT_LEFT: {
         left = anchorRect.left - this.props.offset - popoverWidth - containerRect.left;
         marginLeft = 0;
@@ -257,10 +262,6 @@ class Popover extends React.PureComponent {
           left, top, marginLeft, marginTop,
         },
       });
-
-      if (!isEqual(adjustedPlacement, this.props.placement)) {
-        this.setPlacement(adjustedPlacement);
-      }
     } else {
       console.log('error', this.props.container, this.props.anchor);
     }

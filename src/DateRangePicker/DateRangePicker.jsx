@@ -19,10 +19,6 @@ const propTypes = {
   getPopoverContainer: PropTypes.func,
   max: PropTypes.string,
   min: PropTypes.string,
-  placement: PropTypes.shape({
-    vertical: PropTypes.string,
-    horizontal: PropTypes.string,
-  }),
   defaultTitle: PropTypes.string,
   dateRender: PropTypes.func,
   onActiveChange: PropTypes.func,
@@ -38,10 +34,6 @@ const defaultProps = {
   getPopoverContainer: null,
   max: null,
   min: null,
-  placement: {
-    vertical: Popover.PLACEMENT_BOTTOM,
-    horizontal: Popover.PLACEMENT_CENTER,
-  },
   type: Calendar.TYPE_DATE,
   defaultTitle: null,
   dateRender: null,
@@ -57,6 +49,10 @@ class DateRangePicker extends React.PureComponent {
       active: false,
       start: this.props.start,
       end: this.props.end,
+      placement: {
+        vertical: Popover.PLACEMENT_BOTTOM,
+        horizontal: Popover.PLACEMENT_CENTER,
+      },
     };
 
     this.setActive = this.setActive.bind(this);
@@ -166,15 +162,16 @@ class DateRangePicker extends React.PureComponent {
 
         <Trigger
           active={this.state.active}
-          enterClassName="slide-down-in"
-          leaveClassName="slide-down-out"
+          enterClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-in' : 'slide-down-in'}
+          leaveClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-out' : 'slide-down-out'}
           disabled={this.props.disabled}
           getPopoverContainer={this.props.getPopoverContainer}
           onActiveChange={this.setActive}
           popover={
             <Popover
               className="date-range-popover"
-              placement={this.props.placement}
+              placement={this.state.placement}
+              onPlacementChange={placement => this.setState({ placement })}
               offset={10}
             >
               <div className="float-left">

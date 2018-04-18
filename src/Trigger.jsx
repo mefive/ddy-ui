@@ -23,6 +23,7 @@ const propTypes = {
 const defaultProps = {
   popover: null,
   renderPopover: null,
+  defaultActive: false,
   active: null,
   disabled: false,
   enterClassName: 'enter',
@@ -31,7 +32,6 @@ const defaultProps = {
   leaveDuration: 200,
   onActiveChange: () => {},
   getPopoverContainer: null,
-  defaultActive: null,
   action: 'click',
   children: null,
 };
@@ -41,13 +41,7 @@ class Trigger extends React.PureComponent {
     super(props);
 
     this.state = {
-      // eslint-disable-next-line
-      active: false,
-      anchorRect: {},
-      containerRect: {},
-      containerScroll: {},
-      popoverContainer: null,
-      anchor: null,
+      active: this.getActive(),
     };
 
     this.tryToggle = this.tryToggle.bind(this);
@@ -56,28 +50,9 @@ class Trigger extends React.PureComponent {
     this.deactivate = this.deactivate.bind(this);
   }
 
-  componentDidMount() {
-    // eslint-disable-next-line
-    this.setState({ anchor: this.anchor });
-
-    if (this.props.active == null && this.props.defaultActive !== null) {
-      // eslint-disable-next-line
-      this.setState({ active: this.props.defaultActive });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const prevActive = this.getActive(prevProps, prevState);
-    const active = this.getActive();
-
-    if (!prevActive && active) {
-      if (this.props.action === 'click') {
-        document.addEventListener('click', this.tryToggle);
-      }
-    } else if (!active && prevActive) {
-      if (this.props.action === 'click') {
-        document.removeEventListener('click', this.tryToggle);
-      }
+  componentWillReceiveProps({ active }) {
+    if (active !== this.props.active) {
+      this.onActiveChange(active);
     }
   }
 
@@ -89,21 +64,33 @@ class Trigger extends React.PureComponent {
     }
   }
 
-  getActive(props = this.props, state = this.state) {
-    if (props.active != null) {
-      return props.active;
+  onActiveChange(active) {
+    if (active) {
+      if (this.props.action === 'click') {
+        document.addEventListener('click', this.tryToggle);
+      }
+    } else if (this.props.action === 'click') {
+      document.removeEventListener('click', this.tryToggle);
+    }
+  }
+
+  getActive() {
+    if (this.props.active != null) {
+      return this.props.active;
     }
 
-    return state.active;
+    if (this.state == null) {
+      return this.props.defaultActive;
+    }
+
+    return this.state.active;
   }
 
   setActive(active) {
     if (!this.props.disabled) {
-      if (this.props.active == null) {
-        // eslint-disable-next-line
-        this.setState({ active });
+      if (this.props.active == null && this.state.active !== active) {
+        this.setState({ active }, () => this.onActiveChange(active));
       }
-
       this.props.onActiveChange(active);
     }
   }
@@ -156,11 +143,7 @@ class Trigger extends React.PureComponent {
   }
 
   render() {
-    const { anchorRect, containerRect, containerScroll } = this.state;
-
     const child = React.Children.only(this.props.children);
-    const popoverElement
-      = this.props.renderPopover ? this.props.renderPopover() : this.props.popover;
 
     return React.cloneElement(
       child,
@@ -181,26 +164,29 @@ class Trigger extends React.PureComponent {
         leaveDuration={this.props.leaveDuration}
       >
         {this.getActive() && (
-          <Portal
-            onContainerChange={popoverContainer => this.setState({ popoverContainer })}
-            getContainer={this.props.getPopoverContainer}
-          >
-            {React.cloneElement(
-              popoverElement,
-              {
-                containerRect,
-                containerScroll,
-                anchorRect,
-                anchor: this.state.anchor,
-                container: this.state.popoverContainer,
-                ref: (el) => {
-                  if (typeof popoverElement.ref === 'function') {
-                    popoverElement.ref(el);
-                  }
-                  this.popover = el;
+          <Portal getContainer={this.props.getPopoverContainer}>
+            {(() => {
+              const popoverElement
+                = this.props.renderPopover ? this.props.renderPopover() : this.props.popover;
+
+              const container = this.props.getPopoverContainer == null
+                ? document.body
+                : this.props.getPopoverContainer();
+
+              return React.cloneElement(
+                popoverElement,
+                {
+                  anchor: this.anchor,
+                  container,
+                  ref: (el) => {
+                    if (typeof popoverElement.ref === 'function') {
+                      popoverElement.ref(el);
+                    }
+                    this.popover = el;
+                  },
                 },
-              },
-            )}
+              );
+            })()}
           </Portal>
         )}
       </Animate>,

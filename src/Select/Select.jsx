@@ -187,7 +187,7 @@ class Select extends React.PureComponent {
             offset={5}
             className={classNames(
               'select-popup text-sm',
-              { [this.props.popoverClassName]: !!this.props.popoverClassNme },
+              this.props.popoverClassName,
             )}
           >
             <div

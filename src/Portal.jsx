@@ -6,14 +6,12 @@ import classNames from 'classnames';
 
 const propTypes = {
   getContainer: PropTypes.func,
-  onContainerChange: PropTypes.func,
   children: PropTypes.node,
   className: PropTypes.string,
 };
 
 const defaultProps = {
   getContainer: null,
-  onContainerChange: () => null,
   children: null,
   className: null,
 };
@@ -22,18 +20,15 @@ class Portal extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    const { getContainer } = this.props;
+    const container = this.props.getContainer == null ? document.body : this.props.getContainer();
 
-    if (getContainer) {
-      this.container = getContainer();
-    } else {
-      this.container = document.createElement('div');
-      document.body.appendChild(this.container);
-    }
+    this.container = document.createElement('div');
+
+    container.appendChild(this.container);
   }
 
-  componentDidMount() {
-    this.props.onContainerChange(this.container.parentNode);
+  componentWillUnmount() {
+    this.container.parentNode.removeChild(this.container);
   }
 
   render() {

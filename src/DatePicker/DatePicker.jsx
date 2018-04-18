@@ -39,6 +39,10 @@ class DatePicker extends Component {
 
     this.state = {
       active: false,
+      placement: {
+        vertical: Popover.PLACEMENT_BOTTOM,
+        horizontal: Popover.PLACEMENT_CENTER,
+      },
     };
 
     this.changeActive = this.changeActive.bind(this);
@@ -114,16 +118,14 @@ class DatePicker extends Component {
 
         <Trigger
           disabled={this.props.disabled}
-          enterClassName="slide-down-in"
-          leaveClassName="slide-down-out"
+          enterClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-in' : 'slide-down-in'}
+          leaveClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-out' : 'slide-down-out'}
           active={this.state.active}
           getPopoverContainer={this.props.getPopoverContainer}
           popover={(
             <Popover
-              placement={{
-                vertical: Popover.PLACEMENT_BOTTOM,
-                horizontal: Popover.PLACEMENT_CENTER,
-              }}
+              placement={this.state.placement}
+              onPlacementChange={placement => this.setState({ placement })}
               className="date-picker-popover"
               offset={10}
             >

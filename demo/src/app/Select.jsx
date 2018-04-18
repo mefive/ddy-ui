@@ -18,7 +18,7 @@ class SelectShowcase extends React.PureComponent {
   render() {
     return (
       <ShowcaseContainer title="Select">
-        <div className="mt-1">
+        <div>
           <div style={{ width: 200 }}>
             <Select
               options={this.state.options}

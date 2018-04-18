@@ -15,10 +15,12 @@ class ShowcaseDatePicker extends React.Component {
   render() {
     return (
       <ShowcaseContainer title="DatePicker">
-        <DatePicker
-          value={this.state.value}
-          onChange={value => this.setState({ value })}
-        />
+        <div>
+          <DatePicker
+            value={this.state.value}
+            onChange={value => this.setState({ value })}
+          />
+        </div>
       </ShowcaseContainer>
     );
   }

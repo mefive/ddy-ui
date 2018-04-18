@@ -124,6 +124,7 @@ class TableHeader extends React.PureComponent {
                   ? Popover.PLACEMENT_RIGHT_ALIGN
                   : Popover.PLACEMENT_LEFT_ALIGN,
               }}
+              adjustPlacement={false}
               className="table-filter-popover"
               ref={(el) => { this.popover = el; }}
             >
