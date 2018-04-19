@@ -62,22 +62,7 @@ let rows = [];
 }());
 
 function getColumns() {
-  // const max = 3;
-  // const rt = [];
-
-  // for (let i = 0; i < max; i++) {
-  //   rt.push({
-  //     key: `${i}`,
-  //     title: `${i}_column`,
-  //     sortKey: `${i}`,
-  //     filterable: true,
-  //     noWrap: true,
-  //   });
-  // }
-
-  // return rt;
-
-  return columns.map((c, index) => ({
+  return [...columns, ...columns].map((c, index) => ({
     key: index,
     title: c,
     // sortKey: `${i}`,
@@ -130,9 +115,9 @@ class ShowcaseTable extends React.Component {
               <Table
                 columns={this.state.columns}
                 dataSource={this.state.dataSource}
-                // height="auto"
-                // fixHeader
-                // fixColumnCount={2}
+                height={500}
+                fixHeader
+                fixColumnCount={2}
                 rowSelection={{
                   onChange: selectedRowKeys =>
                     this.setState({ selectedRowKeys }),
@@ -145,7 +130,7 @@ class ShowcaseTable extends React.Component {
                 // rowKey="2"
                 enablePagination
                 page={this.state.page}
-                rowsPerPage={10}
+                rowsPerPage={50}
                 onPageChange={page => this.setState({ page })}
               />
             </div>

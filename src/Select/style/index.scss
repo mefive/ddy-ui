@@ -63,7 +63,7 @@
 .select-popup {
   background-color: $white-color;
   border: 1px solid $gray-color;
-  z-index: 1;
+
   @include border-radius($border-radius-base);
 
   li {

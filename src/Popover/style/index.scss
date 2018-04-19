@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   background-color: $white-color;
-  z-index: 2;
+  z-index: $z-index-base;
 
   &.placed {
     @include opacity(1);

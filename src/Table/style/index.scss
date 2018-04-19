@@ -254,7 +254,7 @@
     top: 0;
     background-color: $white-color;
     box-shadow: 6px 0 6px -4px rgba(0,0,0, .2);
-    z-index: 500;
+    //z-index: $z-index-lg;
 
     .table-header,
     .table-body {
