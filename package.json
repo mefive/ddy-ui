@@ -11,7 +11,7 @@
     "lint": "eslint ./src/**/*.jsx ./src/**/*.js",
     "build": "rm -rf ./lib && babel src -d lib --copy-files",
     "demo:dev": "NODE_ENV=development webpack-dev-server --config ./demo/webpack.config.js",
-    "demo:build": "NODE_ENV=production webpack --config ./demo/webpack.dll.js && NODE_ENV=production webpack --config ./demo/webpack.config.js"
+    "demo:build": "NODE_ENV=production webpack --config ./demo/webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -72,6 +72,7 @@
     "lodash-webpack-plugin": "^0.11.4",
     "node-sass": "^4.5.3",
     "react-router": "^3.2.1",
+    "resolve-url-loader": "^2.3.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "uglifyjs-webpack-plugin": "^1.2.4",

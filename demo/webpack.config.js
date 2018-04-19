@@ -28,7 +28,7 @@ module.exports = function () {
     },
     context: path.resolve(__dirname, './src'),
     output: {
-      filename: 'js/[name].[chunkhash:7].js',
+      filename: 'static/[name].[chunkhash:7].js',
       path: path.resolve(__dirname, BUILD_PATH),
     },
     module: {
@@ -43,12 +43,8 @@ module.exports = function () {
           use: ExtractTextPlugin.extract({
             fallback: 'style-loader',
             use: [
-              {
-                loader: 'css-loader',
-              },
-              {
-                loader: 'sass-loader',
-              },
+              { loader: 'css-loader' },
+              'sass-loader',
             ],
           }),
         },
@@ -56,10 +52,12 @@ module.exports = function () {
           test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
           use: [
             {
-              loader: 'url-loader',
+              loader: 'file-loader',
               options: {
                 limit: 100,
-                name: 'images/[name].[hash:7].[ext]',
+                name: '[name].[hash:7].[ext]',
+                outputPath: 'static',
+                publicPath: '../static',
               },
             },
           ],
@@ -68,22 +66,12 @@ module.exports = function () {
           test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
           use: [
             {
-              loader: 'url-loader',
+              loader: 'file-loader',
               options: {
-                limit: 10000,
-                name: 'font/[name].[hash:7].[ext]',
-              },
-            },
-          ],
-        },
-        {
-          test: /\.(rar|jar|zip)(\?.*)?$/,
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 1,
-                name: 'files/[name].[hash:7].[ext]',
+                limit: 100,
+                name: '[name].[hash:7].[ext]',
+                outputPath: 'static',
+                publicPath: '../static',
               },
             },
           ],
@@ -95,7 +83,7 @@ module.exports = function () {
     },
     plugins: [
       new webpack.EnvironmentPlugin(['NODE_ENV']),
-      new ExtractTextPlugin('css/[name].[chunkhash:7].css'),
+      new ExtractTextPlugin('static/[name].[chunkhash:7].css'),
     ],
   };
 
@@ -108,7 +96,7 @@ module.exports = function () {
         }),
 
         new CleanWebpackPlugin([
-          '*.html', 'js/*.*', 'images/*.*', 'css/*.*',
+          '*.html', 'static/*.*',
         ], { root: path.join(__dirname, BUILD_PATH) }),
 
         new webpack.DllReferencePlugin({
@@ -133,10 +121,10 @@ module.exports = function () {
           filename: 'index.html',
         }),
 
-        // new UglifyJsPlugin({
-        //   parallel: true,
-        //   cache: true,
-        // }),
+        new UglifyJsPlugin({
+          parallel: true,
+          cache: true,
+        }),
       ],
     });
   } else {

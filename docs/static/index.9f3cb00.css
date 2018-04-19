@@ -1907,8 +1907,8 @@ textarea {
 
 @font-face {
   font-family: 'icomoon';
-  src: url(font/icomoon.fbe263d.eot);
-  src: url(font/icomoon.fbe263d.eot) format("embedded-opentype"), url(font/icomoon.05488c3.ttf) format("truetype"), url(font/icomoon.d2dce85.woff) format("woff"), url(images/icomoon.499c621.svg) format("svg");
+  src: url(../static/icomoon.fbe263d.eot);
+  src: url(../static/icomoon.fbe263d.eot) format("embedded-opentype"), url(../static/icomoon.05488c3.ttf) format("truetype"), url(../static/icomoon.d2dce85.woff) format("woff"), url(../static/icomoon.499c621.svg) format("svg");
   font-weight: normal;
   font-style: normal; }
 
