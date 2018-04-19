@@ -57,7 +57,7 @@ module.exports = function () {
                 limit: 100,
                 name: '[name].[hash:7].[ext]',
                 outputPath: 'static',
-                publicPath: '../static',
+                publicPath: '/static',
               },
             },
           ],
@@ -71,7 +71,7 @@ module.exports = function () {
                 limit: 100,
                 name: '[name].[hash:7].[ext]',
                 outputPath: 'static',
-                publicPath: '../static',
+                publicPath: '/static',
               },
             },
           ],
@@ -121,10 +121,10 @@ module.exports = function () {
           filename: 'index.html',
         }),
 
-        new UglifyJsPlugin({
-          parallel: true,
-          cache: true,
-        }),
+        // new UglifyJsPlugin({
+        //   parallel: true,
+        //   cache: true,
+        // }),
       ],
     });
   } else {
