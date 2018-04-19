@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './style/index.scss';
+import Clickable from '../Clickable';
 
 const propTypes = {
   dataSource: PropTypes.arrayOf(PropTypes.shape({
@@ -38,17 +39,19 @@ class Tabs extends React.PureComponent {
         className={this.props.className}
       >
         {this.props.dataSource.map((tab, index) => (
-          <div
-            aria-hidden
-            className={classNames(
-              this.props.itemClassName,
-              { [this.props.currentClassName]: tab.value === this.props.value },
-            )}
+          <Clickable
             onClick={() => this.props.onChange(tab.value)}
-            key={`${index + 1}`}
           >
-            {this.props.renderTitle != null ? this.props.renderTitle(tab) : tab.title}
-          </div>
+            <div
+              className={classNames(
+                this.props.itemClassName,
+                { [this.props.currentClassName]: tab.value === this.props.value },
+              )}
+              key={`${index + 1}`}
+            >
+              {this.props.renderTitle != null ? this.props.renderTitle(tab) : tab.title}
+            </div>
+          </Clickable>
         ))}
       </div>
     );

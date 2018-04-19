@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
@@ -30,7 +30,7 @@ const defaultProps = {
   children: null,
 };
 
-class Animate extends Component {
+class Animate extends React.PureComponent {
   constructor(props) {
     super(props);
 

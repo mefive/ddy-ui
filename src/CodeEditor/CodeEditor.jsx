@@ -91,7 +91,7 @@ const excludedIntelliSenseTriggerKeys = {
   222: 'quote',
 };
 
-class CodeEditor extends React.Component {
+class CodeEditor extends React.PureComponent {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);

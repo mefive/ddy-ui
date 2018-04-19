@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import './style/index.scss';
+import Clickable from '../Clickable';
 
-const DEFAULT_STYLE = 'default';
-const FLIP_STYLE = 'flip';
+const STYLE_DEFAULT = 'default';
+const STYLE_FLIP = 'flip';
 
 const propTypes = {
   bgColor: PropTypes.string,
   flipTrue: PropTypes.string,
   flipFalse: PropTypes.string,
   onChange: PropTypes.func,
-  style: PropTypes.oneOf([DEFAULT_STYLE, FLIP_STYLE]),
+  style: PropTypes.oneOf([STYLE_DEFAULT, STYLE_FLIP]),
   value: PropTypes.bool,
   width: PropTypes.number,
 };
@@ -21,12 +23,12 @@ const defaultProps = {
   flipTrue: 'YES',
   flipFalse: 'NO',
   onChange: () => null,
-  style: DEFAULT_STYLE,
+  style: STYLE_DEFAULT,
   value: false,
   width: 60,
 };
 
-class ToggleButton extends React.Component {
+class ToggleButton extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,15 +51,9 @@ class ToggleButton extends React.Component {
     const value = this.props.value || this.state.value;
 
     switch (style) {
-      case FLIP_STYLE:
+      case STYLE_FLIP:
         return (
-          <div
-            id="toggle-flip-button"
-            style={{
-              boxShadow: value ? 'none' : null,
-              height: width / 2,
-              width,
-            }}
+          <Clickable
             onClick={() => {
               this.setState({
                 value: !value,
@@ -66,33 +62,39 @@ class ToggleButton extends React.Component {
             }}
           >
             <div
-              className={`true-button ${value ? 'active' : ''}`}
+              className="toggle-flip-button"
               style={{
-                  lineHeight: `${width / 2}px`,
-                }}
+                boxShadow: value ? 'none' : null,
+                height: width / 2,
+                width,
+              }}
+
             >
-              {flipTrue}
+              <div
+                className={classNames(
+                  'true-button',
+                  { active: value != null },
+                )}
+                style={{ lineHeight: `${width / 2}px` }}
+              >
+                {flipTrue}
+              </div>
+              <div
+                className={`false-button ${value ? '' : 'active'}`}
+                style={{
+                    lineHeight: `${width / 2}px`,
+                  }}
+              >
+                {flipFalse}
+              </div>
+
             </div>
-            <div
-              className={`false-button ${value ? '' : 'active'}`}
-              style={{
-                  lineHeight: `${width / 2}px`,
-                }}
-            >
-              {flipFalse}
-            </div>
-          </div>
+          </Clickable>
         );
-      case DEFAULT_STYLE:
+      case STYLE_DEFAULT:
       default:
         return (
-          <div
-            id="toggle-button"
-            style={{
-              boxShadow: value ? 'none' : null,
-              height: width / 2,
-              width,
-            }}
+          <Clickable
             onClick={() => {
               this.setState({
                 value: !value,
@@ -101,19 +103,28 @@ class ToggleButton extends React.Component {
             }}
           >
             <div
-              className="button-bg"
+              className="toggle-button"
               style={{
-                backgroundColor: value ? bgColor : null,
+                boxShadow: value ? 'none' : null,
+                height: width / 2,
+                width,
               }}
             >
               <div
-                className="button"
+                className="button-bg"
                 style={{
-                  left: value ? width / 2 : null,
+                  backgroundColor: value ? bgColor : null,
                 }}
-              />
+              >
+                <div
+                  className="button"
+                  style={{
+                    left: value ? width / 2 : null,
+                  }}
+                />
+              </div>
             </div>
-          </div>
+          </Clickable>
         );
     }
   }
@@ -121,7 +132,8 @@ class ToggleButton extends React.Component {
 
 ToggleButton.propTypes = propTypes;
 ToggleButton.defaultProps = defaultProps;
-ToggleButton.DEFAULT_STYLE = DEFAULT_STYLE;
-ToggleButton.FLIP_STYLE = FLIP_STYLE;
+
+ToggleButton.STYLE_DEFAULT = STYLE_DEFAULT;
+ToggleButton.STYLE_FLIP = STYLE_FLIP;
 
 export default ToggleButton;

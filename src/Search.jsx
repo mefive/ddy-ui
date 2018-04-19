@@ -24,7 +24,7 @@ const defaultProps = {
   value: '',
 };
 
-class Search extends React.Component {
+class Search extends React.PureComponent {
   constructor(props) {
     super(props);
     this.fixScroll = this.fixScroll.bind(this);

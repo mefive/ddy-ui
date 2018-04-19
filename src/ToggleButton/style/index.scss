@@ -1,7 +1,7 @@
 @import "~compass-mixins";
 @import "../../style/variables";
 
-#toggle-button {
+.toggle-button {
   position: relative;
 
   .button-bg {
@@ -30,7 +30,7 @@
   }
 }
 
-#toggle-flip-button {
+.toggle-flip-button {
   position: relative;
 
   .true-button, .false-button {

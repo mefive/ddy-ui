@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
@@ -33,7 +33,7 @@ const defaultProps = {
   onChange: () => null,
 };
 
-class DatePicker extends Component {
+class DatePicker extends React.PureComponent {
   constructor(props) {
     super(props);
 

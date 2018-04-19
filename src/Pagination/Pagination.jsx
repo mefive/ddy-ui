@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './style/index.scss';
+import Clickable from '../Clickable';
 
 const propTypes = {
   total: PropTypes.number,
@@ -14,10 +15,15 @@ const propTypes = {
 };
 
 const defaultProps = {
-
+  total: null,
+  page: 1,
+  totalPages: null,
+  rowsPerPage: null,
+  onChange: () => {},
+  className: null,
 };
 
-class Pagination extends React.Component {
+class Pagination extends React.PureComponent {
   getItem(page) {
     return (
       <span
@@ -39,25 +45,23 @@ class Pagination extends React.Component {
   }
 
   render() {
-    let {
-      total, rowsPerPage, page, totalPages,
-    } = this.props;
+    let { totalPages } = this.props;
 
     if (totalPages != null) {
       if (totalPages === 1) {
         return null;
       }
-    } else if (rowsPerPage != null && total < rowsPerPage) {
+    } else if (this.props.rowsPerPage != null && this.props.total < this.props.rowsPerPage) {
       return null;
     }
 
-    const isFirstPage = page === 1;
+    const isFirstPage = this.props.page === 1;
 
     if (totalPages == null) {
-      totalPages = Math.ceil(total / rowsPerPage);
+      totalPages = Math.ceil(this.props.total / this.props.rowsPerPage);
     }
 
-    const isLastPage = (page === totalPages);
+    const isLastPage = (this.props.page === totalPages);
 
     return (
       <div
@@ -66,36 +70,38 @@ class Pagination extends React.Component {
           { [this.props.className]: !!this.props.className },
         )}
       >
-        <div
-          className={classNames(
-            'btn',
-            'btn-outline-primary',
-            { disabled: isFirstPage },
-          )}
-          aria-hidden
+        <Clickable
           onClick={() => {
             if (!isFirstPage) {
-              this.props.onChange(page - 1);
+              this.props.onChange(this.props.page - 1);
             }
           }}
         >
-          <i className="icon icon-angle-left" />
-          上一页
-        </div>
+          <div
+            className={classNames(
+              'btn',
+              'btn-outline-primary',
+              { disabled: isFirstPage },
+            )}
+          >
+            <i className="icon icon-angle-left" />
+            上一页
+          </div>
+        </Clickable>
 
         <span className="page">
           {(() => {
             const pageItems = [];
 
             if (totalPages < 10) {
-              for (let i = 1; i <= totalPages; i++) {
+              for (let i = 1; i <= totalPages; i += 1) {
                 pageItems.push(this.getItem(i));
               }
 
               return pageItems;
             }
 
-            if (page < 4) {
+            if (this.props.page < 4) {
               for (let i = 1; i <= 5; i += 1) {
                 pageItems.push(this.getItem(i));
               }
@@ -106,7 +112,7 @@ class Pagination extends React.Component {
               return pageItems;
             }
 
-            if (page > totalPages - 4) {
+            if (this.props.page > totalPages - 4) {
               pageItems.push(this.getItem(1));
               pageItems.push(<span className="ellipsis" key="ellipsis"> ... </span>);
 
@@ -120,7 +126,7 @@ class Pagination extends React.Component {
             pageItems.push(this.getItem(1));
             pageItems.push(<span className="ellipsis" key="ellipsis1"> ... </span>);
 
-            for (let i = page - 2; i <= page + 2; i += 1) {
+            for (let i = this.props.page - 2; i <= this.props.page + 2; i += 1) {
               pageItems.push(this.getItem(i));
             }
 
@@ -131,22 +137,24 @@ class Pagination extends React.Component {
           })()}
         </span>
 
-        <div
-          className={classNames(
-            'btn',
-            'btn-outline-primary',
-            { disabled: isLastPage },
-          )}
-          aria-hidden
+        <Clickable
           onClick={() => {
             if (!isLastPage) {
-              this.props.onChange(page + 1);
+              this.props.onChange(this.props.page + 1);
             }
           }}
         >
-          下一页
-          <i className="icon icon-angle-right" />
-        </div>
+          <div
+            className={classNames(
+              'btn',
+              'btn-outline-primary',
+              { disabled: isLastPage },
+            )}
+          >
+            下一页
+            <i className="icon icon-angle-right" />
+          </div>
+        </Clickable>
       </div>
     );
   }

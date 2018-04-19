@@ -4,6 +4,7 @@
  * MIT Licensed
  */
 
+/* eslint-disable */
 define((require, exports) => {
   exports.version = '0.1.0';
 
@@ -79,3 +80,4 @@ define((require, exports) => {
 
   return Calendar;
 });
+/* eslint-enable */

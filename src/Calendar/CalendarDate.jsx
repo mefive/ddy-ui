@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import padStart from 'lodash/padStart';
@@ -28,7 +28,7 @@ const defaultProps = {
   onChange: () => {},
 };
 
-class Calendar extends Component {
+class Calendar extends React.PureComponent {
   constructor(props) {
     super(props);
 

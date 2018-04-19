@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Input from '../Input';
 import './style/index.scss';
+import Clickable from '../Clickable';
 
 const propTypes = {
   checkable: PropTypes.bool,
@@ -38,13 +39,13 @@ const defaultProps = {
   isProperSubset: false,
   multiple: false,
   nodeWrap: {},
-  onCheck: (k, n) => console.log('onCheck', k, n),
-  onExpand: (k, n) => console.log('onExpand', k, n),
-  onSelect: (k, n) => console.log('onSelect', k, n),
+  onCheck: () => {},
+  onExpand: () => {},
+  onSelect: () => {},
   render: treeNode => treeNode.title,
 };
 
-class Tree extends React.Component {
+class Tree extends React.PureComponent {
   constructor(props) {
     super(props);
     this.stretchBranch = this.stretchBranch.bind(this);
@@ -277,9 +278,7 @@ class Tree extends React.Component {
                   })
                 }
               >
-                <i
-                  {...arrowProperty}
-                  aria-hidden
+                <Clickable
                   onClick={(event) => {
                     event.persist();
                     event.stopPropagation();
@@ -298,16 +297,16 @@ class Tree extends React.Component {
                       event,
                     }));
                   }}
-                />
+                >
+                  <i {...arrowProperty} />
+                </Clickable>
                 {this.props.checkable && (
                   <Input
                     {...checkboxProperty}
                     {...this.checkboxIndeterminate(key)}
                   />
                 )}
-                <div
-                  {...nodeProperty}
-                >
+                <div {...nodeProperty}>
                   {this.props.render(treeNode, key)}
                 </div>
               </div>
