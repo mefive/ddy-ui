@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
   }).filter(Boolean);
 }
 
-module.exports = function () {
+module.exports = function entry() {
   let config = {
     entry: {
       index: './app/index',
@@ -57,7 +57,7 @@ module.exports = function () {
                 limit: 100,
                 name: '[name].[hash:7].[ext]',
                 outputPath: 'static',
-                publicPath: '/ddy-ui/static',
+                publicPath: '/static',
               },
             },
           ],
@@ -71,7 +71,7 @@ module.exports = function () {
                 limit: 100,
                 name: '[name].[hash:7].[ext]',
                 outputPath: 'static',
-                publicPath: '/ddy-ui/static',
+                publicPath: '/static',
               },
             },
           ],
@@ -121,10 +121,10 @@ module.exports = function () {
           filename: 'index.html',
         }),
 
-        // new UglifyJsPlugin({
-        //   parallel: true,
-        //   cache: true,
-        // }),
+        new UglifyJsPlugin({
+          parallel: true,
+          cache: true,
+        }),
       ],
     });
   } else {

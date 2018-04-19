@@ -10,19 +10,20 @@
   bottom: 0;
 }
 
-:local(.modal) {
+.full-screen-modal {
   z-index: $z-index-base;
   @include full-screen;
   padding: 0 200px;
 
   &.enter {
-    :local(.body) {
+    .full-screen-modal-body {
       @include animation-name(scaleIn);
       @include animation-duration(0.2s);
       @include animation-fill-mode(forwards);
     }
-    :local(.mask),
-    :local(.close) {
+
+    .full-screen-modal-mask,
+    .full-screen-modal-close {
       @include animation-name(fadeIn);
       @include animation-duration(0.2s);
       @include animation-fill-mode(forwards);
@@ -30,13 +31,13 @@
   }
 
   &.leave {
-    :local(.body) {
+    .full-screen-modal-body {
       @include animation-name(scaleOut);
       @include animation-duration(0.2s);
       @include animation-fill-mode(forwards);
     }
-    :local(.mask),
-    :local(.close) {
+    .full-screen-modal-mask,
+    .full-screen-modal-close {
       @include animation-name(fadeOut);
       @include animation-duration(0.2s);
       @include animation-fill-mode(forwards);
@@ -44,12 +45,12 @@
   }
 }
 
-:local(.mask) {
+.full-screen-modal-mask {
   @include full-screen;
   background-color: rgba(255, 255, 255, .8);
 }
 
-:local(.body) {
+.full-screen-modal-body {
   position: relative;
   height: 100%;
   max-width: 1000px;
@@ -58,14 +59,7 @@
   box-shadow: 0 0 12px 1px rgba(193, 193, 193, 0.83);
 }
 
-:local(.title) {
-  padding: 0 20px;
-  line-height: 60px;
-  font-size: 22px;
-  background-color: #fafdfb;
-}
-
-:local(.close) {
+.full-screen-modal-close {
   position: absolute;
   right: 20px;
   top: 20px;

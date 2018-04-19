@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import './style/index.scss';
 
 const propTypes = {
+  value: PropTypes.oneOfType([PropTypes.any]),
   options: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.any.isRequired,
     title: PropTypes.string,
@@ -11,12 +12,13 @@ const propTypes = {
   onChange: PropTypes.func,
 };
 
-const defaultProp = {
+const defaultProps = {
+  value: null,
   options: [],
   onChange: () => null,
 };
 
-class RadioGroup extends React.Component {
+class RadioGroup extends React.PureComponent {
   render() {
     return (
       <div className="radio-group">
@@ -40,6 +42,6 @@ class RadioGroup extends React.Component {
 }
 
 RadioGroup.propTypes = propTypes;
-RadioGroup.defaultProp = defaultProp;
+RadioGroup.defaultProps = defaultProps;
 
 export default RadioGroup;

@@ -1,86 +1,76 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import omit from 'lodash/omit';
+import isFunction from 'lodash/isFunction';
 
 const propTypes = {
-  value: PropTypes.any,
+  value: PropTypes.oneOfType([PropTypes.any]),
   onChange: PropTypes.func,
   type: PropTypes.string,
   autoFocus: PropTypes.bool,
+  indeterminate: PropTypes.bool,
   format: PropTypes.func,
   onEnter: PropTypes.func,
 };
 
 const defaultProps = {
+  value: null,
   autoFocus: false,
+  type: 'text',
+  format: null,
+  indeterminate: false,
   onChange: () => null,
   onEnter: () => {},
 };
 
-function isCheckable(type) {
-  return ['checkbox', 'radio'].indexOf(type) !== -1;
-}
-
-function isFile(type) {
-  return type === 'file';
-}
-
 class Input extends React.PureComponent {
   componentDidMount() {
-    const el = ReactDOM.findDOMNode(this);
-
-    el.indeterminate
-      = this.props.indeterminate && this.props.type === 'checkbox';
-
     if (this.props.autoFocus) {
-      el.focus();
+      this.input.focus();
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    ReactDOM.findDOMNode(this).indeterminate = nextProps.indeterminate && nextProps.type === 'checkbox';
   }
 
   render() {
-    const {
-      type, value, onChange, format,
-    } = this.props;
+    const props = omit(this.props, 'onEnter', 'indeterminate', 'value');
 
-    const newProps = omit(this.props, 'onEnter');
-
-    if (!type) {
-      newProps.type = 'text';
+    if (['file', 'checkbox', 'radio'].indexOf(props.type) === -1) {
+      props.value = this.props.value == null ? '' : this.props.value;
     }
 
-    Reflect.deleteProperty(newProps, 'indeterminate');
+    if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
+      props.checked = this.props.value;
+    }
+
+    if (this.props.indeterminate && props.type === 'checkbox') {
+      props.indeterminate = true;
+    }
 
     return (
       <input
-        {...newProps}
+        {...props}
+
+        ref={(el) => { this.input = el; }}
+
         onChange={(e) => {
-          let value;
           const { target } = e;
 
-          if (isCheckable(type)) {
+          let value;
+
+          if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
             value = target.checked;
-          } else if (isFile(type)) {
-            value = target.files
-              ? target.files[0]
-              // ie9
-              : target.value;
+          } else if (props.type === 'file') {
+            value = target.files != null ? target.files[0] : target.value;
           } else {
-            value = target.value;
+            ({ value } = target);
           }
 
-          if (typeof format === 'function') {
-            value = format(value);
+          if (isFunction(this.props.format)) {
+            value = this.props.format(value);
           }
 
-          onChange(value, e);
+          this.props.onChange(value, e);
         }}
-        value={isCheckable(type) ? '' : (value == null ? '' : value)}
-        checked={isCheckable(type) ? value : null}
+
         onKeyPress={(e) => {
           if (e.charCode === 13) {
             this.props.onEnter();

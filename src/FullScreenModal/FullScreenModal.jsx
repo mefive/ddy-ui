@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import keycode from 'keycode';
 import { addClass, removeClass } from 'dom-helpers/class';
 
-import style from './style/index.scss';
 import Portal from '../Portal';
 import Animate from '../Animate/Animate';
+import Clickable from '../Clickable';
 
 const propTypes = {
   visible: PropTypes.bool,
@@ -56,18 +56,20 @@ class FullScreenModal extends React.PureComponent {
       <Animate>
         {this.props.visible && (
           <Portal>
-            <div className={style.modal}>
-              <div className={style.mask} />
-              <div className={style.body}>
+            <div className="full-screen-modal">
+              <div className="full-screen-modal-mask" />
+              <div className="full-screen-modal-body">
                 {this.props.children}
               </div>
-              <div
-                className={style.close}
-                aria-hidden
+              <Clickable
                 onClick={() => this.props.onClose()}
               >
-                <i className="icon icon-times" />
-              </div>
+                <div
+                  className="full-screen-modal-close"
+                >
+                  <i className="icon icon-times" />
+                </div>
+              </Clickable>
             </div>
           </Portal>
         )}

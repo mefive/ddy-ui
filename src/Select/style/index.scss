@@ -5,7 +5,7 @@
   position: relative;
 
   .select-trigger.active {
-    box-shadow: 0px 0px 3px 1px rgba(0, 128, 236, 0.34);
+    box-shadow: 0 0 3px 1px rgba(0, 128, 236, 0.34);
     border-color: $primary-color;
   }
 }
@@ -18,7 +18,7 @@
   padding: 7px 22px 7px 12px;
   border: 1px solid $gray-color;
   background-color: #f9fafc;
-  @include border-radius($border-radius-base);
+  border-radius: $border-radius-base;
 
   .trigger-icon {
     position: absolute;
@@ -64,7 +64,7 @@
   background-color: $white-color;
   border: 1px solid $gray-color;
 
-  @include border-radius($border-radius-base);
+  border-radius: $border-radius-base;
 
   li {
     padding: 6px 12px;
@@ -102,7 +102,7 @@
   .actions {
     width: 100%;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
 
     .btn {
       width: 100%;

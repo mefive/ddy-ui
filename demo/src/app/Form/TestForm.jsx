@@ -5,18 +5,20 @@ import { Row, Col } from '../../../../src/grid';
 import Clickable from '../../../../src/Clickable';
 import Input from '../../../../src/Input';
 import DatePicker from '../../../../src/DatePicker/DatePicker';
-import FileInput from '../../../../../ottobock-web-fe-pc/source/js/components/FileInput';
+import RadioGroup from '../../../../src/RadioGroup/RadioGroup';
 
 const propTypes = {
+  dataSource: PropTypes.shape({
+    avatar: PropTypes.string,
+  }),
   getFieldDecorator: PropTypes.func.isRequired,
   validate: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
-  dataSource: PropTypes.shape({}),
 };
 
 const defaultProps = {
-  onSubmit: () => {},
   dataSource: {},
+  onSubmit: () => {},
 };
 
 const labelCol = {
@@ -33,6 +35,14 @@ class TestForm extends React.PureComponent {
     super(props);
 
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentWillReceiveProps({ dataSource }) {
+    if (dataSource !== this.props.dataSource) {
+      if (dataSource.avatar !== this.props.dataSource.avatar) {
+        this.props.validate('avatar');
+      }
+    }
   }
 
   onSubmit() {
@@ -73,6 +83,24 @@ class TestForm extends React.PureComponent {
         </FormItem>
 
         <FormItem
+          label="Gender"
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
+        >
+          {getFieldDecorator('gender')((
+            <RadioGroup
+              options={[{
+                value: 'male',
+                title: 'Male',
+              }, {
+                value: 'female',
+                title: 'Female',
+              }]}
+            />
+          ))}
+        </FormItem>
+
+        <FormItem
           label="Birth Date"
           labelCol={labelCol}
           wrapperCol={wrapperCol}
@@ -93,22 +121,22 @@ class TestForm extends React.PureComponent {
         </FormItem>
 
         <FormItem
-          label="Pic"
+          label="Avatar"
           labelCol={labelCol}
           wrapperCol={wrapperCol}
         >
-          {getFieldDecorator('pic', {
+          {getFieldDecorator('avatar', {
             rules: [{
               validator: (file) => {
-                if (file) {
-                  console.log(file.type);
+                if (!file.type.startsWith('image')) {
+                  return '请选择图片';
                 }
 
                 return null;
               },
             }],
           })((
-            <FileInput onChange={() => setTimeout(() => validate('pic'))} />
+            <Input type="file" />
           ))}
         </FormItem>
 
