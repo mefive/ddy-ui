@@ -30,7 +30,6 @@ module.exports = function () {
     output: {
       filename: 'js/[name].[chunkhash:7].js',
       path: path.resolve(__dirname, BUILD_PATH),
-      publicPath: '/',
     },
     module: {
       rules: [
