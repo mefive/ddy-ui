@@ -52,7 +52,11 @@ class Input extends React.PureComponent {
         ref={(el) => { this.input = el; }}
 
         onChange={(e) => {
-          const { target } = e;
+          let { target } = e;
+
+          if (target === window) {
+            target = e.currentTarget;
+          }
 
           let value;
 
