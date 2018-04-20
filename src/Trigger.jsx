@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import contains from 'dom-helpers/query/contains';
 
 import Portal from './Portal';
 import Animate from './Animate';
@@ -100,7 +101,6 @@ class Trigger extends React.PureComponent {
       if (typeof origin === 'function') {
         origin(e);
       }
-
       handler(e);
     };
   }
@@ -121,7 +121,10 @@ class Trigger extends React.PureComponent {
   }
 
   tryToggle(e) {
-    if (this.popover && !this.popover.node.contains(e.target)) {
+    if (this.popover
+      && !contains(this.popover.node, e.target)
+      && !contains(this.anchor, e.target)
+    ) {
       this.toggle();
     }
   }
@@ -130,7 +133,6 @@ class Trigger extends React.PureComponent {
     if (e) {
       e.stopPropagation();
     }
-
     this.setActive(!this.getActive());
   }
 

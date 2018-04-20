@@ -7,6 +7,7 @@ import './style/index.scss';
 
 import Trigger from '../Trigger';
 import Popover from '../Popover/index';
+import Clickable from '../Clickable';
 
 const propTypes = {
   className: PropTypes.string,
@@ -104,8 +105,7 @@ class Select extends React.PureComponent {
 
   setTriggerWidth() {
     this.setState({
-      triggerWidth:
-        this.trigger.offsetWidth,
+      triggerWidth: this.trigger.offsetWidth,
     });
   }
 
@@ -207,43 +207,50 @@ class Select extends React.PureComponent {
               >
                 <ul>
                   {this.props.options != null && this.props.options.map(i => (
-                    <li
-                      key={i.value}
-                      className={classNames({
-                        active: this.props.multiple
-                          ? this.state.multipleSelection.indexOf(i.value) !== -1
-                          : i.value === this.props.value,
-                      })}
-                      onClick={() => this.select(i.value)}
-                      aria-hidden
-                      ref={(el) => {
-                        if (i.value === this.props.value) {
-                          this.selectedElement = el;
-                        }
+                    <Clickable
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        this.select(i.value);
                       }}
+                      key={i.value}
                     >
-                      {this.props.multiple && i.value === this.props.value && (
-                        <i className="icon icon-check" />
-                      )}
+                      <li
+                        className={classNames({
+                          active: this.props.multiple
+                            ? this.state.multipleSelection.indexOf(i.value) !== -1
+                            : i.value === this.props.value,
+                        })}
+                        ref={(el) => {
+                          if (i.value === this.props.value) {
+                            this.selectedElement = el;
+                          }
+                        }}
+                      >
+                        {this.props.multiple && i.value === this.props.value && (
+                          <i className="icon icon-check" />
+                        )}
 
-                      {this.props.renderOption
-                        ? this.props.renderOption(i.value)
-                        : i.title
-                      }
-                    </li>
+                        {this.props.renderOption
+                          ? this.props.renderOption(i.value)
+                          : i.title
+                        }
+                      </li>
+                    </Clickable>
                   ))}
                 </ul>
               </div>
 
               {this.props.multiple && (
                 <div className="actions">
-                  <div
-                    className="btn btn-sm btn-primary"
+                  <Clickable
                     onClick={this.confirmSelection}
-                    aria-hidden
                   >
-                    确定
-                  </div>
+                    <div
+                      className="btn btn-sm btn-primary"
+                    >
+                      确定
+                    </div>
+                  </Clickable>
                 </div>
               )}
             </div>
