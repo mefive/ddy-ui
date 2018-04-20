@@ -7,6 +7,8 @@ import Portal from '../Portal';
 import Animate from '../Animate/Animate';
 import Clickable from '../Clickable';
 
+import './style/index.scss';
+
 const propTypes = {
   visible: PropTypes.bool,
   onClose: PropTypes.func,
