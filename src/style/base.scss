@@ -20,11 +20,11 @@ body {
   color: $text-color;
   background-color: $body-background-color;
 
-  &.has-modal {
-    #body-wrapper {
-      @include filter(blur(2px));
-    }
-  }
+  //&.has-modal {
+  //  #body-wrapper {
+  //    @include filter(blur(2px));
+  //  }
+  //}
 }
 
 #body-wrapper {
