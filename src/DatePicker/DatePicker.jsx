@@ -146,12 +146,14 @@ class DatePicker extends React.PureComponent {
               marginRight: '2.8em',
             }}
           >
-            <input
-              type="text"
-              value={this.props.value}
-              readOnly
-              style={{ width: '100%', cursor: 'initial' }}
-            />
+            <div
+              className={classNames(
+                'value',
+                { active: this.state.active },
+              )}
+            >
+              {this.props.value}
+            </div>
           </div>
         </Trigger>
       </div>

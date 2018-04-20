@@ -239,12 +239,14 @@ class DateRangePicker extends React.PureComponent {
               }
             }
           >
-            <input
-              type="text"
-              value={this.getValue()}
-              readOnly
-              style={{ width: '100%', cursor: 'initial' }}
-            />
+            <div
+              className={classNames(
+                'value',
+                { active: this.state.active },
+              )}
+            >
+              {this.getValue()}
+            </div>
           </div>
         </Trigger>
       </div>
