@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import addClass from 'dom-helpers/class/addClass';
-import UAParser from 'ua-parser-js';
 import isFunction from 'lodash/isFunction';
 import mimoza from 'mimoza';
+import { isOlderIE } from '../utils/browser';
 
 import Input from '../Input';
 import service from '../utils/service';
@@ -24,7 +24,6 @@ const defaultProps = {
   children: null,
 };
 
-const uaParser = new UAParser(navigator.userAgent);
 
 class FileUploader extends React.PureComponent {
   constructor(props) {
@@ -35,7 +34,7 @@ class FileUploader extends React.PureComponent {
       inputKey: 0,
     };
 
-    this.isIE = uaParser.getBrowser().name === 'IE';
+    this.isOlderIE = isOlderIE();
     this.onChange = this.onChange.bind(this);
     this.upload = this.upload.bind(this);
     this.onFrameLoad = this.onFrameLoad.bind(this);
@@ -87,7 +86,7 @@ class FileUploader extends React.PureComponent {
   }
 
   upload() {
-    if (this.isIE) {
+    if (this.isOlderIE) {
       this.uploadIE();
     } else {
       this.uploadHtml5();
@@ -137,7 +136,7 @@ class FileUploader extends React.PureComponent {
   }
 
   renderInput() {
-    if (this.isIE) {
+    if (this.isOlderIE) {
       return (
         <form
           ref={(el) => { this.form = el; }}

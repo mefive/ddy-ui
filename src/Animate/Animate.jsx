@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import remove from 'lodash/remove';
+import { isOlderIE } from '../utils/browser';
 
 import './style/index.scss';
 
@@ -39,6 +40,8 @@ class Animate extends React.PureComponent {
       children: [],
       statusMap: {},
     };
+
+    this.isOlderIE = isOlderIE();
 
     const statusMap = {};
 
@@ -111,7 +114,7 @@ class Animate extends React.PureComponent {
       this.setState({ children, statusMap });
 
       if (hasLeavingChild) {
-        setTimeout(() => this.processLeave(), nextProps.leaveDuration);
+        setTimeout(() => this.processLeave(), this.isOlderIE ? 0 : nextProps.leaveDuration);
       }
     }
   }
@@ -163,7 +166,7 @@ class Animate extends React.PureComponent {
 
     this.setState({ statusMap });
 
-    setTimeout(() => this.processEnter(), this.props.enterDuration);
+    setTimeout(() => this.processEnter(), this.isOlderIE ? 0 : this.props.enterDuration);
   }
 
   processEnter() {
