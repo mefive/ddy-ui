@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Odometer from 'odometer';
+import { isOlderIE } from '../utils/browser';
 
 import './style/index.scss';
 
@@ -21,7 +22,7 @@ class OdometerNumber extends React.Component {
       value: this.props.value,
       format: '(ddd).ddd',
       theme: 'default',
-      duration: 1000,
+      duration: isOlderIE() ? 0 : 1000,
     });
   }
 
