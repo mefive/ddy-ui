@@ -1,7 +1,6 @@
 @import "../../style/variables";
 
 :local(.trigger) {
-  display: inline-block;
   text-align: center;
   border-radius: $border-radius-base;
   border: 1px solid $gray-color;
