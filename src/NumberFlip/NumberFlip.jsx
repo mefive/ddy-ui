@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import StaticCard from './StaticCard';
 import AnimatedCard from './AnimatedCard';
+import { isOlderIE } from '../utils/browser';
 
 import style from './style/index.scss';
 import './style/flip.sass';
@@ -40,8 +41,6 @@ class NumberFlip extends React.PureComponent {
   }
 
   render() {
-    console.log('render');
-
     const { lastValue, value, shuffle } = this.state;
 
     // shuffle digits
@@ -60,12 +59,20 @@ class NumberFlip extends React.PureComponent {
           this.props.className,
         )}
       >
-        <div className="flipUnitContainer">
-          <StaticCard position="upperCard" digit={this.state.value} />
-          <StaticCard position="lowerCard" digit={this.state.lastValue} />
-          <AnimatedCard position="first" digit={digit1} animation={animation1} />
-          <AnimatedCard position="second" digit={digit2} animation={animation2} />
-        </div>
+        {isOlderIE()
+          ? (
+            <div className="flipUnitContainer">
+              {this.state.value}
+            </div>
+          )
+          : (
+            <div className="flipUnitContainer">
+              <StaticCard position="upperCard" digit={this.state.value} />
+              <StaticCard position="lowerCard" digit={this.state.lastValue} />
+              <AnimatedCard position="first" digit={digit1} animation={animation1} />
+              <AnimatedCard position="second" digit={digit2} animation={animation2} />
+            </div>
+          )}
       </div>
     );
   }
