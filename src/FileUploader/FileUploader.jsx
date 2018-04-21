@@ -32,6 +32,7 @@ class FileUploader extends React.PureComponent {
 
     this.state = {
       error: null,
+      inputKey: 0,
     };
 
     this.isIE = uaParser.getBrowser().name === 'IE';
@@ -59,6 +60,7 @@ class FileUploader extends React.PureComponent {
 
         const { data: { url } } = JSON.parse(content.innerHTML || 'null innerHTML');
 
+        this.setState({ inputKey: this.state.inputKey += 1 });
         this.props.onChange(url);
       }
     } catch (e) {
@@ -98,6 +100,7 @@ class FileUploader extends React.PureComponent {
         this.props.uploadUrl,
         this.props.value,
       );
+      this.setState({ inputKey: this.state.inputKey += 1 });
       this.props.onChange(url);
     } catch (e) {
       this.setState({ error: JSON.stringify(e) });
@@ -145,6 +148,7 @@ class FileUploader extends React.PureComponent {
           className={style['file-input']}
         >
           <Input
+            key={this.state.inputKey}
             type="file"
             onChange={this.onChange}
             name="file"
@@ -156,6 +160,7 @@ class FileUploader extends React.PureComponent {
 
     return (
       <Input
+        key={this.state.inputKey}
         className={style['file-input']}
         type="file"
         onChange={this.onChange}
@@ -169,7 +174,7 @@ class FileUploader extends React.PureComponent {
 
     return (
       <div>
-        <div className="p-relative cursor-pointer d-inline-block">
+        <div className="p-relative cursor-pointer">
           {this.renderInput()}
 
           {child != null && React.cloneElement(child, {

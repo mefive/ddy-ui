@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormItem, withForm } from '../../../../src/form';
-import { Row, Col } from '../../../../src/grid';
-import Clickable from '../../../../src/Clickable';
+import Form from '../../../../src/form/Form';
+import FormItem from '../../../../src/form/FormItem';
 import Input from '../../../../src/Input';
 import DatePicker from '../../../../src/DatePicker/DatePicker';
+import Row from '../../../../src/grid/Row';
+import Col from '../../../../src/grid/Col';
+import Clickable from '../../../../src/Clickable';
+import { withForm } from '../../../../src/form';
 import RadioGroup from '../../../../src/RadioGroup/RadioGroup';
+import ImageUploader from '../../../../src/ImageUploader/ImageUploader';
 
 const propTypes = {
   dataSource: PropTypes.shape({
-    avatar: PropTypes.string,
+    avatar: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.string]),
   }),
   getFieldDecorator: PropTypes.func.isRequired,
   validate: PropTypes.func.isRequired,
@@ -35,14 +39,6 @@ class TestForm extends React.PureComponent {
     super(props);
 
     this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  componentWillReceiveProps({ dataSource }) {
-    if (dataSource !== this.props.dataSource) {
-      if (dataSource.avatar !== this.props.dataSource.avatar) {
-        this.props.validate('avatar');
-      }
-    }
   }
 
   onSubmit() {
@@ -127,16 +123,22 @@ class TestForm extends React.PureComponent {
         >
           {getFieldDecorator('avatar', {
             rules: [{
-              validator: (file) => {
-                if (!file.type.startsWith('image')) {
-                  return '请选择图片';
+              validator: (avatar) => {
+                if (avatar != null && typeof avatar === 'object') {
+                  if (!avatar.type.startsWith('image')) {
+                    return false;
+                  }
                 }
 
-                return null;
+                return true;
               },
+              message: '请选择图片',
+            }, {
+              required: true,
+              message: '图片必传',
             }],
           })((
-            <Input type="file" />
+            <ImageUploader width={80} uploadUrl="/api/upload/images" />
           ))}
         </FormItem>
 
