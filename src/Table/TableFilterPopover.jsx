@@ -73,11 +73,9 @@ class TableFilterPopover extends React.PureComponent {
             value={this.state.query}
             onChange={query => this.setState({ query })}
             maxLength={100}
-            onKeyPress={(e) => {
-              if (e.charCode === 13) {
-                if (filteredItems.length > 0) {
-                  this.onConfirm();
-                }
+            onEnter={() => {
+              if (filteredItems.length > 0) {
+                this.onConfirm();
               }
             }}
           />
@@ -101,7 +99,7 @@ class TableFilterPopover extends React.PureComponent {
                 <div className="p-1 ellipsis">
                   <Input
                     value={this.props.filter == null
-                      || this.props.filter.values.indexOf(item) !== -1}
+                    || this.props.filter.values.indexOf(item) !== -1}
                     type="checkbox"
                     className="mr-0"
                     onChange={(checked) => {
@@ -138,28 +136,28 @@ class TableFilterPopover extends React.PureComponent {
 
         <div className="p-1">
           {this.props.filterItems.length > 1 && (
-          <div className="text-sm">
-            <div>
-              <Input
-                type="checkbox"
-                className="mr-0"
-                value={this.props.filter
-                  ? this.props.filter.values.length === this.props.filter.items.length : true}
-                onChange={(all) => {
-                  this.props.onFilterChange({
-                    key: `${this.props.column.key}`,
-                    values: all ? this.props.filterItems : [],
-                    items: (this.props.isLast && this.props.filter != null)
-                      ? this.props.filter.items
-                      : this.props.filterItems,
-                  });
-                }}
-              />
-              <span className="text-primary mr-0">
+            <div className="text-sm">
+              <div>
+                <Input
+                  type="checkbox"
+                  className="mr-0"
+                  value={this.props.filter
+                    ? this.props.filter.values.length === this.props.filter.items.length : true}
+                  onChange={(all) => {
+                    this.props.onFilterChange({
+                      key: `${this.props.column.key}`,
+                      values: all ? this.props.filterItems : [],
+                      items: (this.props.isLast && this.props.filter != null)
+                        ? this.props.filter.items
+                        : this.props.filterItems,
+                    });
+                  }}
+                />
+                <span className="text-primary mr-0">
                 全部
               </span>
+              </div>
             </div>
-          </div>
           )}
 
           <div className="mt-1">
@@ -181,15 +179,15 @@ class TableFilterPopover extends React.PureComponent {
             </div>
 
             {this.props.isInFilters && (
-            <div
-              className="btn btn-sm btn-outline-primary ml-1"
-              aria-hidden
-              onClick={() => {
-                this.props.onClear();
-              }}
-            >
-              清空
-            </div>
+              <div
+                className="btn btn-sm btn-outline-primary ml-1"
+                aria-hidden
+                onClick={() => {
+                  this.props.onClear();
+                }}
+              >
+                清空
+              </div>
             )}
           </div>
         </div>
