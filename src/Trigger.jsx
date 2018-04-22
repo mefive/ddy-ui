@@ -46,7 +46,7 @@ class Trigger extends React.PureComponent {
     };
 
     this.outsideToggle = this.outsideToggle.bind(this);
-    this.ancherToggle = this.ancherToggle.bind(this);
+    this.anchorToggle = this.anchorToggle.bind(this);
     this.toggle = this.toggle.bind(this);
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
@@ -110,7 +110,7 @@ class Trigger extends React.PureComponent {
     const eventHandlers = {};
 
     if (this.props.action === 'click') {
-      eventHandlers.onClick = this.getEventHandler(child.props.onClick, this.ancherToggle);
+      eventHandlers.onClick = this.getEventHandler(child.props.onClick, this.anchorToggle);
     }
 
     if (this.props.action === 'hover') {
@@ -130,7 +130,7 @@ class Trigger extends React.PureComponent {
     }
   }
 
-  ancherToggle(e) {
+  anchorToggle(e) {
     e.stopPropagation();
 
     if (contains(this.anchor, e.target)) {
