@@ -45,7 +45,8 @@ class Trigger extends React.PureComponent {
       active: this.getActive(),
     };
 
-    this.tryToggle = this.tryToggle.bind(this);
+    this.outsideToggle = this.outsideToggle.bind(this);
+    this.anchorToggle = this.anchorToggle.bind(this);
     this.toggle = this.toggle.bind(this);
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
@@ -61,17 +62,17 @@ class Trigger extends React.PureComponent {
     const { action } = this.props;
 
     if (action === 'click') {
-      document.removeEventListener('click', this.tryToggle);
+      document.removeEventListener('click', this.outsideToggle);
     }
   }
 
   onActiveChange(active) {
     if (active) {
       if (this.props.action === 'click') {
-        document.addEventListener('click', this.tryToggle);
+        document.addEventListener('click', this.outsideToggle);
       }
     } else if (this.props.action === 'click') {
-      document.removeEventListener('click', this.tryToggle);
+      document.removeEventListener('click', this.outsideToggle);
     }
   }
 
@@ -109,7 +110,7 @@ class Trigger extends React.PureComponent {
     const eventHandlers = {};
 
     if (this.props.action === 'click') {
-      eventHandlers.onClick = this.getEventHandler(child.props.onClick, this.toggle);
+      eventHandlers.onClick = this.getEventHandler(child.props.onClick, this.anchorToggle);
     }
 
     if (this.props.action === 'hover') {
@@ -120,7 +121,7 @@ class Trigger extends React.PureComponent {
     return eventHandlers;
   }
 
-  tryToggle(e) {
+  outsideToggle(e) {
     if (this.popover
       && !contains(this.popover.node, e.target)
       && !contains(this.anchor, e.target)
@@ -129,10 +130,15 @@ class Trigger extends React.PureComponent {
     }
   }
 
-  toggle(e) {
-    if (e) {
-      e.stopPropagation();
+  anchorToggle(e) {
+    e.stopPropagation();
+
+    if (contains(this.anchor, e.target)) {
+      this.toggle();
     }
+  }
+
+  toggle() {
     this.setActive(!this.getActive());
   }
 

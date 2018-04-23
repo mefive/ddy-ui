@@ -1,6 +1,6 @@
 {
   "name": "ddy-ui",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "React components for common use",
   "main": "./lib",
   "files": [
@@ -40,14 +40,19 @@
     "codemirror": "^5.36.0",
     "compass-mixins": "^0.12.10",
     "dom-helpers": "^3.3.1",
+    "form-urlencoded": "^2.0.4",
     "highcharts": "^6.0.7",
     "keycode": "^2.2.0",
     "lodash": "^4.17.4",
+    "mimoza": "^1.0.0",
     "moment": "^2.22.0",
     "odometer": "^0.4.8",
     "prop-types": "^15.6.0",
+    "query-string": "latest",
     "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react-dom": "^16.3.0",
+    "ua-parser-js": "latest",
+    "isomorphic-fetch": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

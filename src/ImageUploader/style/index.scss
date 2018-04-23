@@ -1,0 +1,7 @@
+@import "../../style/variables";
+
+:local(.trigger) {
+  text-align: center;
+  border-radius: $border-radius-base;
+  border: 1px solid $gray-color;
+}
