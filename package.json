@@ -3,9 +3,6 @@
   "version": "0.0.14",
   "description": "React components for common use",
   "main": "./lib",
-  "files": [
-    "lib"
-  ],
   "scripts": {
     "test": "npm run test",
     "lint": "eslint ./src/**/*.jsx ./src/**/*.js",
@@ -51,7 +48,6 @@
     "query-string": "latest",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "ua-parser-js": "latest",
     "isomorphic-fetch": "latest"
   },
   "devDependencies": {
