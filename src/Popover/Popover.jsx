@@ -133,23 +133,64 @@ class Popover extends React.PureComponent {
     const toBottom = window.innerHeight - bottom;
     const toRight = window.innerWidth - right;
 
-    if (placement.vertical === PLACEMENT_TOP && top < height) {
-      placement.vertical = PLACEMENT_BOTTOM;
-    } else if (placement.vertical === PLACEMENT_BOTTOM_ALIGN && (top + anchorHeight) < height) {
-      placement.vertical = PLACEMENT_TOP_ALIGN;
-    } else if (placement.vertical === PLACEMENT_BOTTOM && toBottom < height) {
-      placement.vertical = PLACEMENT_TOP;
-    } else if (placement.vertical === PLACEMENT_TOP_ALIGN && (toBottom + anchorHeight) < height) {
-      placement.vertical = PLACEMENT_BOTTOM_ALIGN;
-    } else if (placement.horizontal === PLACEMENT_LEFT && left < width) {
-      placement.horizontal = PLACEMENT_RIGHT;
-    } else if (placement.horizontal === PLACEMENT_RIGHT_ALIGN && (left + anchorWidth) < width) {
-      placement.horizontal = PLACEMENT_LEFT_ALIGN;
-    } else if (placement.horizontal === PLACEMENT_RIGHT && toRight < width) {
-      placement.horizontal = PLACEMENT_LEFT;
-    } else if (placement.horizontal === PLACEMENT_LEFT_ALIGN && (toRight + anchorWidth) < width) {
-      placement.horizontal = PLACEMENT_RIGHT_ALIGN;
+    const notEnough = new Set();
+
+    if (top < height) {
+      notEnough.add(PLACEMENT_TOP);
     }
+
+    if ((top + anchorHeight) < height) {
+      notEnough.add(PLACEMENT_BOTTOM_ALIGN);
+    }
+
+    if (toBottom < height) {
+      notEnough.add(PLACEMENT_BOTTOM);
+    }
+
+    if ((toBottom + anchorHeight) < height) {
+      notEnough.add(PLACEMENT_TOP_ALIGN);
+    }
+
+    if (left < width) {
+      notEnough.add(PLACEMENT_LEFT);
+    }
+
+    if ((left + anchorWidth) < width) {
+      notEnough.add(PLACEMENT_RIGHT_ALIGN);
+    }
+
+    if (toRight < width) {
+      notEnough.add(PLACEMENT_RIGHT);
+    }
+
+    if ((toRight + anchorWidth) < width) {
+      notEnough.add(PLACEMENT_LEFT_ALIGN);
+    }
+
+    const oppositePlacements = [
+      [PLACEMENT_TOP, PLACEMENT_BOTTOM],
+      [PLACEMENT_BOTTOM_ALIGN, PLACEMENT_TOP_ALIGN],
+      [PLACEMENT_LEFT, PLACEMENT_RIGHT],
+      [PLACEMENT_RIGHT_ALIGN, PLACEMENT_LEFT_ALIGN],
+    ];
+
+    const correct = (k, p) => {
+      for (let i = 0; i < oppositePlacements.length; i += 1) {
+        const pair = oppositePlacements[i];
+
+        const index = pair.indexOf(p);
+
+        if (index !== -1) {
+          if (notEnough.has(pair[index]) && !notEnough.has(pair[index === 0 ? 1 : 0])) {
+            placement[k] = pair[index === 0 ? 1 : 0];
+          }
+          break;
+        }
+      }
+    };
+
+    correct('vertical', placement.vertical);
+    correct('horizontal', placement.horizontal);
 
     return placement;
   }

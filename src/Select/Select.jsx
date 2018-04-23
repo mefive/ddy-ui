@@ -46,8 +46,7 @@ const defaultProps = {
   defaultTitle: '请选择',
   onChange: () => null,
   placement: {
-    // vertical: Popover.PLACEMENT_BOTTOM,
-    vertical: Popover.PLACEMENT_TOP,
+    vertical: Popover.PLACEMENT_BOTTOM,
     horizontal: Popover.PLACEMENT_CENTER,
   },
   getPopoverContainer: null,
