@@ -26,18 +26,12 @@ const defaultProps = {
 
 class Alert extends React.PureComponent {
   render() {
-    const {
-      confirmText,
-      title,
-      visible,
-    } = this.props;
-
     return (
       <Modal
         onClose={this.props.onClose}
         hasCloseButton={this.props.hasCloseButton}
-        title={title}
-        visible={visible}
+        title={this.props.title}
+        visible={this.props.visible}
         className="alert"
         onEnter={this.props.onClose}
       >
@@ -50,7 +44,7 @@ class Alert extends React.PureComponent {
             onClick={this.props.onClose}
           >
             <div className="btn btn-primary">
-              {confirmText}
+              {this.props.confirmText}
             </div>
           </Clickable>
         </div>
