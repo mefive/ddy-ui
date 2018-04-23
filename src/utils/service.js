@@ -1,4 +1,4 @@
-import queryString from 'query-string';
+import queryString from 'querystring';
 import fetch from 'isomorphic-fetch';
 import formData from 'form-urlencoded';
 

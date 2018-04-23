@@ -42,16 +42,16 @@
     "dom-helpers": "^3.3.1",
     "form-urlencoded": "^2.0.4",
     "highcharts": "^6.0.7",
+    "isomorphic-fetch": "latest",
     "keycode": "^2.2.0",
     "lodash": "^4.17.4",
     "mimoza": "^1.0.0",
     "moment": "^2.22.0",
     "odometer": "^0.4.8",
     "prop-types": "^15.6.0",
-    "query-string": "latest",
+    "querystring": "^0.2.0",
     "react": "^16.3.0",
-    "react-dom": "^16.3.0",
-    "isomorphic-fetch": "latest"
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

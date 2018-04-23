@@ -7,7 +7,7 @@ import { isOlderIE } from '../utils/browser';
 
 import Input from '../Input';
 import service from '../utils/service';
-import Alert from '../Alert/Alert';
+import Alert from '../Alert';
 
 import style from './style/index.scss';
 
