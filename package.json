@@ -1,6 +1,6 @@
 {
   "name": "ddy-ui",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "React components for common use",
   "main": "./lib",
   "scripts": {
@@ -11,7 +11,8 @@
     "demo:build": "NODE_ENV=production webpack --config ./demo/webpack.config.js"
   },
   "files": [
-    "lib", "src"
+    "lib",
+    "src"
   ],
   "repository": {
     "type": "git",
