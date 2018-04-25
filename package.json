@@ -11,7 +11,7 @@
     "demo:build": "NODE_ENV=production webpack --config ./demo/webpack.config.js"
   },
   "files": [
-    "lib"
+    "lib", "src"
   ],
   "repository": {
     "type": "git",
