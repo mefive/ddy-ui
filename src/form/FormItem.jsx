@@ -17,7 +17,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  label: '',
+  label: null,
   id: null,
   children: null,
   required: false,

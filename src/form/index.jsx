@@ -59,7 +59,7 @@ const withForm = (WrappedComponent) => {
     }
 
     validate(field) {
-      const errors = {};
+      const errors = { ...this.state.errors };
 
       let fields;
 
@@ -72,6 +72,10 @@ const withForm = (WrappedComponent) => {
       }
 
       const addToError = (name, message) => {
+        if (name in this.state.errors) {
+          delete errors[name];
+        }
+
         if (name in errors) {
           errors[name] = `${errors[name]}, ${message}`;
         } else {
@@ -105,7 +109,7 @@ const withForm = (WrappedComponent) => {
               addToError(name, rule.message || `不得大于${rule.maxLength}个字符`);
             } else if (rule.minLength != null && value.length < rule.minLength) {
               addToError(name, rule.message || `不得少于${rule.minLength}个字符`);
-            } else if (rules.regex != null && !rules.regex.test(value)) {
+            } else if (rule.regex != null && !rule.regex.test(value)) {
               addToError(name, rule.message || '格式不正确');
             }
           }

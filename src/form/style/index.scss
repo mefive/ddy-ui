@@ -1,8 +1,8 @@
 @import "~compass-mixins";
-@import "../../style/mixins/triangle";
-@import "../../style/variables";
+@import "~ddy-ui/lib/style/mixins/triangle";
+@import "~ddy-ui/lib/style/variables";
 
-$form-line-height: 32px;
+$form-line-height: 36px;
 
 .form {
   .required {
@@ -19,13 +19,14 @@ $form-line-height: 32px;
   .label-col {
     &.right {
       text-align: right;
+      padding-right: 15px;
     }
 
     label {
-      &:after {
-        content: ":";
-        margin: 0 8px 0 2px;
-      }
+      //&:after {
+      //  content: ":";
+      //  margin: 0 8px 0 2px;
+      //}
     }
   }
 
@@ -59,7 +60,7 @@ $form-line-height: 32px;
   }
 
   .error {
-    margin-top: 10px;
+    margin-top: 5px;
     color: $error-color;
     font-size: $font-size-sm;
   }
