@@ -12,6 +12,7 @@ import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import Pagination from '../Pagination/Pagination';
 import Portal from '../Portal';
+import Loading from '../Loading/Loading';
 
 const ASC = 'asc';
 const DESC = 'desc';
@@ -265,7 +266,7 @@ class Table extends React.PureComponent {
     let onePageDataSource = dataSource;
 
     if (this.props.enablePagination) {
-      if (this.props.rowsPerPage && this.props.totalPages == null) {
+      if (this.props.totalPages == null) {
         const start = (this.props.page - 1) * this.props.rowsPerPage;
 
         onePageDataSource = onePageDataSource.slice(
@@ -443,6 +444,8 @@ class Table extends React.PureComponent {
     if (this.props.rowSelection) {
       columns.unshift({
         key: 'row-select',
+        width: 100,
+        align: 'center',
         renderColumn: () => dataSource && (
           <input
             type="checkbox"
@@ -637,7 +640,7 @@ class Table extends React.PureComponent {
   renderNoData() {
     if (Object.keys(this.getFilters()).length > 0) {
       return (
-        <div className="default-no-data">
+        <div>
           该筛选条件下无匹配数据
         </div>
       );
@@ -648,7 +651,7 @@ class Table extends React.PureComponent {
     }
 
     return (
-      <div className="default-no-data">
+      <div>
         没有数据
       </div>
     );
@@ -657,8 +660,11 @@ class Table extends React.PureComponent {
   renderPager() {
     const dataSourceLength = this.state.dataSource ? this.state.dataSource.length : 0;
 
-    const hasPager = this.props.enablePagination
-      && (this.props.rowsPerPage == null || dataSourceLength > this.props.rowsPerPage);
+    let hasPager = this.props.enablePagination;
+
+    if (this.props.totalPages == null) {
+      hasPager = hasPager && dataSourceLength > this.props.rowsPerPage;
+    }
 
     if (!hasPager) {
       return null;
@@ -708,9 +714,9 @@ class Table extends React.PureComponent {
               {this.props.renderLoading !== null
                 ? this.props.renderLoading()
                 : (
-                  <div className="default-loading">
+                  <Loading>
                     加载中...
-                  </div>
+                  </Loading>
                 )
               }
             </div>
@@ -720,9 +726,9 @@ class Table extends React.PureComponent {
           && this.state.dataSource != null
           && this.state.dataSource.length === 0
           && (
-            <div className="no-data">
+            <Loading>
               {this.renderNoData()}
-            </div>
+            </Loading>
           )}
         </div>
 

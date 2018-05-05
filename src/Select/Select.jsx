@@ -185,7 +185,7 @@ class Select extends React.PureComponent {
             onPlacementChange={placement => this.setState({ placement })}
             offset={5}
             className={classNames(
-              'select-popup text-sm',
+              'select-popup',
               this.props.popoverClassName,
             )}
           >

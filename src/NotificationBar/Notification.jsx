@@ -40,11 +40,11 @@ class Notification extends React.PureComponent {
     return (
       <div
         className={classNames(
-          'notification',
-          { 'alert-success': this.props.type === Notification.type.SUCC },
-          { 'alert-error': this.props.type === Notification.type.ERROR },
-          this.props.className,
-        )}
+            'notification',
+            { 'alert-success': this.props.type === Notification.type.SUCC },
+            { 'alert-error': this.props.type === Notification.type.ERROR },
+            this.props.className,
+          )}
       >
         {this.props.message}
       </div>

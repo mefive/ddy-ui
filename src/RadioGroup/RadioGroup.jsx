@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import './style/index.scss';
 
@@ -10,18 +11,27 @@ const propTypes = {
     title: PropTypes.string,
   })),
   onChange: PropTypes.func,
+  renderLabel: PropTypes.func,
+  className: PropTypes.string,
 };
 
 const defaultProps = {
   value: null,
   options: [],
   onChange: () => null,
+  renderLabel: null,
+  className: null,
 };
 
 class RadioGroup extends React.PureComponent {
   render() {
     return (
-      <div className="radio-group">
+      <div
+        className={classNames(
+          'radio-groups',
+          this.props.className,
+        )}
+      >
         {this.props.options.map(option => (
           <label key={option.value}>
             <input
@@ -32,7 +42,7 @@ class RadioGroup extends React.PureComponent {
             }}
             />
             <span>
-              {option.title}
+              {this.props.renderLabel == null ? option.title : this.props.renderLabel(option)}
             </span>
           </label>
       ))}

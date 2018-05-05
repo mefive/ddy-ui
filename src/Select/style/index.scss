@@ -1,23 +1,14 @@
 @import "~compass-mixins";
 @import "../../style/variables";
 
-.select {
-  position: relative;
-
-  .select-trigger.active {
-    box-shadow: 0 0 3px 1px rgba(0, 128, 236, 0.34);
-    border-color: $primary-color;
-  }
-}
-
 .select-trigger {
   line-height: 14px;
   width: 100%;
   text-align: left !important;
   @include ellipsis();
-  padding: 7px 22px 7px 12px;
+  padding: 10px 22px 10px 12px;
   border: 1px solid $gray-color;
-  background-color: #f9fafc;
+  background-color: $white-color;
   border-radius: $border-radius-base;
 
   .trigger-icon {
@@ -30,12 +21,12 @@
     background-color: $white-color;
     font-size: 18px;
     border-radius: 0 2px 2px 0;
-    border-left: 1px solid $gray-color;
+    //border-left: 1px solid $gray-color;
 
     .icon {
       color: #8797ab;
-      padding: 5px;
-      font-size: 18px;
+      padding: 10px;
+      font-size: 14px;
     }
   }
 
@@ -54,9 +45,23 @@
   }
 }
 
-.select.disabled {
-  .select-trigger {
-    cursor: not-allowed;
+.select {
+  position: relative;
+
+  .select-trigger.active {
+    box-shadow: 0 0 3px 1px rgba(0, 128, 236, 0.34);
+    border-color: $primary-color;
+  }
+
+  &.disabled {
+    .select-trigger {
+      cursor: not-allowed;
+      background: #eceeef;
+      color: #959ca0;
+    }
+    .trigger-icon {
+      background: #eceeef;
+    }
   }
 }
 

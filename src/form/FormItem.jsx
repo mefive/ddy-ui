@@ -9,6 +9,7 @@ const propTypes = {
   id: PropTypes.string,
   children: PropTypes.node,
   required: PropTypes.bool,
+  className: PropTypes.string,
 
   labelCol: PropTypes.shape({
     alignRight: PropTypes.bool,
@@ -21,6 +22,7 @@ const defaultProps = {
   id: null,
   children: null,
   required: false,
+  className: null,
 
   labelCol: {
     alignRight: false,
@@ -50,9 +52,11 @@ class FormItem extends React.PureComponent {
 
     return (
       <Row
-        className={classNames('form-item', {
-          'has-error': error != null,
-        })}
+        className={classNames(
+          'form-item',
+          this.props.className,
+          { 'has-error': error != null },
+        )}
       >
         {this.props.label != null && (
           <Col

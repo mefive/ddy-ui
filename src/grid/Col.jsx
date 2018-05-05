@@ -26,6 +26,7 @@ const propTypes = {
   className: PropTypes.string,
   gutter: PropTypes.number,
   children: PropTypes.node,
+  style: PropTypes.shape({}),
 };
 
 const defaultProps = {
@@ -41,6 +42,7 @@ const defaultProps = {
   className: null,
   gutter: null,
   children: null,
+  style: {},
 };
 
 class Col extends React.PureComponent {
@@ -80,6 +82,7 @@ class Col extends React.PureComponent {
         style={{
           paddingLeft: gutter == null ? null : gutter / 2,
           paddingRight: gutter == null ? null : gutter / 2,
+          ...this.props.style,
         }}
       >
         {this.props.children}

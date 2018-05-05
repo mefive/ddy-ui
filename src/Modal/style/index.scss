@@ -2,7 +2,7 @@
 @import "~compass-mixins/lib/animation/core";
 @import "../../style/variables";
 
-$modal-dialog-header-height: 55px;
+$modal-dialog-header-height: 56px;
 
 .modal {
   position: fixed;
@@ -27,22 +27,20 @@ $modal-dialog-header-height: 55px;
     position: absolute;
     background-color: $white-color;
     min-width: 600px;
-    left: 0;
-    top: 0;
     opacity: 0;
-    box-shadow: 0px 4px 22.5px 2.5px rgba(41, 48, 61, 0.3);
-
-    @include border-radius($border-radius-base);
-
+    box-shadow: 0 4px 22.5px 2.5px rgba(41, 48, 61, 0.3);
+    border-radius: 4px;
     left: 50%;
     top: 50%;
 
     .dialog-header {
-      padding-left: 30px;
+      padding-left: 20px;
+      background: #f4f4f8;
+      border-radius: 4px 4px 0 0;
 
       h3 {
-        font-size: $font-size-base;
-        color: $secondary-color;
+        font-size: $font-size-xl;
+        font-weight: bold;
         vertical-align: middle;
         line-height: $modal-dialog-header-height;
       }
@@ -85,35 +83,12 @@ $modal-dialog-header-height: 55px;
       .dialog-content {
         font-size: 14px;
         line-height: 1.5;
-
         padding: 50px;
         min-height: 120px;
       }
 
       .dialog-actions {
-        text-align: center;
-        padding: 15px 0;
         border-top: 1px solid $gray-color;
-
-        .btn {
-          padding: 10px 0;
-
-          & + .btn {
-            margin-left: 15px;
-          }
-        }
-
-        &[data-action-count="1"] {
-          .btn {
-            width: 520px;
-          }
-        }
-
-        &[data-action-count="2"] {
-          .btn {
-            width: 200px;
-          }
-        }
       }
     }
 
@@ -134,7 +109,7 @@ $modal-dialog-header-height: 55px;
     textarea {
       @include appearance(none);
       border: 1px solid $gray-color;
-      @include border-radius(2px);
+      border-radius: 2px;
       outline: none;
       width: 100%;
       resize: none;
@@ -189,8 +164,8 @@ $modal-dialog-header-height: 55px;
       color: $primary-color;
       margin-right: 20px;
     }
+
     .btn-primary {
-      width: 100px;
     }
   }
 }

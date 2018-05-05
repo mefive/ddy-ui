@@ -1,6 +1,6 @@
-import queryString from 'querystring';
 import fetch from 'isomorphic-fetch';
 import formData from 'form-urlencoded';
+import queryString from 'querystring';
 
 function handleResponse(promise, url, method) {
   return promise
@@ -21,7 +21,7 @@ function handleResponse(promise, url, method) {
 
         return models;
       } else if (code) {
-        console.error('network error', {
+        console.log('network error', {
           code, message, url, method,
         });
 

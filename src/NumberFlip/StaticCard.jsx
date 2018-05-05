@@ -6,16 +6,14 @@ const propTypes = {
   digit: PropTypes.number.isRequired,
 };
 
-class StaticCard extends React.Component {
-  render() {
-    const { position, digit } = this.props;
-    return (
-      <div className={position}>
-        <span>{digit}</span>
-      </div>
-    );
-  }
-}
+const StaticCard = (props) => {
+  const { position, digit } = props;
+  return (
+    <div className={position}>
+      <span>{digit}</span>
+    </div>
+  );
+};
 
 StaticCard.propTypes = propTypes;
 

@@ -8,7 +8,7 @@ export function cancelFullScreen(el = document) {
   if (requestMethod) { // cancel full screen.
     requestMethod.call(el);
   } else if (typeof window.ActiveXObject !== 'undefined') { // Older IE.
-    const wscript = new ActiveXObject('WScript.Shell');
+    const wscript = new window.ActiveXObject('WScript.Shell');
     if (wscript !== null) {
       wscript.SendKeys('{F11}');
     }
@@ -26,7 +26,7 @@ export function requestFullScreen(el = document.documentElement) {
   if (requestMethod) { // Native full screen.
     requestMethod.call(el);
   } else if (typeof window.ActiveXObject !== 'undefined') { // Older IE.
-    const wscript = new ActiveXObject('WScript.Shell');
+    const wscript = new window.ActiveXObject('WScript.Shell');
     if (wscript !== null) {
       wscript.SendKeys('{F11}');
     }

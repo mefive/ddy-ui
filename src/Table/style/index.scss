@@ -34,6 +34,8 @@
 
 .table {
   position: relative;
+  background-color: $white-color;
+  padding-bottom: 20px;
 
   .table-header {
     position: absolute;
@@ -87,7 +89,7 @@
 
     th {
       text-align: left;
-      line-height: 30px;
+      line-height: 58px;
       font-size: 14px;
       color: #000;
       > div {
@@ -98,7 +100,7 @@
     tr.header {
       td {
         background-color: #F7F8F9;
-        line-height: 28px;
+        line-height: 58px;
       }
     }
 
@@ -111,7 +113,6 @@
 
     > tbody {
       td {
-        font-size: $font-size-sm;
         text-align: left;
         padding: 10px;
       }
@@ -123,7 +124,7 @@
 
     .row-container {
       td {
-        padding: 10px 20px;
+        padding: 13px 20px;
       }
     }
 
@@ -154,7 +155,6 @@
         padding: 0;
 
         thead th{
-          font-size: 12px;
           padding-left: 10px;
         }
 
@@ -182,10 +182,9 @@
 
   table > thead {
     border-radius: 3px;
+    border-bottom: 2px solid $gray-color;
 
     th {
-      line-height: 30px;
-      background-color: #f9fafc;
       color: $text-color;
 
       &:first-child {
@@ -309,5 +308,9 @@
       text-align: right;
       width: 100%;
     }
+  }
+
+  .pager-container {
+    padding-right: 40px;
   }
 }

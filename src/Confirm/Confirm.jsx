@@ -41,7 +41,7 @@ class Confirm extends React.PureComponent {
           {this.props.children}
         </div>
 
-        <div className="dialog-actions">
+        <div className="dialog-actions text-right pr-3 pt-1 pb-1">
           <Clickable
             onClick={this.props.onConfirm}
           >
@@ -53,7 +53,7 @@ class Confirm extends React.PureComponent {
           <Clickable
             onClick={this.props.onClose}
           >
-            <div className="btn btn-default">
+            <div className="btn btn-default ml-1">
               {this.props.cancelText}
             </div>
           </Clickable>

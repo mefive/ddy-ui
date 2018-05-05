@@ -79,17 +79,15 @@ class Pagination extends React.PureComponent {
         >
           <div
             className={classNames(
-              'btn',
-              'btn-outline-primary',
+              'page-item',
               { disabled: isFirstPage },
             )}
           >
             <i className="icon icon-angle-left" />
-            上一页
           </div>
         </Clickable>
 
-        <span className="page">
+        <span>
           {(() => {
             const pageItems = [];
 
@@ -146,12 +144,10 @@ class Pagination extends React.PureComponent {
         >
           <div
             className={classNames(
-              'btn',
-              'btn-outline-primary',
+              'page-item',
               { disabled: isLastPage },
             )}
           >
-            下一页
             <i className="icon icon-angle-right" />
           </div>
         </Clickable>

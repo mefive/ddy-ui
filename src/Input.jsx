@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import omit from 'lodash/omit';
 import isFunction from 'lodash/isFunction';
 
 const propTypes = {
@@ -11,6 +10,7 @@ const propTypes = {
   indeterminate: PropTypes.bool,
   format: PropTypes.func,
   onEnter: PropTypes.func,
+  prepend: PropTypes.node,
 };
 
 const defaultProps = {
@@ -21,6 +21,7 @@ const defaultProps = {
   indeterminate: false,
   onChange: () => null,
   onEnter: () => {},
+  prepend: null,
 };
 
 class Input extends React.PureComponent {
@@ -31,7 +32,9 @@ class Input extends React.PureComponent {
   }
 
   render() {
-    const props = omit(this.props, 'onEnter', 'indeterminate', 'value');
+    const {
+      prepend, onEnter, indeterminate, ...props
+    } = this.props;
 
     if (['file', 'checkbox', 'radio'].indexOf(props.type) === -1) {
       props.value = this.props.value == null ? '' : this.props.value;
@@ -41,46 +44,50 @@ class Input extends React.PureComponent {
       props.checked = this.props.value;
     }
 
-    if (this.props.indeterminate && props.type === 'checkbox') {
+    if (indeterminate && props.type === 'checkbox') {
       props.indeterminate = true;
     }
 
     return (
-      <input
-        {...props}
+      <span>
+        {prepend}
 
-        ref={(el) => { this.input = el; }}
+        <input
+          {...props}
 
-        onChange={(e) => {
-          let { target } = e;
+          ref={(el) => { this.input = el; }}
 
-          if (target === window) {
-            target = e.currentTarget;
-          }
+          onChange={(e) => {
+            let { target } = e;
 
-          let value;
+            if (target === window) {
+              target = e.currentTarget;
+            }
 
-          if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
-            value = target.checked;
-          } else if (props.type === 'file') {
-            value = target.files != null ? target.files[0] : target.value;
-          } else {
-            ({ value } = target);
-          }
+            let value;
 
-          if (isFunction(this.props.format)) {
-            value = this.props.format(value);
-          }
+            if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
+              value = target.checked;
+            } else if (props.type === 'file') {
+              value = target.files != null ? target.files[0] : target.value;
+            } else {
+              ({ value } = target);
+            }
 
-          this.props.onChange(value, e);
-        }}
+            if (isFunction(this.props.format)) {
+              value = this.props.format(value);
+            }
 
-        onKeyPress={(e) => {
-          if (e.charCode === 13) {
-            this.props.onEnter();
-          }
-        }}
-      />
+            this.props.onChange(value, e);
+          }}
+
+          onKeyPress={(e) => {
+            if (e.charCode === 13) {
+              onEnter();
+            }
+          }}
+        />
+      </span>
     );
   }
 }

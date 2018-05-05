@@ -39,7 +39,7 @@ class Alert extends React.PureComponent {
           {this.props.children}
         </div>
 
-        <div className="dialog-actions">
+        <div className="dialog-actions text-right pr-3 pt-1 pb-1">
           <Clickable
             onClick={this.props.onClose}
           >
