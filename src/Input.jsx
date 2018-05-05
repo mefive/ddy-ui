@@ -33,7 +33,7 @@ class Input extends React.PureComponent {
 
   render() {
     const {
-      prepend, onEnter, indeterminate, ...props
+      prepend, onEnter, indeterminate, value, ...props
     } = this.props;
 
     if (['file', 'checkbox', 'radio'].indexOf(props.type) === -1) {
@@ -55,6 +55,8 @@ class Input extends React.PureComponent {
         <input
           {...props}
 
+          value={value || ''}
+
           ref={(el) => { this.input = el; }}
 
           onChange={(e) => {
@@ -64,21 +66,21 @@ class Input extends React.PureComponent {
               target = e.currentTarget;
             }
 
-            let value;
+            let v;
 
             if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
-              value = target.checked;
+              v = target.checked;
             } else if (props.type === 'file') {
-              value = target.files != null ? target.files[0] : target.value;
+              v = target.files != null ? target.files[0] : target.value;
             } else {
-              ({ value } = target);
+              ({ value: v } = target);
             }
 
             if (isFunction(this.props.format)) {
-              value = this.props.format(value);
+              v = this.props.format(v);
             }
 
-            this.props.onChange(value, e);
+            this.props.onChange(v, e);
           }}
 
           onKeyPress={(e) => {

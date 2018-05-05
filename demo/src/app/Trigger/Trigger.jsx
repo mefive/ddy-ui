@@ -17,34 +17,35 @@ class ShowcaseTrigger extends React.PureComponent {
   render() {
     return (
       <ShowcaseContainer title="Trigger">
-        {(new Array(1)).fill(0).map((i, index) => (
-          <div key={`${index + 1}`} className="mt-1">
-            <Trigger
-              action="click"
-              getPopoverContainer={() => this.wrapper}
-              enterClassName="move-right-in"
-              leaveClassName="move-right-out"
-              popover={(
-                <Popover
-                  className={classNames(
-                    'p-3',
-                    style.popover,
-                  )}
-                  ref={(el) => { this.popoverElements[index] = el; }}
-                >
-                  Popover Content
-                </Popover>
-              )}
-            >
-              <div
-                className="btn btn-primary"
-                aria-hidden
+        <div ref={(el) => { this.wrapper = el; }}>
+          {(new Array(1)).fill(0).map((i, index) => (
+            <div key={`${index + 1}`} className="mt-1">
+              <Trigger
+                action="click"
+                enterClassName="move-right-in"
+                leaveClassName="move-right-out"
+                popover={(
+                  <Popover
+                    className={classNames(
+                      'p-3',
+                      style.popover,
+                    )}
+                    ref={(el) => { this.popoverElements[index] = el; }}
+                  >
+                    Popover Content
+                  </Popover>
+                )}
               >
-                Show Popover
-              </div>
-            </Trigger>
-          </div>
-        ))}
+                <div
+                  className="btn btn-primary"
+                  aria-hidden
+                >
+                  Show Popover
+                </div>
+              </Trigger>
+            </div>
+          ))}
+        </div>
       </ShowcaseContainer>
     );
   }
