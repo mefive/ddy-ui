@@ -6,12 +6,14 @@ const propTypes = {
   className: PropTypes.string,
   gutter: PropTypes.number,
   children: PropTypes.node,
+  style: PropTypes.shape({}),
 };
 
 const defaultProps = {
   className: null,
   gutter: null,
   children: null,
+  style: {},
 };
 
 class Row extends React.PureComponent {
@@ -24,6 +26,7 @@ class Row extends React.PureComponent {
         style={{
           marginLeft: gutter == null ? null : gutter / -2,
           marginRight: gutter == null ? null : gutter / -2,
+          ...this.props.style,
         }}
       >
         {this.props.children}

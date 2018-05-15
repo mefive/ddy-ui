@@ -2,6 +2,7 @@ import React from 'react';
 import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
+import pick from 'lodash/pick';
 
 import Form from './Form';
 import FormItem from './FormItem';
@@ -27,6 +28,7 @@ const withForm = (WrappedComponent) => {
 
       this.getFieldDecorator = this.getFieldDecorator.bind(this);
       this.validate = this.validate.bind(this);
+      this.clearError = this.clearError.bind(this);
 
       this.state = {
         errors: {},
@@ -50,7 +52,7 @@ const withForm = (WrappedComponent) => {
               Item.props.onChange(value);
             }
 
-            this.setState({ errors: omit(this.state.errors, [name]) });
+            this.clearError(name);
             this.props.onChange(name, value);
           },
           error,
@@ -58,8 +60,22 @@ const withForm = (WrappedComponent) => {
       };
     }
 
+    clearError(field) {
+      let fields;
+
+      if (field == null) {
+        fields = Object.keys(this.rules);
+      } else if (typeof field === 'string') {
+        fields = [field];
+      } else {
+        fields = field;
+      }
+
+      this.setState({ errors: omit(this.state.errors, fields) });
+    }
+
     validate(field) {
-      const errors = { ...this.state.errors };
+      const errors = pick(this.state.errors, Object.keys(this.rules));
 
       let fields;
 
@@ -87,19 +103,20 @@ const withForm = (WrappedComponent) => {
         const rules = this.rules[name];
 
         if (rules) {
-          const value = this.props.dataSource[name];
+          let value = this.props.dataSource[name];
 
           for (let i = 0; i < rules.length; i += 1) {
             const rule = rules[i];
 
-            if (rule.required
-              && (
-                value == null || value === '' || (typeof value === 'string' && value.trim() === '')
-              )
-            ) {
-              errors[name] = rule.message || '必填项不能为空';
+            if (value == null || value === '' || (typeof value === 'string' && value.trim() === '')) {
+              if (rule.required) {
+                errors[name] = rule.message || '必填项不能为空';
+              }
+
               break;
             }
+
+            value = value || '';
 
             if (isFunction(rule.validator)) {
               if (!rule.validator(value)) {
@@ -122,12 +139,16 @@ const withForm = (WrappedComponent) => {
     }
 
     render() {
+      // clear rules at first, let 'getFieldDecorator' start over the adding
+      this.rules = [];
+
       return (
         <WrappedComponent
           {...this.props}
           validate={this.validate}
           getFieldDecorator={this.getFieldDecorator}
           errors={this.state.errors}
+          clearError={this.clearError}
           ref={(el) => { this.wrappedInstance = el; }}
         />
       );

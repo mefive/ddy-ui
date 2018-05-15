@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import omit from 'lodash/omit';
 
 const propTypes = {
   value: PropTypes.oneOfType([
@@ -10,6 +9,7 @@ const propTypes = {
   onChange: PropTypes.func,
   maxLength: PropTypes.number,
   showCounter: PropTypes.bool,
+  autoFocus: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -17,20 +17,29 @@ const defaultProps = {
   onChange: () => {},
   maxLength: null,
   showCounter: true,
+  autoFocus: false,
 };
 
 class TextArea extends React.PureComponent {
+  componentDidMount() {
+    if (this.props.autoFocus) {
+      this.input.focus();
+    }
+  }
+
   render() {
-    const props = omit(this.props, ['showCounter']);
+    const { showCounter, autoFocus, ...props } = this.props;
 
     return (
       <span>
-        <textArea
+        <textarea
+          ref={autoFocus ? (el) => { this.input = el; } : null}
           {...props}
+          value={props.value || ''}
           onChange={e => this.props.onChange(e.target.value, e)}
         />
 
-        {this.props.showCounter && this.props.maxLength != null && (
+        {showCounter && this.props.maxLength != null && (
           <div className="text-right mt-1">
             {this.props.value == null ? 0 : `${this.props.value}`.length}/{this.props.maxLength}
           </div>

@@ -8,6 +8,7 @@ import Portal from '../Portal';
 import Animate from '../Animate';
 
 import './style/index.scss';
+import Clickable from '../Clickable';
 
 const propTypes = {
   title: PropTypes.string,
@@ -21,6 +22,10 @@ const propTypes = {
   onResize: PropTypes.func,
   id: PropTypes.string,
   children: PropTypes.node,
+  width: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
 };
 
 const defaultProps = {
@@ -35,6 +40,7 @@ const defaultProps = {
   onResize: () => {},
   id: null,
   children: null,
+  width: null,
 };
 
 class Modal extends React.PureComponent {
@@ -82,11 +88,10 @@ class Modal extends React.PureComponent {
   }
 
   onKeyPress(e) {
-    e.preventDefault();
-
     const code = keycode(e);
 
     if (code === 'esc') {
+      e.preventDefault();
       this.props.onClose();
     } else if (code === 'enter') {
       this.props.onEnter();
@@ -144,6 +149,8 @@ class Modal extends React.PureComponent {
                 style={{
                   marginLeft: this.state.marginLeft,
                   marginTop: this.state.marginTop,
+                  width: this.props.width,
+                  minWidth: this.props.width,
                 }}
                 ref={(el) => { this.dialog = el; }}
                 id={this.props.id}
@@ -151,11 +158,9 @@ class Modal extends React.PureComponent {
                 {(this.props.renderTitle || this.props.title) && (
                   <div className="dialog-header">
                     {this.props.hasCloseButton && (
-                      <i
-                        className="icon icon-times-circle-o close"
-                        aria-hidden
-                        onClick={this.props.onClose}
-                      />
+                      <Clickable onClick={this.props.onClose}>
+                        <i className="icon icon-times close" />
+                      </Clickable>
                     )}
 
                     {this.props.renderTitle != null

@@ -1,6 +1,7 @@
-import queryString from 'querystring';
 import fetch from 'isomorphic-fetch';
 import formData from 'form-urlencoded';
+import queryString from 'querystring';
+import omitBy from 'lodash/omitBy';
 
 function handleResponse(promise, url, method) {
   return promise
@@ -21,12 +22,12 @@ function handleResponse(promise, url, method) {
 
         return models;
       } else if (code) {
-        console.error('network error', {
-          code, message, url, method,
+        console.log('network error', {
+          code, message, url, method, data,
         });
 
         throw Object({
-          code, message, url, method,
+          code, message, url, method, data,
         });
       }
 
@@ -36,7 +37,7 @@ function handleResponse(promise, url, method) {
 
 export function formatApiParams(api, params) {
   let newApi = api;
-  const newParams = { ...params };
+  let newParams = { ...params };
 
   if (params) {
     Object.keys(params).forEach((key) => {
@@ -48,6 +49,8 @@ export function formatApiParams(api, params) {
       }
     });
   }
+
+  newParams = omitBy(newParams, p => p == null);
 
   return {
     newApi,

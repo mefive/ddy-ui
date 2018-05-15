@@ -3,7 +3,7 @@
  * Copyright(c) 2011 Luciano Ramalho <luciano@ramalho.org>
  * MIT Licensed
  */
-
+/* eslint-disable */
 define((require, exports) => {
   exports.version = '0.1.0';
 
@@ -79,3 +79,4 @@ define((require, exports) => {
 
   return Calendar;
 });
+/* eslint-enable */

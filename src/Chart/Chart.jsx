@@ -298,7 +298,7 @@ class Chart extends React.Component {
           <div className="chart-legend">
             {series.map((i, index) => (
               <div
-                className="label"
+                className="chart-label"
                 key={`${index + 1}`}
                 data-series-name={i.name}
                 data-visible={i.visible}

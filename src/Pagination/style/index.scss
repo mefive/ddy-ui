@@ -5,10 +5,6 @@
   margin-top: 20px;
   text-align: right;
 
-  .page {
-    margin: 0 10px;
-  }
-
   .page-item {
     margin: 0 5px;
     cursor: pointer;
@@ -28,31 +24,21 @@
       color: $primary-color;
     }
 
+    &.disabled {
+      cursor: not-allowed;
+      &:hover {
+        border-color: $gray-color;
+        color: $text-color;
+      }
+    }
+
     &.current {
       background-color: $primary-color;
       color: $white-color;
     }
   }
 
-  .btn {
-    + .btn {
-      margin-left: 10px;
-    }
-
-    .icon {
-      vertical-align: middle;
-      margin-top: -1px;
-    }
-
-    .icon-angle-left {
-      margin-left: -5px;
-    }
-
-    .icon-angle-right {
-      margin-right: -5px;
-    }
-  }
-  span{
+  span {
     display: inline-block;
     vertical-align: middle;
   }

@@ -8,20 +8,29 @@
 .text-primary {
   color: $primary-color !important;
 }
+
 .text-error {
   color: $error-color !important;
 }
+
 .text-success {
   color: $success-color !important;
 }
+
 .text-light {
   color: $text-light-color !important;
 }
+
 .text-dark {
   color: $text-dark-color !important;
 }
+
 .text-white {
   color: $white-color !important;
+}
+
+.text-gray {
+  color: $gray-color !important;
 }
 
 .d-inline {
@@ -57,15 +66,15 @@
 }
 
 .bg-black {
-  background: $black-color;
+  background: $black-color !important;
 }
 
 .bg-success {
-  background-color: $success-color;
+  background-color: $success-color !important;
 }
 
 .bg-white {
-  background-color: $white-color;
+  background-color: $white-color !important;
 }
 
 .align-top {
@@ -276,6 +285,10 @@
   padding: 20px;
 }
 
+.p-4 {
+  padding: 30px;
+}
+
 .pl-0 {
   padding-left: 5px;
 }
@@ -290,6 +303,10 @@
 
 .pl-3 {
   padding-left: 20px;
+}
+
+.pl-4 {
+  padding-left: 30px;
 }
 
 .pr-0 {
@@ -308,6 +325,10 @@
   padding-right: 20px;
 }
 
+.pr-4 {
+  padding-right: 30px;
+}
+
 .pt-0 {
   padding-top: 5px;
 }
@@ -324,6 +345,10 @@
   padding-top: 20px;
 }
 
+.pt-4 {
+  padding-top: 30px;
+}
+
 .pb-0 {
   padding-bottom: 5px;
 }
@@ -338,6 +363,10 @@
 
 .pb-3 {
   padding-bottom: 20px;
+}
+
+.pb-4 {
+  padding-bottom: 30px;
 }
 
 .clearfix {

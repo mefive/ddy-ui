@@ -155,7 +155,7 @@ class TableFilterPopover extends React.PureComponent {
                 />
                 <span className="text-primary mr-0">
                 全部
-              </span>
+                </span>
               </div>
             </div>
           )}

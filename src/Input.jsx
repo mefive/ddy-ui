@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import omit from 'lodash/omit';
 import isFunction from 'lodash/isFunction';
 
 const propTypes = {
@@ -11,6 +10,8 @@ const propTypes = {
   indeterminate: PropTypes.bool,
   format: PropTypes.func,
   onEnter: PropTypes.func,
+  prepend: PropTypes.node,
+  getDom: PropTypes.func,
 };
 
 const defaultProps = {
@@ -21,6 +22,8 @@ const defaultProps = {
   indeterminate: false,
   onChange: () => null,
   onEnter: () => {},
+  prepend: null,
+  getDom: null,
 };
 
 class Input extends React.PureComponent {
@@ -31,7 +34,9 @@ class Input extends React.PureComponent {
   }
 
   render() {
-    const props = omit(this.props, 'onEnter', 'indeterminate', 'value');
+    const {
+      getDom, prepend, onEnter, indeterminate, value, ...props
+    } = this.props;
 
     if (['file', 'checkbox', 'radio'].indexOf(props.type) === -1) {
       props.value = this.props.value == null ? '' : this.props.value;
@@ -41,46 +46,58 @@ class Input extends React.PureComponent {
       props.checked = this.props.value;
     }
 
-    if (this.props.indeterminate && props.type === 'checkbox') {
+    if (indeterminate && props.type === 'checkbox') {
       props.indeterminate = true;
     }
 
     return (
-      <input
-        {...props}
+      <span>
+        {prepend}
 
-        ref={(el) => { this.input = el; }}
+        <input
+          {...props}
 
-        onChange={(e) => {
-          let { target } = e;
+          value={value || ''}
 
-          if (target === window) {
-            target = e.currentTarget;
-          }
+          ref={(el) => {
+            if (getDom != null) {
+              getDom(el);
+            }
 
-          let value;
+            this.input = el;
+          }}
 
-          if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
-            value = target.checked;
-          } else if (props.type === 'file') {
-            value = target.files != null ? target.files[0] : target.value;
-          } else {
-            ({ value } = target);
-          }
+          onChange={(e) => {
+            let { target } = e;
 
-          if (isFunction(this.props.format)) {
-            value = this.props.format(value);
-          }
+            if (target === window) {
+              target = e.currentTarget;
+            }
 
-          this.props.onChange(value, e);
-        }}
+            let v;
 
-        onKeyPress={(e) => {
-          if (e.charCode === 13) {
-            this.props.onEnter();
-          }
-        }}
-      />
+            if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
+              v = target.checked;
+            } else if (props.type === 'file') {
+              v = target.files != null ? target.files[0] : target.value;
+            } else {
+              ({ value: v } = target);
+            }
+
+            if (isFunction(this.props.format)) {
+              v = this.props.format(v);
+            }
+
+            this.props.onChange(v, e);
+          }}
+
+          onKeyPress={(e) => {
+            if (e.charCode === 13) {
+              onEnter();
+            }
+          }}
+        />
+      </span>
     );
   }
 }

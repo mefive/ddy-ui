@@ -1,6 +1,8 @@
 @import "../variables";
 @import "~compass-mixins";
 
+$input-height: 36px;
+
 input[type="text"],
 input[type="number"],
 input[type="password"],
@@ -9,7 +11,7 @@ textarea {
   outline: none;
   transition-property: border-color;
   transition-duration: .2s;
-  line-height: 14px; // fix to the minimum limited of Chrome
+  line-height: $input-height - (1 * 2) - (7 * 2);
   background-color: $white-color;
   resize: none;
 
@@ -19,12 +21,15 @@ textarea {
 
   &[readonly] {
     cursor: not-allowed;
+    color: #959ca0;
+    background-color: #eceeef;
+    border: solid 1px #e8eaef;
   }
 
   &:focus {
     border-color: $primary-color;
     &[readonly] {
-      border-color: $gray-color;
+      border-color: #e8eaef;
     }
   }
 
@@ -38,7 +43,7 @@ textarea {
 }
 
 textarea {
-  height: 160px;
+  height: 66px;
 }
 
 .code {

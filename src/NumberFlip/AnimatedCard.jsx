@@ -7,16 +7,14 @@ const propTypes = {
   animation: PropTypes.string.isRequired,
 };
 
-class AnimatedCard extends React.Component {
-  render() {
-    const { position, digit, animation } = this.props;
-    return (
-      <div className={`flipCard ${position} ${animation}`}>
-        <span>{digit}</span>
-      </div>
-    );
-  }
-}
+const AnimatedCard = (props) => {
+  const { position, digit, animation } = props;
+  return (
+    <div className={`flipCard ${position} ${animation}`}>
+      <span>{digit}</span>
+    </div>
+  );
+};
 
 AnimatedCard.propTypes = propTypes;
 
