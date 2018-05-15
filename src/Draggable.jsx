@@ -8,27 +8,27 @@ const propTypes = {
   left: PropTypes.number,
   onTopChange: PropTypes.func,
   onLeftChange: PropTypes.func,
+  onStop: PropTypes.func,
   children: PropTypes.node,
 };
 
 const defaultProps = {
   onTopChange: () => {},
   onLeftChange: () => {},
+  onStop: () => {},
   children: null,
-  top: 0,
-  left: 0,
-};
-
-const defaultState = {
   top: null,
   left: null,
-  dragging: false,
 };
 
 class Draggable extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = { ...defaultState };
+    this.state = {
+      top: null,
+      left: null,
+      dragging: false,
+    };
 
     this.startDragging = this.startDragging.bind(this);
     this.stopDragging = this.stopDragging.bind(this);
@@ -123,7 +123,7 @@ class Draggable extends React.PureComponent {
   }
 
   stopDragging() {
-    this.setState({ dragging: false });
+    this.setState({ dragging: false }, this.props.onStop);
     window.removeEventListener('mouseup', this.stopDragging);
     window.removeEventListener('mousemove', this.move);
   }

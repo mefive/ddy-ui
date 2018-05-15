@@ -26,6 +26,7 @@ import NumberFlip from './NumberFlip/index';
 import Dialog from './Dialog';
 import Form from './Form';
 import Grid from './Grid';
+import Slider from './Slider';
 
 const links = [{
   url: 'table',
@@ -72,6 +73,9 @@ const links = [{
 }, {
   url: 'form',
   title: 'Form',
+}, {
+  url: 'slider',
+  title: 'Slider',
 }];
 
 const Port = props => (
@@ -116,6 +120,7 @@ ReactDOM.render(
       <Route path="dialog" component={Dialog} />
       <Route path="form" component={Form} />
       <Route path="grid" component={Grid} />
+      <Route path="slider" component={Slider} />
     </Route>
   </Router>,
   document.getElementById('main'),
