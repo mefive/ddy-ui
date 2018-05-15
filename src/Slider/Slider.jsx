@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import style from './style/index.scss';
+import './style/index.scss';
 import Clickable from '../Clickable';
 import Draggable from '../Draggable';
 
