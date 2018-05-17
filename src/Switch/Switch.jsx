@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import addClass from 'dom-helpers/class/addClass';
 
 import Clickable from '../Clickable';
 
