@@ -93,12 +93,12 @@ class Draggable extends React.PureComponent {
     const { containerWidth, containerHeight } = this.props;
 
     if (containerWidth != null) {
-      const maxLeft = containerWidth - this.draggableItem.clientWidth;
+      const maxLeft = containerWidth - this.node.clientWidth;
       left = Math.min(maxLeft, left);
     }
 
     if (containerHeight != null) {
-      const maxTop = containerHeight - this.draggableItem.clientHeight;
+      const maxTop = containerHeight - this.node.clientHeight;
       top = Math.min(maxTop, top);
     }
 
@@ -143,7 +143,9 @@ class Draggable extends React.PureComponent {
     return React.cloneElement(
       child,
       {
-        ref: (el) => { this.draggableItem = el; },
+        ref: (el) => {
+          this.node = el;
+        },
         style,
         onMouseDown: this.startDragging,
       },

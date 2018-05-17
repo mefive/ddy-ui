@@ -41,6 +41,7 @@ class Tabs extends React.PureComponent {
         {this.props.dataSource.map((tab, index) => (
           <Clickable
             onClick={() => this.props.onChange(tab.value)}
+            key={tab.value}
           >
             <div
               className={classNames(

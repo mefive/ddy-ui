@@ -4,16 +4,16 @@
 
 $form-line-height: 36px;
 
+.form-item-line-height {
+  line-height: $form-line-height;
+}
+
 .form {
   .required {
     color: $error-color;
     font-size: 16px;
     margin-right: 10px;
     vertical-align: middle;
-  }
-
-  .form-item-line-height {
-    line-height: $form-line-height;
   }
 
   .label-col {

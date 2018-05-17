@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import contains from 'dom-helpers/query/contains';
 
 import './style/index.scss';
 import Clickable from '../Clickable';
@@ -9,6 +10,7 @@ const propTypes = {
   value: PropTypes.oneOfType([PropTypes.any]),
   onChange: PropTypes.func,
   onStopDragging: PropTypes.func,
+  onClick: PropTypes.func,
   min: PropTypes.number,
   max: PropTypes.number,
   step: PropTypes.number,
@@ -18,6 +20,7 @@ const propTypes = {
 const defaultProps = {
   value: null,
   onChange: () => {},
+  onClick: () => {},
   onStopDragging: () => {},
   min: 0,
   max: 100,
@@ -33,6 +36,8 @@ class Slider extends React.PureComponent {
       railWidth: 0,
     };
 
+    this.clicked = false;
+
     this.onClick = this.onClick.bind(this);
     this.setValueByLeft = this.setValueByLeft.bind(this);
   }
@@ -41,9 +46,23 @@ class Slider extends React.PureComponent {
     this.setRailWidth();
   }
 
+  componentWillReceiveProps({ value }) {
+    if (this.props.value !== value) {
+      if (this.clicked) {
+        this.clicked = false;
+        this.props.onClick();
+      }
+    }
+  }
+
   onClick(e) {
+    if (e.target === this.thumb.node || contains(e.target, this.thumb.node)) {
+      return;
+    }
+
     const left = e.clientX - this.rail.getBoundingClientRect().left;
     this.setValueByLeft(left);
+    this.clicked = true;
   }
 
   getPercent() {
@@ -114,6 +133,7 @@ class Slider extends React.PureComponent {
               left={(percent * this.state.railWidth) / 100}
               onLeftChange={this.setValueByLeft}
               onStop={this.props.onStopDragging}
+              ref={(el) => { this.thumb = el; }}
             >
               <div className="slider-thumb" />
             </Draggable>

@@ -29,7 +29,7 @@
   left: 0;
   top: 4px;
   height: 4px;
-  background-color: lighten($primary-color, 30%);
+  background-color: lighten($primary-color, 10%);
   transition: background-color .2s;
 }
 
@@ -41,7 +41,7 @@
   position: absolute;
   width: 10px;
   height: 10px;
-  border: 2px solid lighten($primary-color, 30%);
+  border: 2px solid lighten($primary-color, 10%);
   transition: border-color .2s;
   border-radius: 100%;
   cursor: pointer;
