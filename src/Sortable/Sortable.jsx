@@ -29,6 +29,7 @@ class Sortable extends React.PureComponent {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
+    this.updatePositions = this.updatePositions.bind(this);
   }
 
   componentWillUnmount() {
@@ -49,13 +50,7 @@ class Sortable extends React.PureComponent {
       },
     });
 
-    this.positions = this.nodes.map((n) => {
-      const t = n.getBoundingClientRect().top;
-      return {
-        top: t,
-        bottom: t + n.clientHeight,
-      };
-    });
+    this.updatePositions(true);
 
     window.addEventListener('mouseup', this.onMouseUp);
     window.addEventListener('mousemove', this.onMouseMove);
@@ -119,6 +114,18 @@ class Sortable extends React.PureComponent {
     }
   }
 
+  updatePositions(force = false) {
+    if (force || this.state.draggingIndex != null) {
+      this.positions = this.nodes.map((n) => {
+        const t = n.getBoundingClientRect().top;
+        return {
+          top: t,
+          bottom: t + n.clientHeight,
+        };
+      });
+    }
+  }
+
   render() {
     return (
       <div
@@ -126,6 +133,7 @@ class Sortable extends React.PureComponent {
           'sortable',
           { 'is-dragging': this.state.draggingIndex != null },
         )}
+        style={{ height: 400 }}
         ref={(el) => { this.container = el; }}
       >
         {React.Children.map(this.props.children, (child, index) => React.cloneElement(
