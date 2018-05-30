@@ -28,6 +28,7 @@ import Form from './Form';
 import Grid from './Grid';
 import Slider from './Slider';
 import Switch from './Switch';
+import Sortable from './Sortable';
 
 const links = [{
   url: 'table',
@@ -80,6 +81,9 @@ const links = [{
 }, {
   url: 'switch',
   title: 'Switch',
+}, {
+  url: 'sortable',
+  title: 'Sortable',
 }];
 
 const Port = props => (
@@ -126,6 +130,7 @@ ReactDOM.render(
       <Route path="grid" component={Grid} />
       <Route path="slider" component={Slider} />
       <Route path="switch" component={Switch} />
+      <Route path="sortable" component={Sortable} />
     </Route>
   </Router>,
   document.getElementById('main'),

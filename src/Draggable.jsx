@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  containerWidth: PropTypes.number.isRequired,
-  containerHeight: PropTypes.number.isRequired,
+  containerWidth: PropTypes.number,
+  containerHeight: PropTypes.number,
   top: PropTypes.number,
   left: PropTypes.number,
   onTopChange: PropTypes.func,
@@ -13,6 +13,8 @@ const propTypes = {
 };
 
 const defaultProps = {
+  containerWidth: null,
+  containerHeight: null,
   onTopChange: () => {},
   onLeftChange: () => {},
   onStop: () => {},
