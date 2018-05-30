@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import scrollTop from 'dom-helpers/query/scrollTop';
+import throttle from 'lodash/throttle';
 
 import './style/index.scss';
 import Ghost from './Ghost';
@@ -30,6 +32,7 @@ class Sortable extends React.PureComponent {
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.updatePositions = this.updatePositions.bind(this);
+    this.onScroll = throttle(this.onScroll.bind(this), 1000);
   }
 
   componentWillUnmount() {
@@ -73,8 +76,22 @@ class Sortable extends React.PureComponent {
     this.setState({ draggingIndex: null });
   }
 
+  onScroll() {
+    this.updatePositions();
+  }
+
   onMouseMove(e) {
     const { clientY } = e;
+
+    if (clientY < this.containerPosition.top) {
+      if (this.container.scrollTop > 0) {
+        scrollTop(this.container, this.container.scrollTop - 10);
+      }
+    }
+
+    if (clientY > this.containerPosition.bottom) {
+      scrollTop(this.container, this.container.scrollTop + 10);
+    }
 
     const { draggingIndex } = this.state;
 
@@ -123,6 +140,13 @@ class Sortable extends React.PureComponent {
           bottom: t + n.clientHeight,
         };
       });
+
+      const containerTop = this.container.getBoundingClientRect().top;
+
+      this.containerPosition = {
+        top: containerTop,
+        bottom: containerTop + this.container.clientHeight,
+      };
     }
   }
 
@@ -135,6 +159,7 @@ class Sortable extends React.PureComponent {
         )}
         style={{ height: 400 }}
         ref={(el) => { this.container = el; }}
+        onScroll={this.onScroll}
       >
         {React.Children.map(this.props.children, (child, index) => React.cloneElement(
           child,
