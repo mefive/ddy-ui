@@ -13,8 +13,6 @@
   color: $white-color;
   text-align: right;
   @include user-select(none);
-  transition: opacity .2s;
-  opacity: 0;
 
   &.checked {
     background: $primary-color;
@@ -22,7 +20,6 @@
   }
 
   &.ready {
-    opacity: 1;
     transition: background-color .2s;
 
     .switch-ball {

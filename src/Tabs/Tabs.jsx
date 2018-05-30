@@ -8,7 +8,7 @@ import Clickable from '../Clickable';
 const propTypes = {
   dataSource: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.any.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
   })),
   value: PropTypes.oneOfType([
     PropTypes.string,

@@ -17,6 +17,20 @@
   }
 }
 
+.slider-min,
+.slider-max {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.slider-min {
+  margin-right: 15px;
+}
+
+.slider-max {
+  margin-left: 15px;
+}
+
 .slider-rail {
   height: 4px;
   background-color: $gray-color;

@@ -4,10 +4,10 @@
   right: 0;
   top: 0;
   bottom: 0;
-}
 
-:local(.message) {
-  position: absolute;
-  left: 50%;
-  top: 50%;
+  .message {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  }
 }

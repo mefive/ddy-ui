@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import style from './style/index.scss';
 
 const propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
+  vertical: PropTypes.bool,
+  horizontal: PropTypes.bool,
 };
 
 const defaultProps = {
   children: null,
+  className: null,
+  vertical: true,
+  horizontal: true,
 };
 
 class Loading extends React.PureComponent {
@@ -26,19 +33,24 @@ class Loading extends React.PureComponent {
     const { message } = this;
     const { clientWidth, clientHeight } = message;
 
-    message.style.marginLeft = `${-(0.5 * clientWidth)}px`;
-    message.style.marginTop = `${-(0.5 * clientHeight)}px`;
+    if (this.props.horizontal) {
+      message.style.marginLeft = `${-(0.5 * clientWidth)}px`;
+    }
+
+    if (this.props.vertical) {
+      message.style.marginTop = `${-(0.5 * clientHeight)}px`;
+    }
   }
 
   render() {
     return (
-      <div className={style.container}>
-        <span
+      <div className={classNames(this.props.className, style.container)}>
+        <div
           ref={(el) => { this.message = el; }}
-          className={style.message}
+          className="message d-inline-block"
         >
           {this.props.children}
-        </span>
+        </div>
       </div>
     );
   }

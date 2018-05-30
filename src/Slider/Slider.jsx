@@ -15,6 +15,9 @@ const propTypes = {
   max: PropTypes.number,
   step: PropTypes.number,
   width: PropTypes.number,
+  className: PropTypes.string,
+  renderThumb: PropTypes.func,
+  thumbWidth: PropTypes.number,
 };
 
 const defaultProps = {
@@ -26,6 +29,9 @@ const defaultProps = {
   max: 100,
   step: 1,
   width: 100,
+  className: null,
+  renderThumb: null,
+  thumbWidth: 6,
 };
 
 class Slider extends React.PureComponent {
@@ -111,8 +117,8 @@ class Slider extends React.PureComponent {
     const percent = this.getPercent();
 
     return (
-      <div>
-        <div className="d-inline-block align-middle mr-2">{this.props.min}</div>
+      <div className={this.props.className}>
+        <div className="slider-min">{this.props.min}</div>
 
         <Clickable onClick={this.onClick}>
           <div className="slider" style={{ width: this.props.width }}>
@@ -128,19 +134,21 @@ class Slider extends React.PureComponent {
             />
 
             <Draggable
-              containerWidth={this.state.railWidth + 6}
+              containerWidth={this.state.railWidth + (this.props.thumbWidth * 0.5)}
               containerHeight={0}
               left={(percent * this.state.railWidth) / 100}
               onLeftChange={this.setValueByLeft}
               onStop={this.props.onStopDragging}
               ref={(el) => { this.thumb = el; }}
             >
-              <div className="slider-thumb" />
+              {this.props.renderThumb == null
+                ? <div className="slider-thumb" />
+                : this.props.renderThumb()}
             </Draggable>
           </div>
         </Clickable>
 
-        <div className="d-inline-block align-middle ml-2">{this.props.max}</div>
+        <div className="slider-max">{this.props.max}</div>
       </div>
     );
   }

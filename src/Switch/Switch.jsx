@@ -12,6 +12,7 @@ const propTypes = {
   trueText: PropTypes.string,
   falseText: PropTypes.string,
   width: PropTypes.number,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -20,6 +21,7 @@ const defaultProps = {
   trueText: '开',
   falseText: '关',
   width: null,
+  disabled: false,
 };
 
 class Switch extends React.PureComponent {
@@ -39,7 +41,7 @@ class Switch extends React.PureComponent {
   setWidth() {
     this.setState({
       width: this.node.clientWidth,
-    }, () => this.setState({ ready: true }));
+    }, () => setTimeout(() => this.setState({ ready: true })));
   }
 
   render() {
@@ -49,7 +51,13 @@ class Switch extends React.PureComponent {
 
     return (
       <Clickable
-        onClick={() => this.props.onChange(!value)}
+        onClick={() => {
+          if (this.props.disabled) {
+            return;
+          }
+
+          this.props.onChange(!value);
+        }}
       >
         <div
           className={classNames(
@@ -57,7 +65,7 @@ class Switch extends React.PureComponent {
             { ready: this.state.ready },
             { checked: value },
           )}
-          style={{ width }}
+          style={{ width, cursor: this.props.disabled ? 'not-allowed' : null }}
           ref={(el) => { this.node = el; }}
         >
           <div

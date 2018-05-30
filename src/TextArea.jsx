@@ -16,7 +16,7 @@ const defaultProps = {
   value: null,
   onChange: () => {},
   maxLength: null,
-  showCounter: true,
+  showCounter: false,
   autoFocus: false,
 };
 
