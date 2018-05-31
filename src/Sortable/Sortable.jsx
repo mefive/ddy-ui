@@ -112,11 +112,11 @@ class Sortable extends React.PureComponent {
 
       if (index < draggingIndex) {
         if (clientY < pos.bottom) {
-          translateY = 50;
+          translateY = pos.bottom - pos.top;
         }
       } else if (index > draggingIndex) {
         if (clientY > pos.top) {
-          translateY = -50;
+          translateY = -(pos.bottom - pos.top);
         }
       }
 
