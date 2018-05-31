@@ -88,12 +88,19 @@ class Sortable extends React.PureComponent {
   onMouseMove(e) {
     const { clientY } = e;
 
+    let scrollDirection = null;
+
     if (clientY < this.containerPosition.top) {
-      this.scrollDirection = SCROLL_DIRECTION_UP;
-      this.startScrolling();
+      scrollDirection = SCROLL_DIRECTION_UP;
     } else if (clientY > this.containerPosition.bottom) {
-      this.scrollDirection = SCROLL_DIRECTION_DOWN;
-      this.startScrolling();
+      scrollDirection = SCROLL_DIRECTION_DOWN;
+    }
+
+    if (scrollDirection != null) {
+      if (this.animationFrame == null) {
+        this.scrollDirection = scrollDirection;
+        this.startScrolling();
+      }
     } else {
       this.clearScrollTimer();
       this.updatePositions();
@@ -144,7 +151,7 @@ class Sortable extends React.PureComponent {
   scroll() {
     scrollTop(
       this.container,
-      this.container.scrollTop + (this.scrollDirection === SCROLL_DIRECTION_DOWN ? 1 : -1),
+      this.container.scrollTop + (this.scrollDirection === SCROLL_DIRECTION_DOWN ? 5 : -5),
     );
 
     this.startScrolling();
