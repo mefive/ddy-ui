@@ -8,12 +8,16 @@ class SortableShowcase extends React.PureComponent {
     super(props);
 
     this.state = {
-      dataSource: Array(30).fill(0).map((n, index) => ({ value: index })),
+      dataSource: Array(300).fill(0).map((n, index) => ({ value: index })),
     };
 
     this.onScroll = debounce(this.onScroll.bind(this));
 
     window.addEventListener('scroll', this.onScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   onScroll() {
