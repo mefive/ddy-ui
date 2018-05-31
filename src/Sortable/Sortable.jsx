@@ -16,6 +16,9 @@ const defaultProps = {
   children: null,
 };
 
+const SCROLL_DIRECTION_DOWN = 'down';
+const SCROLL_DIRECTION_UP = 'up';
+
 class Sortable extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -33,11 +36,13 @@ class Sortable extends React.PureComponent {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.updatePositions = this.updatePositions.bind(this);
     this.onScroll = throttle(this.onScroll.bind(this), 1000);
+    this.scroll = this.scroll.bind(this);
   }
 
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.onMouseUp);
     window.removeEventListener('mousemove', this.onMouseMove);
+    this.clearScrollTimer();
   }
 
   onMouseDown(e, index) {
@@ -77,20 +82,21 @@ class Sortable extends React.PureComponent {
   }
 
   onScroll() {
-    this.updatePositions();
+    // this.updatePositions();
   }
 
   onMouseMove(e) {
     const { clientY } = e;
 
     if (clientY < this.containerPosition.top) {
-      if (this.container.scrollTop > 0) {
-        scrollTop(this.container, this.container.scrollTop - 10);
-      }
-    }
-
-    if (clientY > this.containerPosition.bottom) {
-      scrollTop(this.container, this.container.scrollTop + 10);
+      this.scrollDirection = SCROLL_DIRECTION_UP;
+      this.startScrolling();
+    } else if (clientY > this.containerPosition.bottom) {
+      this.scrollDirection = SCROLL_DIRECTION_DOWN;
+      this.startScrolling();
+    } else {
+      this.clearScrollTimer();
+      this.updatePositions();
     }
 
     const { draggingIndex } = this.state;
@@ -128,6 +134,26 @@ class Sortable extends React.PureComponent {
       this.newIndex = bucketBottom;
     } else if (bucketBottom < draggingIndex) {
       this.newIndex = bucketTop;
+    }
+  }
+
+  startScrolling() {
+    this.animationFrame = window.requestAnimationFrame(this.scroll);
+  }
+
+  scroll() {
+    scrollTop(
+      this.container,
+      this.container.scrollTop + (this.scrollDirection === SCROLL_DIRECTION_DOWN ? 1 : -1),
+    );
+
+    this.startScrolling();
+  }
+
+  clearScrollTimer() {
+    if (this.animationFrame) {
+      window.cancelAnimationFrame(this.animationFrame);
+      this.animationFrame = null;
     }
   }
 
