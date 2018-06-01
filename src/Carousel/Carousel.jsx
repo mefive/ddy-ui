@@ -196,31 +196,31 @@ class Carousel extends React.PureComponent {
           ))}
         </div>
 
-        {this.props.hasPageTurner && (
+        {this.props.hasPageTurner && this.props.dataSource.length > 1 && [
           <Clickable
             onClick={() => {
               this.stop();
               this.prev(this.start);
             }}
+            key="prev"
           >
             <div className="carousel-page-turner-left">
               <i className="icon icon-angle-left" />
             </div>
-          </Clickable>
-        )}
+          </Clickable>,
 
-        {this.props.hasPageTurner && (
           <Clickable
             onClick={() => {
               this.stop();
               this.next(this.start);
             }}
+            key="next"
           >
             <div className="carousel-page-turner-right">
               <i className="icon icon-angle-right" />
             </div>
           </Clickable>
-        )}
+        ]}
       </div>
     );
   }
