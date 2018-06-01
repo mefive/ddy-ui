@@ -44,9 +44,9 @@ class CarouselShowcase extends React.PureComponent {
           className="border-0"
         >
           <Carousel
-            dataSource={Array(4).fill(0).map((n, index) => ({
+            dataSource={Array(2).fill(0).map((n, index) => ({
               render: () => (
-                <div>
+                <div data-key={index} style={{ lineHeight: '500px', textAlign: 'center', fontSize: '40px' }}>
                   {index}
                 </div>
               ),

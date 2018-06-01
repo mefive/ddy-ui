@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash/throttle';
-import style from 'dom-helpers/style';
 import addClass from 'dom-helpers/class/addClass';
-import hasClass from 'dom-helpers/class/hasClass';
 import removeClass from 'dom-helpers/class/removeClass';
 
 import './style/index.scss';
@@ -20,7 +18,7 @@ const propTypes = {
 
 const defaultProps = {
   dataSource: [],
-  interval: 5000,
+  interval: 3000,
   hasPageTurner: false,
 };
 
@@ -38,14 +36,15 @@ class Carousel extends React.PureComponent {
 
     this.loopMove = this.loopMove.bind(this);
     this.start = this.start.bind(this);
+    this.setPadding = this.setPadding.bind(this);
     this.next = throttle(this.next.bind(this), TRANSITION_DURATION, { trailing: false });
     this.prev = throttle(this.prev.bind(this), TRANSITION_DURATION, { trailing: false });
   }
 
   componentDidMount() {
     this.hasMounted = true;
-    this.enableTransition();
     this.setWidth();
+    this.setPadding();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -71,8 +70,51 @@ class Carousel extends React.PureComponent {
     }, this.start);
   }
 
+  setPadding() {
+    if (!this.hasMounted) {
+      return;
+    }
+
+    const { length } = this.props.dataSource;
+
+    let { current, dataSource } = this.state;
+
+    if (length < 2) {
+      return;
+    }
+
+    if (this.state.current === this.state.dataSource.length - 1 || this.state.current === 0) {
+      this.disableTransition();
+
+      dataSource = [...dataSource];
+
+      if (this.state.current === this.state.dataSource.length - 1) {
+        if (this.state.dataSource[this.state.current] !== this.props.dataSource[0]) {
+          dataSource = [...dataSource, this.props.dataSource[0]];
+        } else {
+          dataSource.splice(-1);
+          current = 1;
+        }
+      }
+
+      if (this.state.current === 0) {
+        if (this.state.dataSource[0] !== this.props.dataSource[length - 1]) {
+          dataSource = [this.props.dataSource[length - 1], ...dataSource];
+          current = 1;
+        } else {
+          dataSource.splice(0, 1);
+          current = length - 1;
+        }
+      }
+    }
+
+    this.setState({
+      dataSource,
+      current,
+    });
+  }
+
   start() {
-    return;
     if (this.state.dataSource.length < 2
       || this.props.interval == null
       || this.props.interval < 0
@@ -89,53 +131,21 @@ class Carousel extends React.PureComponent {
   }
 
   next(callback = () => {}) {
-    const { length } = this.props.dataSource;
-
     let { current } = this.state;
 
     current += 1;
 
-    if (current === length - 1) {
-      this.setState({
-        dataSource: [...this.props.dataSource, this.props.dataSource[0]],
-      });
-    }
-
-    if (current === length) {
-      setTimeout(() => {
-        if (this.hasMounted) {
-          this.disableTransition();
-
-          this.setState({
-            dataSource: [...this.props.dataSource],
-            current: 0,
-          });
-        }
-      }, TRANSITION_DURATION);
-    }
+    setTimeout(this.setPadding, TRANSITION_DURATION);
 
     this.setState({ current }, callback);
   }
 
   prev(callback) {
     let { current } = this.state;
-    const { length } = this.props.dataSource;
 
     current -= 1;
 
-    if (current === 0) {
-      this.setState({
-        current,
-      }, () => this.setState({
-        dataSource: [this.props.dataSource[length - 1], ...this.props.dataSource],
-      }));
-
-      this.setState({
-        dataSource: [this.props.dataSource[length - 1], ...this.props.dataSource],
-      });
-
-      current = 1;
-    }
+    setTimeout(this.setPadding, TRANSITION_DURATION);
 
     this.setState({ current }, callback);
   }
