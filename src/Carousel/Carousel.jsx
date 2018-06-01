@@ -140,7 +140,7 @@ class Carousel extends React.PureComponent {
     this.setState({ current }, callback);
   }
 
-  prev(callback) {
+  prev(callback = () => {}) {
     let { current } = this.state;
 
     current -= 1;
@@ -200,7 +200,7 @@ class Carousel extends React.PureComponent {
           <Clickable
             onClick={() => {
               this.stop();
-              this.prev(() => this.start());
+              this.prev(this.start);
             }}
           >
             <div className="carousel-page-turner-left">
@@ -213,7 +213,7 @@ class Carousel extends React.PureComponent {
           <Clickable
             onClick={() => {
               this.stop();
-              this.next(() => this.start());
+              this.next(this.start);
             }}
           >
             <div className="carousel-page-turner-right">
