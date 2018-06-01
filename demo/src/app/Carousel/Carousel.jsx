@@ -53,6 +53,7 @@ class CarouselShowcase extends React.PureComponent {
             // }))}
             dataSource={dataSource}
             hasPageTurner
+            interval={0}
           />
         </div>
       </ShowcaseContainer>

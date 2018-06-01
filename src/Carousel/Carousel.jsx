@@ -117,7 +117,7 @@ class Carousel extends React.PureComponent {
   start() {
     if (this.state.dataSource.length < 2
       || this.props.interval == null
-      || this.props.interval < 0
+      || this.props.interval <= 0
     ) {
       return;
     }
@@ -219,7 +219,7 @@ class Carousel extends React.PureComponent {
             <div className="carousel-page-turner-right">
               <i className="icon icon-angle-right" />
             </div>
-          </Clickable>
+          </Clickable>,
         ]}
       </div>
     );

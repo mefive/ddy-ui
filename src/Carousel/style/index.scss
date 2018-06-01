@@ -19,6 +19,11 @@
 .carousel-item {
   display: inline-block;
   vertical-align: top;
+
+  & > img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .carousel-page-turner-left,
