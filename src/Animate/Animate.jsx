@@ -211,40 +211,34 @@ class Animate extends React.PureComponent {
 
 
   render() {
-    let { children } = this.state;
+    const { children } = this.state;
 
-    if (children.length === 0 || children[0] == null) {
-      children = null;
+    const style = {};
+
+    if (this.props.enterDuration) {
+      style.animationDuration = `${this.props.enterDuration}ms`;
     }
 
     return (
-      <span>
+      <React.Fragment>
         {children && (
-          children.length > 1
-            ? children.map(({ child }) => React.cloneElement(
+          children.map(({ child }) => React.cloneElement(
             child,
             {
+              ...child.props,
               className: classNames(
                 'animation',
                 child.props.className,
                 this.getClassName(this.state.statusMap[child.key || NO_KEY].status),
               ),
+              key: child.key || NO_KEY,
+              style: {
+                ...(child.props.style || {}),
+                ...style,
+              },
             },
-            ))
-            // for the case that single child with no key
-            : React.cloneElement(
-            children[0].child,
-            {
-              className: classNames(
-                'animation',
-                children[0].child.props.className,
-                this.getClassName(this.state.statusMap[children[0].child.key || NO_KEY].status),
-              ),
-            },
-            )
-        )
-        }
-      </span>
+          )))}
+      </React.Fragment>
     );
   }
 }

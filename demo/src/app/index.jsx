@@ -29,7 +29,7 @@ import Grid from './Grid';
 import Slider from './Slider';
 import Switch from './Switch';
 import Sortable from './Sortable';
-import Carousel from './Carousel/Carousel';
+import Animate from './Animate';
 
 const links = [{
   url: 'table',
@@ -88,6 +88,9 @@ const links = [{
 }, {
   url: 'carousel',
   title: 'Carousel',
+}, {
+  url: 'animate',
+  title: 'Animate',
 }];
 
 const Port = props => (
@@ -135,7 +138,7 @@ ReactDOM.render(
       <Route path="slider" component={Slider} />
       <Route path="switch" component={Switch} />
       <Route path="sortable" component={Sortable} />
-      <Route path="carousel" component={Carousel} />
+      <Route path="animate" component={Animate} />
     </Route>
   </Router>,
   document.getElementById('main'),

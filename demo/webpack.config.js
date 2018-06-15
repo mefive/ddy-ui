@@ -131,7 +131,7 @@ module.exports = function entry() {
     config = merge(config, {
       devtool: '#eval-source-map',
       devServer: {
-        port: 9909,
+        port: 9910,
         inline: false,
         hot: false,
         contentBase: path.resolve(__dirname, 'div'),
