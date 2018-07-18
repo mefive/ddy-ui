@@ -48,6 +48,10 @@ class Image extends React.PureComponent {
   }
 
   componentDidMount() {
+    if (this.props.mode === Image.MODE_AUTO) {
+      return;
+    }
+
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
 
