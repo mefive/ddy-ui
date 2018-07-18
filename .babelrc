@@ -1,7 +1,15 @@
 {
-  "presets": ["env", "react"],
+  "presets": [
+    "env",
+    "stage-1",
+    "react"
+  ],
   "plugins": [
-    "transform-runtime",
-    "transform-object-rest-spread"
+    "syntax-dynamic-import",
+    ["transform-runtime", {
+      "polyfill": false
+    }],
+    "transform-object-rest-spread",
+    "transform-decorators-legacy"
   ]
 }
