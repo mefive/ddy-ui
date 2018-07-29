@@ -28,11 +28,15 @@ class ListView extends React.PureComponent {
   };
 
   componentDidMount() {
-    window.addEventListener('scroll', this.onScroll);
+    if (this.props.useBodyScroll) {
+      window.addEventListener('scroll', this.onScroll);
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll);
+    if (this.props.useBodyScroll) {
+      window.removeEventListener('scroll', this.onScroll);
+    }
   }
 
   onScroll = throttle(() => {
