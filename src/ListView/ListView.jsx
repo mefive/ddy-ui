@@ -1,20 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import getScrollTop from 'dom-helpers/query/scrollTop';
+import scrollTop from 'dom-helpers/query/scrollTop';
 import throttle from 'lodash/throttle';
 
 import style from './style.scss';
+import FlexWrapper from '../FlexWrapper/FlexWrapper';
+import Loading from '../Loading/Loading';
 
 class ListView extends React.PureComponent {
   static propTypes = {
     dataSource: PropTypes.arrayOf(PropTypes.any),
     renderRow: PropTypes.func,
     renderFooter: PropTypes.func,
+    renderNoData: PropTypes.func,
     className: PropTypes.string,
     onEndReached: PropTypes.func,
     onEndReachedThreshold: PropTypes.number,
     useBodyScroll: PropTypes.bool,
+    noData: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -25,6 +29,8 @@ class ListView extends React.PureComponent {
     onEndReached: () => {},
     onEndReachedThreshold: 1,
     useBodyScroll: false,
+    renderNoData: null,
+    noData: false,
   };
 
   componentDidMount() {
@@ -40,17 +46,25 @@ class ListView extends React.PureComponent {
   }
 
   onScroll = throttle(() => {
-    const scrollTop = getScrollTop(this.props.useBodyScroll ? window : this.container);
+    const top = scrollTop(this.props.useBodyScroll ? window : this.container);
 
     const diff = this.props.useBodyScroll
-      ? document.body.clientHeight - (window.innerHeight + scrollTop)
-      : this.container.scrollHeight - (this.container.clientHeight + scrollTop);
+      ? document.body.clientHeight - (window.innerHeight + top)
+      : this.container.scrollHeight - (this.container.clientHeight + top);
 
     if (diff < this.props.onEndReachedThreshold
     ) {
       this.props.onEndReached();
     }
   });
+
+  scrollTop(value) {
+    if (this.props.useBodyScroll) {
+      scrollTop(window, value);
+    } else {
+      scrollTop(this.container, value);
+    }
+  }
 
   render() {
     return (
@@ -63,7 +77,13 @@ class ListView extends React.PureComponent {
         ref={(el) => { this.container = el; }}
         onScroll={!this.props.useBodyScroll ? this.onScroll : null}
       >
-        {this.props.dataSource.map((item, index) => this.props.renderRow(item, index))}
+        {this.props.dataSource.map((item, index) => item && this.props.renderRow(item, index))}
+
+        {this.props.noData && (this.props.renderNoData != null ? this.props.renderNoData() : (
+          <FlexWrapper className="p-relative">
+            <Loading>没有数据</Loading>
+          </FlexWrapper>
+        ))}
 
         {this.props.renderFooter()}
       </div>
