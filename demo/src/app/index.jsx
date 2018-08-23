@@ -30,6 +30,7 @@ import Slider from './Slider';
 import Switch from './Switch';
 import Sortable from './Sortable';
 import Animate from './Animate';
+import ContextMenu from './ContextMenu';
 
 const links = [{
   url: 'table',
@@ -91,6 +92,9 @@ const links = [{
 }, {
   url: 'animate',
   title: 'Animate',
+}, {
+  url: 'contextMenu',
+  title: 'ContextMenu',
 }];
 
 const Port = props => (
@@ -139,6 +143,7 @@ ReactDOM.render(
       <Route path="switch" component={Switch} />
       <Route path="sortable" component={Sortable} />
       <Route path="animate" component={Animate} />
+      <Route path="contextMenu" component={ContextMenu} />
     </Route>
   </Router>,
   document.getElementById('main'),
