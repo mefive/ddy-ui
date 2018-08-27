@@ -31,6 +31,7 @@ import Switch from './Switch';
 import Sortable from './Sortable';
 import Animate from './Animate';
 import ContextMenu from './ContextMenu';
+import AutoComplete from './AutoComplete';
 
 const links = [{
   url: 'table',
@@ -95,6 +96,9 @@ const links = [{
 }, {
   url: 'contextMenu',
   title: 'ContextMenu',
+}, {
+  url: 'autoComplete',
+  title: 'AutoComplete',
 }];
 
 const Port = props => (
@@ -144,6 +148,7 @@ ReactDOM.render(
       <Route path="sortable" component={Sortable} />
       <Route path="animate" component={Animate} />
       <Route path="contextMenu" component={ContextMenu} />
+      <Route path="autoComplete" component={AutoComplete} />
     </Route>
   </Router>,
   document.getElementById('main'),
