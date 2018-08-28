@@ -2,26 +2,29 @@
 @import "../../style/variables";
 
 .select-trigger {
-  line-height: 14px;
   width: 100%;
   text-align: left !important;
   @include ellipsis();
-  padding: 10px 22px 10px 12px;
+  padding: 0 34px 0 12px;
   border: 1px solid $gray-color;
   background-color: $white-color;
   border-radius: $border-radius-base;
+  line-height: 36px;
 
   .trigger-icon {
     position: absolute;
 
-    right: 1px;
-    top: 1px;
-    bottom: 1px;
-
     background-color: $white-color;
     font-size: 18px;
     border-radius: 0 2px 2px 0;
-    //border-left: 1px solid $gray-color;
+
+    right: 1px;
+    top: 50%;
+    margin-top: -0.5 * 36px;
+
+    .icon {
+      transition: transform .2s;
+    }
 
     .icon {
       color: #8797ab;
@@ -32,14 +35,9 @@
 
   cursor: pointer;
   @include user-select(none);
-  // transition-property: box-shadow, border-color;
-  // transition-duration: .2s;
-  .icon {
-    transition: transform .2s;
-  }
 
   &.active {
-    .icon {
+    .trigger-icon .icon {
       transform: rotate(180deg);
     }
   }

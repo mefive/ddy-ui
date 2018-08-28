@@ -13,7 +13,7 @@ class AutoCompleteShowcase extends React.PureComponent {
     super(props);
 
     this.state = {
-      value: null,
+      value: [],
     };
   }
 
@@ -24,6 +24,7 @@ class AutoCompleteShowcase extends React.PureComponent {
           <AutoComplete
             value={this.state.value}
             onChange={value => this.setState({ value })}
+            multiple
             getOptions={async keyword => dataSource.filter(d =>
               d.startsWith(keyword)).map(d => ({
                 title: d,
