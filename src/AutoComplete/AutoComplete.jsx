@@ -7,9 +7,9 @@ import keyCode from 'keycode';
 import Input from '../Input';
 import Popover from '../Popover';
 import Trigger from '../Trigger';
+import Clickable from '../Clickable';
 
 import './style.scss';
-import Clickable from '../Clickable';
 
 class AutoComplete extends React.PureComponent {
   static propTypes = {
