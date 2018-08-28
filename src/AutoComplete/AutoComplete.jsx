@@ -1,9 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import contains from 'dom-helpers/query/contains';
+import keyCode from 'keycode';
+
 import Input from '../Input';
-import { Trigger } from '../index';
-import Popover from '../Popover/Popover';
+import Popover from '../Popover';
+import Trigger from '../Trigger';
+
+import './style.scss';
+import Clickable from '../Clickable';
 
 class AutoComplete extends React.PureComponent {
   static propTypes = {
@@ -31,31 +37,90 @@ class AutoComplete extends React.PureComponent {
       active: false,
       options: [],
       keyword: null,
+      width: null,
+      selected: null,
     };
+  }
+
+  componentDidMount() {
+    this.syncWidth();
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onDocumentClick);
+    document.removeEventListener('keydown', this.onDocumentKeyDown);
   }
 
   onChange = (keyword) => {
     this.setState({ keyword }, this.search);
   };
 
+  onDocumentClick = (e) => {
+    const { target } = e;
+
+    if (contains(this.popover, target) || contains(this.trigger, target)) {
+      e.stopPropagation();
+      return;
+    }
+
+    this.deactivate();
+  };
+
+  onDocumentKeyDown = (e) => {
+    const code = keyCode(e);
+
+    if (code === 'down' || code === 'up') {
+      e.stopPropagation();
+      e.preventDefault();
+      const { options } = this.state;
+      let index = options.findIndex(o => o.value === this.state.selected);
+
+      if (code === 'down') {
+        index = Math.min(options.length - 1, index + 1);
+      } else if (code === 'up') {
+        index = Math.max(0, index - 1);
+      }
+
+      this.setState({ selected: (options[index] || {}).value });
+    }
+
+    if (code === 'enter') {
+      this.props.onChange(this.state.selected);
+      this.deactivate();
+    }
+  };
+
+  syncWidth() {
+    this.setState({ width: this.trigger.clientWidth });
+  }
+
   search = () => {
     this.props.getOptions(this.state.keyword)
-      .then(options => this.setState({ options }));
+      .then(options =>
+        this.setState({ options, selected: options[0] ? options[0].value : null }));
   };
 
   activate = () => {
     this.setState({
       active: true,
-    }, this.search);
+    }, () => {
+      document.addEventListener('click', this.onDocumentClick);
+      document.addEventListener('keydown', this.onDocumentKeyDown);
+      this.search();
+    });
   };
 
   deactivate = () => {
     this.setState({
       active: false,
-      keyword: null,
-    }, () => this.setState({
-      options: [],
-    }));
+    }, () => {
+      document.removeEventListener('click', this.onDocumentClick);
+      document.removeEventListener('keydown', this.onDocumentKeyDown);
+      this.setState({
+        options: [],
+        keyword: this.props.value,
+      });
+    });
   };
 
   render() {
@@ -87,30 +152,46 @@ class AutoComplete extends React.PureComponent {
                   this.props.popoverClassName,
                 )}
             >
-              {options.length > 0
-                ? (
-                  <ul>
-                    {options.map(opt => (
-                      <li>
-                        {this.props.renderOption(opt)}
-                      </li>
-                    ))}
-                  </ul>
-                )
-                : (
-                  <div className="auto-complete-no-options">
-                    没有匹配结果
-                  </div>
-                )}
-
+              <div
+                style={{ width: this.state.width }}
+                ref={(el) => { this.popover = el; }}
+              >
+                {options.length > 0
+                  ? (
+                    <ul>
+                      {options.map(opt => (
+                        <Clickable
+                          onClick={() => {
+                            this.props.onChange(opt.value);
+                            this.deactivate();
+                          }}
+                          key={opt.value}
+                        >
+                          <li
+                            className={classNames({
+                              selected: this.state.selected === opt.value,
+                            })}
+                            onMouseEnter={() => this.setState({ selected: opt.value })}
+                          >
+                            {this.props.renderOption(opt)}
+                          </li>
+                        </Clickable>
+                      ))}
+                    </ul>
+                  )
+                  : (
+                    <div className="no-data">
+                      没有匹配结果
+                    </div>
+                  )}
+              </div>
             </Popover>
           )}
         >
-          <div>
+          <div ref={(el) => { this.trigger = el; }}>
             <Input
               value={keyword != null ? keyword : value}
               onChange={this.onChange}
-              onBlur={this.deactivate}
               onFocus={this.activate}
             />
           </div>

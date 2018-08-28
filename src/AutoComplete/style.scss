@@ -1,7 +1,20 @@
+@import "../style/variables";
+
 .ddy-auto-complete {
   position: relative;
 }
 
 .popover.ddy-auto-complete-popover {
+  .no-data {
+    margin: 5px 0;
+    padding: 2px 5px;
+    background-color: #FAFAFA;
+  }
 
+  li {
+    &.selected {
+      background-color: $primary-color;
+      color: #fff;
+    }
+  }
 }
