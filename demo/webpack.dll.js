@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const BUILD_PATH = 'live';
+const BUILD_PATH = 'dict';
 
 module.exports = {
   entry: {

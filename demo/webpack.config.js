@@ -1,4 +1,3 @@
-/* eslint-env node */
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
@@ -9,7 +8,7 @@ const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const LodashWebpackPlugin = require('lodash-webpack-plugin');
 
-const BUILD_PATH = 'live';
+const BUILD_PATH = 'dist';
 let dllFiles;
 
 if (process.env.NODE_ENV === 'production') {
@@ -21,73 +20,79 @@ if (process.env.NODE_ENV === 'production') {
   }).filter(Boolean);
 }
 
-module.exports = function entry() {
-  let config = {
-    entry: {
-      index: './app/index',
-    },
-    context: path.resolve(__dirname, './src'),
-    output: {
-      filename: 'static/[name].[chunkhash:7].js',
-      path: path.resolve(__dirname, BUILD_PATH),
-    },
-    module: {
-      rules: [
-        {
-          test: /\.jsx?$/,
-          exclude: /node_modules/,
-          use: 'babel-loader',
-        },
-        {
-          test: /\.(sc|c|sa)ss$/,
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              { loader: 'css-loader' },
-              'sass-loader',
-            ],
-          }),
-        },
-        {
-          test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+const baseConfig = {
+  entry: {
+    index: './app/index',
+  },
+  context: path.resolve(__dirname, './src'),
+  output: {
+    filename: 'static/[name].[chunkhash:7].js',
+    path: path.resolve(__dirname, BUILD_PATH),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+      {
+        test: /\.(sc|c|sa)ss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
           use: [
-            {
-              loader: 'file-loader',
-              options: {
-                limit: 100,
-                name: '[name].[hash:7].[ext]',
-                outputPath: 'static',
-                publicPath: '/static',
-              },
-            },
+            { loader: 'css-loader' },
+            'sass-loader',
           ],
-        },
-        {
-          test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                limit: 100,
-                name: '[name].[hash:7].[ext]',
-                outputPath: 'static',
-                publicPath: '/static',
-              },
+        }),
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              limit: 100,
+              name: '[name].[hash:7].[ext]',
+              outputPath: 'static',
+              publicPath: '/static',
             },
-          ],
-        },
-      ],
-    },
-    resolve: {
-      extensions: ['.js', '.jsx'],
-    },
+          },
+        ],
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              limit: 100,
+              name: '[name].[hash:7].[ext]',
+              outputPath: 'static',
+              publicPath: '/static',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
+  plugins: [
+    new ExtractTextPlugin('static/[name].[chunkhash:7].css'),
+  ],
+};
+
+module.exports = (env) => {
+  let config = merge(baseConfig, {
+    mode: env.NODE_ENV,
     plugins: [
       new webpack.EnvironmentPlugin(['NODE_ENV']),
-      new ExtractTextPlugin('static/[name].[chunkhash:7].css'),
     ],
-  };
+  });
 
-  if (process.env.NODE_ENV === 'production') {
+  if (env.NODE_ENV === 'production') {
     config = merge(config, {
       plugins: [
         new LodashWebpackPlugin({
@@ -137,6 +142,7 @@ module.exports = function entry() {
         contentBase: path.resolve(__dirname, 'div'),
         host: '0.0.0.0',
         disableHostCheck: true,
+        historyApiFallback: true,
       },
       plugins: [
         new HtmlWebpackPlugin({
