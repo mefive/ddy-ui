@@ -19,7 +19,7 @@ const defaultProps = {
 class ShowcaseContainer extends React.PureComponent {
   render() {
     return (
-      <div className="card m-3">
+      <div className="card">
         <div className="card-header">
           {this.props.title}
         </div>

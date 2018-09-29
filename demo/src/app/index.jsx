@@ -8,12 +8,12 @@ import {
   NavLink,
 } from 'react-router-dom';
 
-import style from './style/index.scss';
+import './style/index.scss';
 
 // pages
 // import Table from './Table';
 import DatePicker from './DatePicker';
-// import DateRangePicker from './DateRangePicker';
+import DateRangePicker from './DateRangePicker';
 // import Trigger from './Trigger';
 // import Tooltip from './Tooltip';
 // import Portal from './Portal';
@@ -96,26 +96,28 @@ const Port = () => (
 );
 
 ReactDOM.render(
-  <Router>
-    <Switch>
-      {/*<Route exact path="/table" component={Table} />*/}
-      <Route exact path="/datePicker" component={DatePicker} />
-      {/*<Route exact path="/dateRangePicker" component={DateRangePicker} />*/}
-      {/*<Route exact path="/trigger" component={Trigger} />*/}
-      {/*<Route exact path="/tooltip" component={Tooltip} />*/}
-      {/*<Route exact path="/portal" component={Portal} />*/}
-      {/*<Route exact path="/select" component={Select} />*/}
-      {/*<Route exact path="/dialog" component={Dialog} />*/}
-      {/*<Route exact path="/form" component={Form} />*/}
-      <Route exact path="/grid" component={Grid} />
-      {/*<Route exact path="/slider" component={Slider} />*/}
-      {/*<Route exact path="/switch" component={SwitchShowCase} />*/}
-      {/*<Route exact path="/sortable" component={Sortable} />*/}
-      {/*<Route exact path="/animate" component={Animate} />*/}
-      {/*<Route exact path="/contextMenu" component={ContextMenu} />*/}
-      {/*<Route exact path="/autoComplete" component={AutoComplete} />*/}
-      <Route exact path="/" component={Port} />
-    </Switch>
-  </Router>,
+  <div className="container pt-3">
+    <Router>
+      <Switch>
+        {/*<Route exact path="/table" component={Table} />*/}
+        <Route exact path="/datePicker" component={DatePicker} />
+        <Route exact path="/dateRangePicker" component={DateRangePicker} />
+        {/*<Route exact path="/trigger" component={Trigger} />*/}
+        {/*<Route exact path="/tooltip" component={Tooltip} />*/}
+        {/*<Route exact path="/portal" component={Portal} />*/}
+        {/*<Route exact path="/select" component={Select} />*/}
+        {/*<Route exact path="/dialog" component={Dialog} />*/}
+        {/*<Route exact path="/form" component={Form} />*/}
+        <Route exact path="/grid" component={Grid} />
+        {/*<Route exact path="/slider" component={Slider} />*/}
+        {/*<Route exact path="/switch" component={SwitchShowCase} />*/}
+        {/*<Route exact path="/sortable" component={Sortable} />*/}
+        {/*<Route exact path="/animate" component={Animate} />*/}
+        {/*<Route exact path="/contextMenu" component={ContextMenu} />*/}
+        {/*<Route exact path="/autoComplete" component={AutoComplete} />*/}
+        <Route exact path="/" component={Port} />
+      </Switch>
+    </Router>
+  </div>,
   document.getElementById('main'),
 );

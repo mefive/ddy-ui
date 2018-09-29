@@ -16,43 +16,52 @@ const PLACEMENT_RIGHT = 'right';
 const PLACEMENT_RIGHT_ALIGN = 'right-align';
 const PLACEMENT_CENTER = 'center';
 
-const propTypes = {
-  className: PropTypes.string,
-  defaultPlacement: PropTypes.shape({
-    vertical: PropTypes.string,
-    horizontal: PropTypes.string,
-  }),
-  placement: PropTypes.shape({
-    vertical: PropTypes.string,
-    horizontal: PropTypes.string,
-  }),
-  adjustPlacement: PropTypes.bool,
-  onPlacementChange: PropTypes.func,
-  container: PropTypes.instanceOf(Node),
-  anchor: PropTypes.instanceOf(Node),
-  offset: PropTypes.number,
-  children: PropTypes.node,
-  style: PropTypes.shape({}),
-};
-
-const defaultProps = {
-  className: null,
-  container: null,
-  anchor: null,
-  defaultPlacement: {
-    vertical: PLACEMENT_TOP,
-    horizontal: PLACEMENT_CENTER,
-  },
-  placement: null,
-  adjustPlacement: true,
-  onPlacementChange: () => {},
-  offset: 10,
-  children: null,
-  style: {},
-};
-
-
 class Popover extends React.PureComponent {
+  static PLACEMENT_TOP = PLACEMENT_TOP;
+  static PLACEMENT_TOP_ALIGN = PLACEMENT_TOP_ALIGN;
+  static PLACEMENT_BOTTOM = PLACEMENT_BOTTOM;
+  static PLACEMENT_BOTTOM_ALIGN = PLACEMENT_BOTTOM_ALIGN;
+  static PLACEMENT_LEFT = PLACEMENT_LEFT;
+  static PLACEMENT_LEFT_ALIGN = PLACEMENT_LEFT_ALIGN;
+  static PLACEMENT_RIGHT = PLACEMENT_RIGHT;
+  static PLACEMENT_RIGHT_ALIGN = PLACEMENT_RIGHT_ALIGN;
+  static PLACEMENT_CENTER = PLACEMENT_CENTER;
+
+  static propTypes = {
+    className: PropTypes.string,
+    defaultPlacement: PropTypes.shape({
+      vertical: PropTypes.string,
+      horizontal: PropTypes.string,
+    }),
+    placement: PropTypes.shape({
+      vertical: PropTypes.string,
+      horizontal: PropTypes.string,
+    }),
+    adjustPlacement: PropTypes.bool,
+    onPlacementChange: PropTypes.func,
+    container: PropTypes.instanceOf(Node),
+    anchor: PropTypes.instanceOf(Node),
+    offset: PropTypes.number,
+    children: PropTypes.node,
+    style: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    className: null,
+    container: null,
+    anchor: null,
+    defaultPlacement: {
+      vertical: PLACEMENT_TOP,
+      horizontal: PLACEMENT_CENTER,
+    },
+    placement: null,
+    adjustPlacement: true,
+    onPlacementChange: () => {},
+    offset: 10,
+    children: null,
+    style: {},
+  };
+
   constructor(props) {
     super(props);
 
@@ -60,9 +69,6 @@ class Popover extends React.PureComponent {
       style: null,
       placement: { ...this.getPlacement() },
     };
-
-    this.onResize = debounce(this.onResize.bind(this));
-    this.place = this.place.bind(this);
   }
 
   componentDidMount() {
@@ -93,9 +99,9 @@ class Popover extends React.PureComponent {
     window.removeEventListener('resize', this.onResize);
   }
 
-  onResize() {
+  onResize = debounce(() => {
     this.place();
-  }
+  });
 
   getPlacement() {
     if (this.props.placement != null) {
@@ -195,7 +201,7 @@ class Popover extends React.PureComponent {
     return placement;
   }
 
-  place() {
+  place = () => {
     if (!this.hasMounted || this.props.container == null || this.props.anchor == null) {
       return;
     }
@@ -233,6 +239,7 @@ class Popover extends React.PureComponent {
       case PLACEMENT_BOTTOM: {
         marginTop = this.props.offset;
         top = (anchorRect.top + anchorHeight) - containerRect.top;
+        console.log(top)
         break;
       }
 
@@ -306,7 +313,7 @@ class Popover extends React.PureComponent {
     } else {
       console.log('error', this.props.container, this.props.anchor);
     }
-  }
+  };
 
   render() {
     const placement = this.getPlacement();
@@ -315,7 +322,7 @@ class Popover extends React.PureComponent {
       <div
         className={
           classNames(
-            'popover',
+            'custom-popover',
             `place-${placement.vertical}`,
             `place-${placement.horizontal}`,
             this.props.className,
@@ -334,18 +341,5 @@ class Popover extends React.PureComponent {
     );
   }
 }
-
-Popover.PLACEMENT_TOP = PLACEMENT_TOP;
-Popover.PLACEMENT_TOP_ALIGN = PLACEMENT_TOP_ALIGN;
-Popover.PLACEMENT_BOTTOM = PLACEMENT_BOTTOM;
-Popover.PLACEMENT_BOTTOM_ALIGN = PLACEMENT_BOTTOM_ALIGN;
-Popover.PLACEMENT_LEFT = PLACEMENT_LEFT;
-Popover.PLACEMENT_LEFT_ALIGN = PLACEMENT_LEFT_ALIGN;
-Popover.PLACEMENT_RIGHT = PLACEMENT_RIGHT;
-Popover.PLACEMENT_RIGHT_ALIGN = PLACEMENT_RIGHT_ALIGN;
-Popover.PLACEMENT_CENTER = PLACEMENT_CENTER;
-
-Popover.propTypes = propTypes;
-Popover.defaultProps = defaultProps;
 
 export default Popover;

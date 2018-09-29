@@ -7,32 +7,34 @@ import Calendar from '../Calendar';
 import Popover from '../Popover';
 
 import './style.scss';
-
-const propTypes = {
-  type: PropTypes.string,
-  className: PropTypes.string,
-  width: PropTypes.number,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  min: PropTypes.string,
-  max: PropTypes.string,
-  disabled: PropTypes.bool,
-  getPopoverContainer: PropTypes.func,
-};
-
-const defaultProps = {
-  type: Calendar.TYPE_DATE,
-  className: null,
-  width: null,
-  min: null,
-  max: null,
-  disabled: false,
-  getPopoverContainer: null,
-  value: moment().format('YYYY-MM-DD'),
-  onChange: () => null,
-};
+import Focusable from '../Focusable';
+import Clickable from '../Clickable';
 
 class DatePicker extends React.PureComponent {
+  static propTypes = {
+    type: PropTypes.string,
+    className: PropTypes.string,
+    width: PropTypes.number,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    min: PropTypes.string,
+    max: PropTypes.string,
+    disabled: PropTypes.bool,
+    getPopoverContainer: PropTypes.func,
+  };
+
+  static defaultProps = {
+    type: Calendar.TYPE_DATE,
+    className: null,
+    width: null,
+    min: null,
+    max: null,
+    disabled: false,
+    getPopoverContainer: null,
+    value: moment().format('YYYY-MM-DD'),
+    onChange: () => null,
+  };
+
   constructor(props) {
     super(props);
 
@@ -42,27 +44,33 @@ class DatePicker extends React.PureComponent {
         vertical: Popover.PLACEMENT_BOTTOM,
         horizontal: Popover.PLACEMENT_CENTER,
       },
+      cursorWidth: 0,
     };
 
-    this.changeActive = this.changeActive.bind(this);
-    this.select = this.select.bind(this);
-    this.moveBack = this.moveBack.bind(this);
-    this.moveNext = this.moveNext.bind(this);
+    this.cursor = React.createRef();
   }
 
-  select(value) {
+  componentDidMount() {
+    this.setCursorWidth();
+  }
+
+  setCursorWidth() {
+    this.setState({ cursorWidth: this.cursor.current.clientWidth });
+  }
+
+  select = (value) => {
     if (value !== this.props.value) {
       this.props.onChange(value);
     }
 
     this.changeActive(false);
-  }
+  };
 
-  changeActive(active) {
+  changeActive = (active) => {
     this.setState({ active });
-  }
+  };
 
-  moveBack() {
+  moveBack = () => {
     if (this.props.type === Calendar.TYPE_DATE) {
       const value = moment(this.props.value).subtract(1, 'd');
 
@@ -76,9 +84,9 @@ class DatePicker extends React.PureComponent {
         this.props.onChange(value.format('YYYY-MM'));
       }
     }
-  }
+  };
 
-  moveNext() {
+  moveNext = () => {
     if (this.props.type === Calendar.TYPE_DATE) {
       const value = moment(this.props.value).add(1, 'd');
 
@@ -92,7 +100,7 @@ class DatePicker extends React.PureComponent {
         this.props.onChange(value.format('YYYY-MM'));
       }
     }
-  }
+  };
 
   render() {
     return (
@@ -103,17 +111,18 @@ class DatePicker extends React.PureComponent {
         )}
         style={{ width: this.props.width }}
       >
-        <i
-          className="icon icon-angle-left backward float-left"
-          aria-hidden
-          onClick={this.moveBack}
-        />
+        <Clickable onClick={this.moveBack}>
+          <i
+            className="fas fa-angle-left backward float-left"
+            ref={this.cursor}
+          />
+        </Clickable>
 
-        <i
-          className="icon icon-angle-right forward float-right"
-          aria-hidden
-          onClick={this.moveNext}
-        />
+        <Clickable onClick={this.moveNext}>
+          <i
+            className="fas fa-angle-right forward float-right"
+          />
+        </Clickable>
 
         <Trigger
           disabled={this.props.disabled}
@@ -141,26 +150,25 @@ class DatePicker extends React.PureComponent {
         >
           <div
             style={{
-              marginLeft: '2.8em',
-              marginRight: '2.8em',
+              marginLeft: this.state.cursorWidth + 10,
+              marginRight: this.state.cursorWidth + 10,
             }}
           >
-            <div
-              className={classNames(
-                'value',
-                { active: this.state.active },
-              )}
-            >
-              {this.props.value}
-            </div>
+            <Focusable>
+              <div
+                className={classNames(
+                  'custom-select',
+                  { active: this.state.active },
+                )}
+              >
+                {this.props.value}
+              </div>
+            </Focusable>
           </div>
         </Trigger>
       </div>
     );
   }
 }
-
-DatePicker.propTypes = propTypes;
-DatePicker.defaultProps = defaultProps;
 
 export default DatePicker;

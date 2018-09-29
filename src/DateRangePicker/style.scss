@@ -1,44 +1,26 @@
 @import "~compass-mixins";
-@import "../../style/variables";
-@import "../../style/mixins/triangle";
+@import "../style/variables";
+@import "../style/mixins/triangle";
 
 .date-range-picker {
   .backward,
   .forward {
     cursor: pointer;
-    color: $primary-color;
-    border: 1px solid $gray-color;
-    padding: 8px;
-    border-radius: $border-radius-base;
-    background-color: $white-color;
-  }
-
-  .value {
-    cursor: pointer;
-    line-height: 30px;
-    border: 1px solid $gray-color;
-    border-radius: $border-radius-base;
-    padding: 0 8px;
-
-    &.active {
-      box-shadow: 0 0 3px 1px rgba(0, 128, 236, 0.34);
-      border-color: $primary-color;
-    }
+    font-size: $font-size-base;
+    line-height: $input-btn-line-height;
+    padding: $custom-select-padding-y $custom-select-padding-x;
+    color: $primary;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    background-color: $white;
   }
 }
 
 .date-range-popover {
-  width: 490px;
   padding: 4px;
-
-  opacity: 0;
-
-  &.active {
-    opacity: 1;
-  }
-
-  @include border-radius($border-radius-base);
-  border: 1px solid $gray-color;
+  z-index: $zindex-dropdown;
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
 
   .calendar {
     &:first-child {
@@ -58,7 +40,7 @@
 
   &.place-top {
     &:before {
-      @include triangle(bottom, $gray-color, 0.5em);
+      @include triangle(bottom, $border-color, 0.5em);
       position: absolute;
       left: 50%;
       margin-left: -7px;
@@ -68,7 +50,7 @@
     }
 
     &:after {
-      @include triangle(bottom, $white-color, 0.5em);
+      @include triangle(bottom, $white, 0.5em);
       position: absolute;
       left: 50%;
       margin-left: -7px;
@@ -79,7 +61,7 @@
 
   &.place-bottom {
     &:before {
-      @include triangle(top, $gray-color, 0.5em);
+      @include triangle(top, $border-color, 0.5em);
       position: absolute;
       left: 50%;
       bottom: 100%;
@@ -89,7 +71,7 @@
     }
 
     &:after {
-      @include triangle(top, $white-color, 0.5em);
+      @include triangle(top, $white, 0.5em);
       position: absolute;
       left: 50%;
       bottom: 100%;

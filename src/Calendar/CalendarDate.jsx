@@ -119,7 +119,7 @@ class Calendar extends React.PureComponent {
           </thead>
         </table>
 
-        <table className="month-table">
+        <table className="month-table w-100">
           <thead>
             <tr>
               {weekDaysLang.map((i, index) => (

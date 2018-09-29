@@ -6,42 +6,46 @@ import classNames from 'classnames';
 import Trigger from '../Trigger';
 import Popover from '../Popover';
 import Calendar from '../Calendar';
+import Focusable from '../Focusable';
+import Col from '../grid/Col';
+import Row from '../grid/Row';
 
-import './style/index.scss';
-
-const propTypes = {
-  type: PropTypes.string,
-  start: PropTypes.string,
-  end: PropTypes.string,
-  onChange: PropTypes.func,
-  disabled: PropTypes.bool,
-  disableCursor: PropTypes.bool,
-  getPopoverContainer: PropTypes.func,
-  max: PropTypes.string,
-  min: PropTypes.string,
-  defaultTitle: PropTypes.string,
-  dateRender: PropTypes.func,
-  onActiveChange: PropTypes.func,
-  onCalendarMove: PropTypes.func,
-};
-
-const defaultProps = {
-  start: moment().subtract().format('YYYY-MM-DD'),
-  end: moment().format('YYYY-MM-DD'),
-  onChange: () => {},
-  disabled: false,
-  disableCursor: false,
-  getPopoverContainer: null,
-  max: null,
-  min: null,
-  type: Calendar.TYPE_DATE,
-  defaultTitle: null,
-  dateRender: null,
-  onActiveChange: () => {},
-  onCalendarMove: () => {},
-};
+import './style.scss';
+import Clickable from '../Clickable';
 
 class DateRangePicker extends React.PureComponent {
+  static propTypes = {
+    type: PropTypes.string,
+    start: PropTypes.string,
+    end: PropTypes.string,
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool,
+    disableCursor: PropTypes.bool,
+    getPopoverContainer: PropTypes.func,
+    max: PropTypes.string,
+    min: PropTypes.string,
+    defaultTitle: PropTypes.string,
+    dateRender: PropTypes.func,
+    onActiveChange: PropTypes.func,
+    onCalendarMove: PropTypes.func,
+  };
+
+  static defaultProps = {
+    start: moment().subtract().format('YYYY-MM-DD'),
+    end: moment().format('YYYY-MM-DD'),
+    onChange: () => {},
+    disabled: false,
+    disableCursor: false,
+    getPopoverContainer: null,
+    max: null,
+    min: null,
+    type: Calendar.TYPE_DATE,
+    defaultTitle: null,
+    dateRender: null,
+    onActiveChange: () => {},
+    onCalendarMove: () => {},
+  };
+
   constructor(props) {
     super(props);
 
@@ -53,9 +57,14 @@ class DateRangePicker extends React.PureComponent {
         vertical: Popover.PLACEMENT_BOTTOM,
         horizontal: Popover.PLACEMENT_CENTER,
       },
+      cursorWidth: 0,
     };
 
-    this.setActive = this.setActive.bind(this);
+    this.cursor = React.createRef();
+  }
+
+  componentDidMount() {
+    this.setCursorWidth();
   }
 
   componentWillReceiveProps({ start, end }) {
@@ -66,7 +75,11 @@ class DateRangePicker extends React.PureComponent {
     }
   }
 
-  setActive(active) {
+  setCursorWidth() {
+    this.setState({ cursorWidth: this.cursor.current.clientWidth });
+  }
+
+  setActive = (active) => {
     this.setState({ active }, () => {
       if (!active) {
         this.setState({
@@ -75,8 +88,9 @@ class DateRangePicker extends React.PureComponent {
         });
       }
     });
+
     this.props.onActiveChange(active);
-  }
+  };
 
   getValue() {
     if (this.props.start == null || this.props.end == null) {
@@ -101,9 +115,7 @@ class DateRangePicker extends React.PureComponent {
         )}
       >
         {!this.props.disableCursor && (
-          <i
-            className="icon icon-angle-left backward float-left"
-            aria-hidden
+          <Clickable
             onClick={() => {
               if (this.props.type === Calendar.TYPE_MONTH) {
                 const start = moment(this.props.start).subtract(1, 'M');
@@ -127,13 +139,13 @@ class DateRangePicker extends React.PureComponent {
                 }
               }
             }}
-          />
+          >
+            <i className="fas fa-angle-left backward float-left" ref={this.cursor} />
+          </Clickable>
         )}
 
         {!this.props.disableCursor && (
-          <i
-            className="icon icon-angle-right forward float-right"
-            aria-hidden
+          <Clickable
             onClick={() => {
               if (this.props.type === Calendar.TYPE_MONTH) {
                 const start = moment(this.props.start).add(1, 'M');
@@ -157,7 +169,9 @@ class DateRangePicker extends React.PureComponent {
                 }
               }
             }}
-          />
+          >
+            <i className="fas fa-angle-right forward float-right" />
+          </Clickable>
         )}
 
         <Trigger
@@ -174,30 +188,32 @@ class DateRangePicker extends React.PureComponent {
               onPlacementChange={placement => this.setState({ placement })}
               offset={10}
             >
-              <div className="float-left">
-                <Calendar
-                  type={this.props.type}
-                  value={this.state.start}
-                  onChange={start => this.setState({ start })}
-                  min={this.props.min}
-                  max={this.state.end || this.props.max}
-                  dateRender={this.props.dateRender}
-                  onCalendarMove={this.props.onCalendarMove}
-                />
-              </div>
+              <Row>
+                <Col span={6}>
+                  <Calendar
+                    type={this.props.type}
+                    value={this.state.start}
+                    onChange={start => this.setState({ start })}
+                    min={this.props.min}
+                    max={this.state.end || this.props.max}
+                    dateRender={this.props.dateRender}
+                    onCalendarMove={this.props.onCalendarMove}
+                  />
+                </Col>
 
-              <div className="float-right">
-                <Calendar
-                  type={this.props.type}
-                  className="last-child"
-                  value={this.state.end}
-                  onChange={end => this.setState({ end })}
-                  min={this.state.start || this.props.min}
-                  max={this.props.max}
-                  dateRender={this.props.dateRender}
-                  onCalendarMove={this.props.onCalendarMove}
-                />
-              </div>
+                <Col span={6}>
+                  <Calendar
+                    type={this.props.type}
+                    className="last-child"
+                    value={this.state.end}
+                    onChange={end => this.setState({ end })}
+                    min={this.state.start || this.props.min}
+                    max={this.props.max}
+                    dateRender={this.props.dateRender}
+                    onCalendarMove={this.props.onCalendarMove}
+                  />
+                </Col>
+              </Row>
 
               <div
                 className="actions"
@@ -231,30 +247,26 @@ class DateRangePicker extends React.PureComponent {
           }
         >
           <div
-            style={this.props.disableCursor
-              ? null
-              : {
-                marginLeft: '2.8em',
-                marginRight: '2.8em',
-              }
-            }
+            style={{
+              marginLeft: this.state.cursorWidth + 10,
+              marginRight: this.state.cursorWidth + 10,
+            }}
           >
-            <div
-              className={classNames(
-                'value',
-                { active: this.state.active },
-              )}
-            >
-              {this.getValue()}
-            </div>
+            <Focusable>
+              <div
+                className={classNames(
+                  'custom-select',
+                  { active: this.state.active },
+                )}
+              >
+                {this.getValue()}
+              </div>
+            </Focusable>
           </div>
         </Trigger>
       </div>
     );
   }
 }
-
-DateRangePicker.propTypes = propTypes;
-DateRangePicker.defaultProps = defaultProps;
 
 export default DateRangePicker;
