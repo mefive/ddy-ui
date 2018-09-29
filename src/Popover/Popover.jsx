@@ -322,7 +322,7 @@ class Popover extends React.PureComponent {
       <div
         className={
           classNames(
-            'custom-popover',
+            'popover',
             `place-${placement.vertical}`,
             `place-${placement.horizontal}`,
             this.props.className,
