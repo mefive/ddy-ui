@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
-
-import './style/index.scss';
-
 import Trigger from '../Trigger';
 import Calendar from '../Calendar';
 import Popover from '../Popover';
+
+import './style.scss';
 
 const propTypes = {
   type: PropTypes.string,

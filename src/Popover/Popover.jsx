@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
-import './style/index.scss';
+import './style.scss';
 
 const PLACEMENT_TOP = 'top';
 const PLACEMENT_TOP_ALIGN = 'top-align';

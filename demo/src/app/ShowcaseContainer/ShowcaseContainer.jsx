@@ -19,13 +19,12 @@ const defaultProps = {
 class ShowcaseContainer extends React.PureComponent {
   render() {
     return (
-      <div className={classNames(
-        style.container,
-        this.props.className,
-      )}
-      >
-        <h1>{this.props.title}</h1>
-        <div className={style.items}>
+      <div className="card m-3">
+        <div className="card-header">
+          {this.props.title}
+        </div>
+
+        <div className="card-body">
           {this.props.children}
         </div>
       </div>

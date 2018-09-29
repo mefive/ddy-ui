@@ -3,22 +3,14 @@ const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const LodashWebpackPlugin = require('lodash-webpack-plugin');
 
-const BUILD_PATH = 'dist';
-let dllFiles;
+const packageJson = require(`${process.cwd()}/package.json`);
 
-if (process.env.NODE_ENV === 'production') {
-  dllFiles = fs.readdirSync(path.resolve(__dirname, `./${BUILD_PATH}/dll/`)).map((file) => {
-    if (file.indexOf('dll.') >= 0) {
-      return `dll/${file}`;
-    }
-    return null;
-  }).filter(Boolean);
-}
+const { buildPath } = packageJson;
 
 const baseConfig = {
   entry: {
@@ -27,7 +19,7 @@ const baseConfig = {
   context: path.resolve(__dirname, './src'),
   output: {
     filename: 'static/[name].[chunkhash:7].js',
-    path: path.resolve(__dirname, BUILD_PATH),
+    path: path.resolve(__dirname, buildPath),
   },
   module: {
     rules: [
@@ -35,16 +27,6 @@ const baseConfig = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: 'babel-loader',
-      },
-      {
-        test: /\.(sc|c|sa)ss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            { loader: 'css-loader' },
-            'sass-loader',
-          ],
-        }),
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -80,19 +62,47 @@ const baseConfig = {
     extensions: ['.js', '.jsx'],
   },
   plugins: [
-    new ExtractTextPlugin('static/[name].[chunkhash:7].css'),
+    new MiniCssExtractPlugin({
+      filename: 'static/[name].css',
+      chunkFilename: 'static/[id].css',
+    }),
   ],
 };
 
-module.exports = (env) => {
+module.exports = (env, argv) => {
+  const { mode } = argv;
+
+  let dllFiles;
+
+  if (mode === 'production') {
+    dllFiles = fs.readdirSync(path.resolve(__dirname, `./${buildPath}/dll/`)).map((file) => {
+      if (file.indexOf('dll.') >= 0) {
+        return `dll/${file}`;
+      }
+      return null;
+    }).filter(Boolean);
+  }
+
   let config = merge(baseConfig, {
-    mode: env.NODE_ENV,
+    mode,
+    module: {
+      rules: [
+        {
+          test: /\.(sc|c|sa)ss$/,
+          use: [
+            mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
+            'css-loader',
+            'sass-loader',
+          ],
+        },
+      ],
+    },
     plugins: [
-      new webpack.EnvironmentPlugin(['NODE_ENV']),
+      new webpack.EnvironmentPlugin({ NODE_ENV: mode }),
     ],
   });
 
-  if (env.NODE_ENV === 'production') {
+  if (mode === 'production') {
     config = merge(config, {
       plugins: [
         new LodashWebpackPlugin({
@@ -102,22 +112,22 @@ module.exports = (env) => {
 
         new CleanWebpackPlugin([
           '*.html', 'static/*.*',
-        ], { root: path.join(__dirname, BUILD_PATH) }),
+        ], { root: path.join(__dirname, buildPath) }),
 
         new webpack.DllReferencePlugin({
           context: '.',
           // eslint-disable-next-line
-          manifest: require(`./${BUILD_PATH}/dll/ashim-manifest.json`),
+          manifest: require(`./${buildPath}/dll/ashim-manifest.json`),
         }),
         new webpack.DllReferencePlugin({
           context: '.',
           // eslint-disable-next-line
-          manifest: require(`./${BUILD_PATH}/dll/react-manifest.json`),
+          manifest: require(`./${buildPath}/dll/react-manifest.json`),
         }),
         new webpack.DllReferencePlugin({
           context: '.',
           // eslint-disable-next-line
-          manifest: require(`./${BUILD_PATH}/dll/vendor-manifest.json`),
+          manifest: require(`./${buildPath}/dll/vendor-manifest.json`),
         }),
 
         new HtmlWebpackPlugin({
@@ -125,12 +135,10 @@ module.exports = (env) => {
           dllFiles,
           filename: 'index.html',
         }),
-
-        new UglifyJsPlugin({
-          parallel: true,
-          cache: true,
-        }),
       ],
+      optimization: {
+        minimize: false,
+      },
     });
   } else {
     config = merge(config, {

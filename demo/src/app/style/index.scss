@@ -1,24 +1,2 @@
+$fa-font-path: "../../../../src/style/fa/webfonts";
 @import "../../../../src/style/index";
-
-@font-face {
-  font-family: 'icomoon';
-  src:  url('../../../../src/fonts/icomoon.eot');
-  src:  url('../../../../src/fonts/icomoon.eot') format('embedded-opentype'),
-  url('../../../../src/fonts/icomoon.ttf') format('truetype'),
-  url('../../../../src/fonts/icomoon.woff') format('woff'),
-  url('../../../../src/fonts/icomoon.svg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-:local(.navs) {
-  a {
-    font-weight: bold;
-    //color: $text-color;
-    font-size: $font-size-xl;
-  }
-
-  li + li {
-    margin-top: 10px;
-  }
-}

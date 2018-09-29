@@ -1,7 +1,7 @@
 import React from 'react';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
-import { Clickable } from '../../../src';
 import Animate from '../../../src/Animate';
+import Clickable from '../../../src/Clickable';
 
 class AnimateShowcase extends React.PureComponent {
   constructor(props) {

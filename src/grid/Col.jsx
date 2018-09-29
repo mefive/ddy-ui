@@ -18,7 +18,6 @@ const propTypes = {
   md: layoutTypes,
   lg: layoutTypes,
   xl: layoutTypes,
-  xxl: layoutTypes,
   /* eslint-enable */
 
   span: PropTypes.number,
@@ -35,7 +34,6 @@ const defaultProps = {
   md: null,
   lg: null,
   xl: null,
-  xxl: null,
 
   span: null,
   offset: null,
@@ -47,7 +45,7 @@ const defaultProps = {
 
 class Col extends React.PureComponent {
   getBreakPointClassNames() {
-    const breakPoints = pick(this.props, ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']);
+    const breakPoints = pick(this.props, ['xs', 'sm', 'md', 'lg', 'xl']);
     const classes = {};
 
     const { span, offset } = this.props;

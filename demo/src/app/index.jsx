@@ -11,22 +11,22 @@ import {
 import style from './style/index.scss';
 
 // pages
-import Table from './Table';
+// import Table from './Table';
 import DatePicker from './DatePicker';
-import DateRangePicker from './DateRangePicker';
-import Trigger from './Trigger';
-import Tooltip from './Tooltip';
-import Portal from './Portal';
-import Select from './Select';
-import Dialog from './Dialog';
-import Form from './Form';
+// import DateRangePicker from './DateRangePicker';
+// import Trigger from './Trigger';
+// import Tooltip from './Tooltip';
+// import Portal from './Portal';
+// import Select from './Select';
+// import Dialog from './Dialog';
+// import Form from './Form';
 import Grid from './Grid';
-import Slider from './Slider';
-import SwitchShowCase from './Switch';
-import Sortable from './Sortable';
-import Animate from './Animate';
-import ContextMenu from './ContextMenu';
-import AutoComplete from './AutoComplete';
+// import Slider from './Slider';
+// import SwitchShowCase from './Switch';
+// import Sortable from './Sortable';
+// import Animate from './Animate';
+// import ContextMenu from './ContextMenu';
+// import AutoComplete from './AutoComplete';
 
 const links = [{
   url: 'table',
@@ -81,50 +81,41 @@ const links = [{
   title: 'AutoComplete',
 }];
 
-const Port = props => (
-  <div className="p-3">
-    {props.children != null
-        ? props.children
-        : (
-          <ul className={style.navs}>
-            {links.map(({ url, title }) => (
-              <li key={url}>
-                <NavLink to={url}>
-                  {title}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        )
-      }
+const Port = () => (
+  <div className="container-fluid">
+    <ul className="nav flex-column">
+      {links.map(({ url, title }) => (
+        <li key={url} className="nav-link">
+          <NavLink to={url}>
+            {title}
+          </NavLink>
+        </li>
+      ))}
+    </ul>
   </div>
 );
 
-Port.propTypes = { children: PropTypes.node };
-Port.defaultProps = { children: null };
-
 ReactDOM.render(
   <Router>
-    <Port>
-      <Switch>
-        <Route exact path="table" component={Table} />
-        <Route exact path="datePicker" component={DatePicker} />
-        <Route exact path="dateRangePicker" component={DateRangePicker} />
-        <Route exact path="trigger" component={Trigger} />
-        <Route exact path="tooltip" component={Tooltip} />
-        <Route exact path="portal" component={Portal} />
-        <Route exact path="select" component={Select} />
-        <Route exact path="dialog" component={Dialog} />
-        <Route exact path="form" component={Form} />
-        <Route exact path="grid" component={Grid} />
-        <Route exact path="slider" component={Slider} />
-        <Route exact path="switch" component={SwitchShowCase} />
-        <Route exact path="sortable" component={Sortable} />
-        <Route exact path="animate" component={Animate} />
-        <Route exact path="contextMenu" component={ContextMenu} />
-        <Route exact path="autoComplete" component={AutoComplete} />
-      </Switch>
-    </Port>
+    <Switch>
+      {/*<Route exact path="/table" component={Table} />*/}
+      <Route exact path="/datePicker" component={DatePicker} />
+      {/*<Route exact path="/dateRangePicker" component={DateRangePicker} />*/}
+      {/*<Route exact path="/trigger" component={Trigger} />*/}
+      {/*<Route exact path="/tooltip" component={Tooltip} />*/}
+      {/*<Route exact path="/portal" component={Portal} />*/}
+      {/*<Route exact path="/select" component={Select} />*/}
+      {/*<Route exact path="/dialog" component={Dialog} />*/}
+      {/*<Route exact path="/form" component={Form} />*/}
+      <Route exact path="/grid" component={Grid} />
+      {/*<Route exact path="/slider" component={Slider} />*/}
+      {/*<Route exact path="/switch" component={SwitchShowCase} />*/}
+      {/*<Route exact path="/sortable" component={Sortable} />*/}
+      {/*<Route exact path="/animate" component={Animate} />*/}
+      {/*<Route exact path="/contextMenu" component={ContextMenu} />*/}
+      {/*<Route exact path="/autoComplete" component={AutoComplete} />*/}
+      <Route exact path="/" component={Port} />
+    </Switch>
   </Router>,
   document.getElementById('main'),
 );

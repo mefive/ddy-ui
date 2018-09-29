@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CalendarDate from './CalendarDate';
 import CalendarMonth from './CalendarMonth';
 
-import './style/index.scss';
+import './style.scss';
 
 const TYPE_DATE = 'type_date';
 const TYPE_MONTH = 'type_month';
