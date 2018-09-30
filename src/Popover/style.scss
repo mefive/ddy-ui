@@ -11,6 +11,21 @@
       left: 50%;
       margin-left: -0.5 * ($popover-arrow-width);
     }
+
+    &.left {
+      .arrow {
+        left: $border-radius-lg;
+        margin-left: 0;
+      }
+    }
+
+    &.right {
+      .arrow {
+        right: 0;
+        left: auto;
+        margin-left: 0;
+      }
+    }
   }
 
   &.bs-popover-left,
@@ -18,6 +33,21 @@
     .arrow {
       top: 50%;
       margin-top: -0.5 * ($popover-arrow-width);
+    }
+
+    &.top {
+      .arrow {
+        top: $border-radius-lg;
+        margin-top: 0;
+      }
+    }
+
+    &.bottom {
+      .arrow {
+        bottom: 0;
+        top: auto;
+        margin-top: 0;
+      }
     }
   }
 }
