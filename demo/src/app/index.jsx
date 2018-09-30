@@ -17,7 +17,7 @@ import Trigger from './Trigger';
 import Tooltip from './Tooltip';
 import Portal from './Portal';
 import Select from './Select';
-// import Dialog from './Dialog';
+import Dialog from './Dialog';
 // import Form from './Form';
 import Grid from './Grid';
 // import Slider from './Slider';
@@ -105,7 +105,7 @@ ReactDOM.render(
         <Route exact path="/tooltip" component={Tooltip} />
         <Route exact path="/portal" component={Portal} />
         <Route exact path="/select" component={Select} />
-        {/*<Route exact path="/dialog" component={Dialog} />*/}
+        <Route exact path="/dialog" component={Dialog} />
         {/*<Route exact path="/form" component={Form} />*/}
         <Route exact path="/grid" component={Grid} />
         {/*<Route exact path="/slider" component={Slider} />*/}

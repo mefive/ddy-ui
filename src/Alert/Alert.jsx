@@ -3,28 +3,29 @@ import PropTypes from 'prop-types';
 
 import Modal from '../Modal';
 
-import './style/index.scss';
 import Clickable from '../Clickable';
 
-const propTypes = {
-  onClose: PropTypes.func,
-  confirmText: PropTypes.string,
-  hasCloseButton: PropTypes.bool,
-  title: PropTypes.string,
-  visible: PropTypes.bool,
-  children: PropTypes.node,
-};
-
-const defaultProps = {
-  onClose: () => null,
-  confirmText: '确定',
-  hasCloseButton: true,
-  visible: false,
-  title: '提示',
-  children: null,
-};
+import './style/index.scss';
 
 class Alert extends React.PureComponent {
+  static propTypes = {
+    onClose: PropTypes.func,
+    confirmText: PropTypes.string,
+    hasCloseButton: PropTypes.bool,
+    title: PropTypes.string,
+    visible: PropTypes.bool,
+    children: PropTypes.node,
+  };
+
+  static defaultProps = {
+    onClose: () => null,
+    confirmText: '确定',
+    hasCloseButton: true,
+    visible: false,
+    title: '提示',
+    children: null,
+  };
+
   render() {
     return (
       <Modal
@@ -32,14 +33,13 @@ class Alert extends React.PureComponent {
         hasCloseButton={this.props.hasCloseButton}
         title={this.props.title}
         visible={this.props.visible}
-        className="alert"
         onEnter={this.props.onClose}
       >
-        <div className="dialog-content">
+        <div className="modal-body">
           {this.props.children}
         </div>
 
-        <div className="dialog-actions text-right pr-3 pt-1 pb-1">
+        <div className="modal-footer">
           <Clickable
             onClick={this.props.onClose}
           >
@@ -52,8 +52,5 @@ class Alert extends React.PureComponent {
     );
   }
 }
-
-Alert.propTypes = propTypes;
-Alert.defaultProps = defaultProps;
 
 export default Alert;

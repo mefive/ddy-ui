@@ -6,44 +6,34 @@ import { addClass, removeClass } from 'dom-helpers/class';
 
 import Portal from '../Portal';
 import Animate from '../Animate';
-
-import './style/index.scss';
 import Clickable from '../Clickable';
 
-const propTypes = {
-  title: PropTypes.string,
-  renderTitle: PropTypes.func,
-  bigHeader: PropTypes.bool,
-  hasCloseButton: PropTypes.bool,
-  className: PropTypes.string,
-  onClose: PropTypes.func,
-  onEnter: PropTypes.func,
-  visible: PropTypes.bool,
-  onResize: PropTypes.func,
-  id: PropTypes.string,
-  children: PropTypes.node,
-  width: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
-};
-
-const defaultProps = {
-  title: null,
-  className: null,
-  renderTitle: null,
-  bigHeader: false,
-  onClose: () => {},
-  onEnter: () => {},
-  hasCloseButton: true,
-  visible: false,
-  onResize: () => {},
-  id: null,
-  children: null,
-  width: null,
-};
+import './style.scss';
 
 class Modal extends React.PureComponent {
+  static propTypes = {
+    title: PropTypes.string,
+    className: PropTypes.string,
+    onClose: PropTypes.func,
+    onEnter: PropTypes.func,
+    visible: PropTypes.bool,
+    children: PropTypes.node,
+    width: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+  };
+
+  static defaultProps = {
+    title: null,
+    className: null,
+    onClose: null,
+    onEnter: () => {},
+    visible: false,
+    children: null,
+    width: null,
+  };
+
   constructor(props) {
     super(props);
 
@@ -53,19 +43,16 @@ class Modal extends React.PureComponent {
       windowHeight: window.innerHeight,
     };
 
-    this.onResize = this.onResize.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.pin = this.pin.bind(this);
+    this.dialog = React.createRef();
   }
 
   componentDidMount() {
-    this.hasMounted = true;
-    this.pin();
     window.addEventListener('resize', this.onResize);
   }
 
   componentWillReceiveProps({ visible }) {
     if (visible && !this.props.visible) {
+      document.activeElement.blur();
       document.addEventListener('keydown', this.onKeyPress);
     } else if (!visible && this.props.visible) {
       document.removeEventListener('keydown', this.onKeyPress);
@@ -75,19 +62,18 @@ class Modal extends React.PureComponent {
   componentDidUpdate({ visible }) {
     if (!visible && this.props.visible) {
       this.pin();
-      addClass(document.body, 'has-modal');
+      addClass(document.body, 'modal-open');
     } else if (visible && !this.props.visible) {
-      removeClass(document.body, 'has-modal');
+      removeClass(document.body, 'modal-open');
     }
   }
 
   componentWillUnmount() {
-    this.hasMounted = false;
     window.removeEventListener('resize', this.onResize);
     document.removeEventListener('keydown', this.onKeyPress);
   }
 
-  onKeyPress(e) {
+  onKeyPress = (e) => {
     const code = keycode(e);
 
     if (code === 'esc') {
@@ -96,101 +82,84 @@ class Modal extends React.PureComponent {
     } else if (code === 'enter') {
       this.props.onEnter();
     }
-  }
+  };
 
-  onResize() {
-    if (!this.hasMounted) {
-      return;
-    }
+  onResize = () => {
+    this.setState({ windowHeight: window.innerHeight }, this.pin);
+  };
 
-    this.setState(
-      { windowHeight: window.innerHeight },
-      () => this.pin(),
-    );
-  }
+  pin = () => {
+    if (this.props.visible) {
+      const dialog = this.dialog.current;
 
-  pin() {
-    if (!this.props.visible || !this.hasMounted) {
-      return;
-    }
-
-    const { dialog } = this;
-
-
-    if (dialog) {
-      this.setState(
-        {
+      if (dialog) {
+        this.setState({
           marginLeft: -0.5 * dialog.offsetWidth,
           marginTop: -0.5 * dialog.offsetHeight,
-        },
-        () => this.props.onResize(),
-      );
+        });
+      }
     }
-  }
+  };
 
   render() {
     return (
-      <Animate>
+      <React.Fragment>
         {this.props.visible && (
           <Portal>
-            <div
-              className={classNames(
-                'modal',
-                this.props.className,
-              )}
-            >
-              <div className="modal-mask" />
-
-              <div
-                className={classNames(
-                  'modal-dialog',
-                  { 'big-header': this.props.bigHeader },
-                )}
-                style={{
-                  marginLeft: this.state.marginLeft,
-                  marginTop: this.state.marginTop,
-                  width: this.props.width,
-                  minWidth: this.props.width,
-                }}
-                ref={(el) => { this.dialog = el; }}
-                id={this.props.id}
-              >
-                {(this.props.renderTitle || this.props.title) && (
-                  <div className="dialog-header">
-                    {this.props.hasCloseButton && (
-                      <Clickable onClick={this.props.onClose}>
-                        <i className="icon icon-times close" />
-                      </Clickable>
-                    )}
-
-                    {this.props.renderTitle != null
-                      ? this.props.renderTitle()
-                      : (
-                        <h3>{this.props.title}</h3>
-                      )
-                    }
-                  </div>
-                )}
-
-                <div
-                  className="dialog-body"
-                  style={{
-                    maxHeight: this.state.windowHeight - 55,
-                    overflowY: 'auto',
-                  }}
-                >
-                  {this.props.children}
-                </div>
-              </div>
-            </div>
+            <div className="modal-backdrop show" />
           </Portal>
         )}
-      </Animate>
+
+        <Animate
+          enterClassName="scale-in"
+          leaveClassName="scale-out"
+        >
+          {this.props.visible && (
+            <Portal>
+              <div
+                className={classNames(
+                  'modal',
+                  this.props.className,
+                )}
+              >
+                <div
+                  className="modal-dialog"
+                  ref={this.dialog}
+                  style={{
+                    marginLeft: this.state.marginLeft,
+                    marginTop: this.state.marginTop,
+                    minWidth: this.props.width,
+                  }}
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">{this.props.title}</h5>
+                      {this.props.onClose != null && (
+                      <Clickable onClick={this.props.onClose}>
+                        <div className="close">
+                          <i className="fas fa-times" />
+                        </div>
+                      </Clickable>
+                        )}
+                    </div>
+
+                    <div
+                      style={{
+                          maxHeight: this.state.windowHeight - 55,
+                          overflowY: 'auto',
+                        }}
+                    >
+                      {this.props.children}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Portal>
+          )}
+        </Animate>
+      </React.Fragment>
     );
   }
 }
-
-Modal.propTypes = propTypes;
-Modal.defaultProps = defaultProps;
 
 export default Modal;

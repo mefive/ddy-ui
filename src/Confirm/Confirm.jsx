@@ -2,33 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Modal from '../Modal';
-
-import './style/index.scss';
 import Clickable from '../Clickable';
 
-const propTypes = {
-  confirmText: PropTypes.string,
-  cancelText: PropTypes.string,
-  hasCloseButton: PropTypes.bool,
-  title: PropTypes.string,
-  visible: PropTypes.bool,
-  onClose: PropTypes.func,
-  onConfirm: PropTypes.func,
-  children: PropTypes.node,
-};
-
-const defaultProps = {
-  onClose: () => {},
-  onConfirm: () => {},
-  confirmText: '确定',
-  cancelText: '取消',
-  hasCloseButton: true,
-  visible: false,
-  title: null,
-  children: null,
-};
+import './style/index.scss';
 
 class Confirm extends React.PureComponent {
+  static propTypes = {
+    confirmText: PropTypes.string,
+    cancelText: PropTypes.string,
+    hasCloseButton: PropTypes.bool,
+    title: PropTypes.string,
+    visible: PropTypes.bool,
+    onClose: PropTypes.func,
+    onConfirm: PropTypes.func,
+    children: PropTypes.node,
+  };
+
+  static defaultProps = {
+    onClose: () => {},
+    onConfirm: () => {},
+    confirmText: '确定',
+    cancelText: '取消',
+    hasCloseButton: true,
+    visible: false,
+    title: null,
+    children: null,
+  };
+
   render() {
     return (
       <Modal
@@ -37,11 +37,19 @@ class Confirm extends React.PureComponent {
         title="提示"
         onEnter={this.props.onConfirm}
       >
-        <div className="dialog-content">
+        <div className="modal-body">
           {this.props.children}
         </div>
 
-        <div className="dialog-actions text-right pr-3 pt-1 pb-1">
+        <div className="modal-footer">
+          <Clickable
+            onClick={this.props.onClose}
+          >
+            <div className="btn btn-secondary ml-1">
+              {this.props.cancelText}
+            </div>
+          </Clickable>
+
           <Clickable
             onClick={this.props.onConfirm}
           >
@@ -49,21 +57,10 @@ class Confirm extends React.PureComponent {
               {this.props.confirmText}
             </div>
           </Clickable>
-
-          <Clickable
-            onClick={this.props.onClose}
-          >
-            <div className="btn btn-default ml-1">
-              {this.props.cancelText}
-            </div>
-          </Clickable>
         </div>
       </Modal>
     );
   }
 }
-
-Confirm.propTypes = propTypes;
-Confirm.defaultProps = defaultProps;
 
 export default Confirm;
