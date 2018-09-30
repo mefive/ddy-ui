@@ -2,6 +2,7 @@ import React from 'react';
 import keycode from 'keycode';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import debounce from 'lodash/debounce';
 import { addClass, removeClass } from 'dom-helpers/class';
 
 import Portal from '../Portal';
@@ -40,14 +41,15 @@ class Modal extends React.PureComponent {
     this.state = {
       marginLeft: 0,
       marginTop: 0,
-      windowHeight: window.innerHeight,
+      bodyMaxHeight: window.innerHeight,
     };
 
     this.dialog = React.createRef();
+    this.dialogHeader = React.createRef();
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.onResize);
+    window.addEventListener('resize', this.resize);
   }
 
   componentWillReceiveProps({ visible }) {
@@ -61,7 +63,7 @@ class Modal extends React.PureComponent {
 
   componentDidUpdate({ visible }) {
     if (!visible && this.props.visible) {
-      this.pin();
+      this.syncBodyMaxHeight();
       addClass(document.body, 'modal-open');
     } else if (visible && !this.props.visible) {
       removeClass(document.body, 'modal-open');
@@ -69,7 +71,7 @@ class Modal extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('resize', this.resize);
     document.removeEventListener('keydown', this.onKeyPress);
   }
 
@@ -84,9 +86,15 @@ class Modal extends React.PureComponent {
     }
   };
 
-  onResize = () => {
-    this.setState({ windowHeight: window.innerHeight }, this.pin);
+  syncBodyMaxHeight = () => {
+    const dialogHeader = this.dialogHeader.current;
+    this.setState({
+      bodyMaxHeight:
+      window.innerHeight - (dialogHeader == null ? 0 : dialogHeader.offsetHeight) - 2,
+    }, this.pin);
   };
+
+  resize = debounce(this.syncBodyMaxHeight);
 
   pin = () => {
     if (this.props.visible) {
@@ -132,7 +140,7 @@ class Modal extends React.PureComponent {
                   }}
                 >
                   <div className="modal-content">
-                    <div className="modal-header">
+                    <div className="modal-header" ref={this.dialogHeader}>
                       <h5 className="modal-title">{this.props.title}</h5>
                       {this.props.onClose != null && (
                       <Clickable onClick={this.props.onClose}>
@@ -145,7 +153,7 @@ class Modal extends React.PureComponent {
 
                     <div
                       style={{
-                          maxHeight: this.state.windowHeight - 55,
+                          maxHeight: this.state.bodyMaxHeight,
                           overflowY: 'auto',
                         }}
                     >

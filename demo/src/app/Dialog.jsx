@@ -1,4 +1,6 @@
 import React from 'react';
+import range from 'lodash/range';
+
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
 import Clickable from '../../../src/Clickable';
 import Alert from '../../../src/Alert/Alert';
@@ -46,7 +48,9 @@ class ShowcaseDialog extends React.PureComponent {
           visible={this.state.alert}
           onClose={() => this.setState({ alert: false })}
         >
-          Hello !
+          {range(200).map(() => (
+            <h5>Hello mefive</h5>
+          ))}
         </Alert>
 
         <Confirm
