@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import {
   BrowserRouter as Router,
   Route,
@@ -15,7 +14,7 @@ import './style/index.scss';
 import DatePicker from './DatePicker';
 import DateRangePicker from './DateRangePicker';
 // import Trigger from './Trigger';
-// import Tooltip from './Tooltip';
+import Tooltip from './Tooltip';
 // import Portal from './Portal';
 // import Select from './Select';
 // import Dialog from './Dialog';
@@ -103,7 +102,7 @@ ReactDOM.render(
         <Route exact path="/datePicker" component={DatePicker} />
         <Route exact path="/dateRangePicker" component={DateRangePicker} />
         {/*<Route exact path="/trigger" component={Trigger} />*/}
-        {/*<Route exact path="/tooltip" component={Tooltip} />*/}
+        <Route exact path="/tooltip" component={Tooltip} />
         {/*<Route exact path="/portal" component={Portal} />*/}
         {/*<Route exact path="/select" component={Select} />*/}
         {/*<Route exact path="/dialog" component={Dialog} />*/}

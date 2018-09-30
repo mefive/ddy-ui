@@ -7,41 +7,35 @@ import Popover from '../Popover';
 
 import './style.scss';
 
-const propTypes = {
-  title: PropTypes.string,
-  placement: PropTypes.shape({
-    vertical: PropTypes.string,
-    horizontal: PropTypes.string,
-  }),
-  disabled: PropTypes.bool,
-  className: PropTypes.string,
-  style: PropTypes.shape({}),
-  children: PropTypes.node,
-  defaultActive: PropTypes.bool,
-  getPopoverContainer: PropTypes.func,
-  action: PropTypes.string,
-  onActiveChange: PropTypes.func,
-  renderPopover: PropTypes.func,
-};
-
-const defaultProps = {
-  title: null,
-  placement: {
-    vertical: Popover.PLACEMENT_TOP,
-    horizontal: Popover.PLACEMENT_CENTER,
-  },
-  disabled: false,
-  className: null,
-  style: null,
-  children: null,
-  defaultActive: null,
-  getPopoverContainer: null,
-  action: 'hover',
-  onActiveChange: () => {},
-  renderPopover: null,
-};
-
 class Tooltip extends React.PureComponent {
+  static propTypes = {
+    title: PropTypes.string,
+    placement: PropTypes.string,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+    style: PropTypes.shape({}),
+    children: PropTypes.node,
+    defaultActive: PropTypes.bool,
+    getPopoverContainer: PropTypes.func,
+    action: PropTypes.string,
+    onActiveChange: PropTypes.func,
+    renderPopover: PropTypes.func,
+  };
+
+  static defaultProps = {
+    title: null,
+    placement: Popover.placement.TOP,
+    disabled: false,
+    className: null,
+    style: null,
+    children: null,
+    defaultActive: null,
+    getPopoverContainer: null,
+    action: 'hover',
+    onActiveChange: () => {},
+    renderPopover: null,
+  };
+
   render() {
     if (this.props.disabled || (!this.props.title && this.props.renderPopover == null)) {
       return this.props.children;
@@ -55,14 +49,16 @@ class Tooltip extends React.PureComponent {
           <Popover
             className={classNames('tooltip', this.props.className)}
             style={this.props.style}
-            defaultPlacement={this.props.placement}
+            placement={this.props.placement}
           >
-            {this.props.renderPopover == null
-              ? (
-                <span dangerouslySetInnerHTML={{ __html: this.props.title }} />
-              )
-              : this.props.renderPopover()
-            }
+            <div className="popover-body">
+              {this.props.renderPopover == null
+                ? (
+                  <span dangerouslySetInnerHTML={{ __html: this.props.title }} />
+                )
+                : this.props.renderPopover()
+              }
+            </div>
           </Popover>
         )}
         enterClassName="scale-in"
@@ -77,8 +73,5 @@ class Tooltip extends React.PureComponent {
     );
   }
 }
-
-Tooltip.propTypes = propTypes;
-Tooltip.defaultProps = defaultProps;
 
 export default Tooltip;

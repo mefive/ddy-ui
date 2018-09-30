@@ -10,12 +10,32 @@ const BOTTOM = 'bottom';
 const LEFT = 'left';
 const RIGHT = 'right';
 
+const TOP_LEFT = 'top-left';
+const TOP_RIGHT = 'top-right';
+
+const BOTTOM_LEFT = 'bottom-left';
+const BOTTOM_RIGHT = 'bottom-right';
+
+const LEFT_TOP = 'left-top';
+const LEFT_BOTTOM = 'left-bottom';
+
+const RIGHT_TOP = 'right-top';
+const RIGHT_BOTTOM = 'right-bottom';
+
 class Popover extends React.PureComponent {
   static placement = {
     TOP,
     BOTTOM,
     LEFT,
     RIGHT,
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT,
+    LEFT_TOP,
+    LEFT_BOTTOM,
+    RIGHT_TOP,
+    RIGHT_BOTTOM,
   };
 
   static propTypes = {
@@ -88,7 +108,10 @@ class Popover extends React.PureComponent {
       offset += 10;
     }
 
-    switch (this.props.placement) {
+    const { placement } = this.props;
+    const placements = placement.split('-');
+
+    switch (placements[0]) {
       case TOP: {
         marginTop = -offset;
         break;
@@ -114,7 +137,7 @@ class Popover extends React.PureComponent {
     }
 
     // placement
-    switch (this.props.placement) {
+    switch (placements[0]) {
       case TOP: {
         top = anchorRect.top - popoverHeight - containerRect.top;
         break;
@@ -140,7 +163,7 @@ class Popover extends React.PureComponent {
     }
 
     // align
-    switch (this.props.placement) {
+    switch (placements[0]) {
       case TOP:
       case BOTTOM: {
         left = (anchorRect.left - containerRect.left) + (0.5 * (anchorWidth - popoverWidth));
@@ -150,6 +173,31 @@ class Popover extends React.PureComponent {
       case LEFT:
       case RIGHT: {
         top = (anchorRect.top - containerRect.top) + (0.5 * (anchorHeight - popoverHeight));
+        break;
+      }
+
+      default:
+        break;
+    }
+
+    switch (placements[1]) {
+      case LEFT: {
+        left -= (0.5 * (anchorWidth - popoverWidth));
+        break;
+      }
+
+      case RIGHT: {
+        left += (0.5 * (anchorWidth - popoverWidth));
+        break;
+      }
+
+      case TOP: {
+        top -= (0.5 * (anchorHeight - popoverHeight));
+        break;
+      }
+
+      case BOTTOM: {
+        top += (0.5 * (anchorHeight - popoverHeight));
         break;
       }
 
@@ -178,12 +226,15 @@ class Popover extends React.PureComponent {
   };
 
   render() {
+    const placement = this.props.placement.split('-');
+
     return (
       <div
         className={
           classNames(
             'popover',
-            `bs-popover-${this.props.placement}`,
+            `bs-popover-${placement[0]}`,
+            placement[1],
             this.props.className,
           )
         }

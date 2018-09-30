@@ -2,6 +2,59 @@
 @import "../style/variables";
 @import "../style/mixins/triangle";
 
+.popover.tooltip {
+  background-color: $tooltip-bg;
+  border: none;
+
+  .popover-body {
+    color: $tooltip-color;
+  }
+
+  &.bs-popover-top {
+    .arrow {
+      &::before {
+        border-top-color: transparent;
+      }
+      &::after {
+        border-top-color: $tooltip-bg;
+      }
+    }
+  }
+
+  &.bs-popover-bottom {
+    .arrow {
+      &::before {
+        border-bottom-color: transparent;
+      }
+      &::after {
+        border-bottom-color: $tooltip-bg;
+      }
+    }
+  }
+
+  &.bs-popover-left {
+    .arrow {
+      &::before {
+        border-left-color: transparent;
+      }
+      &::after {
+        border-left-color: $tooltip-bg;
+      }
+    }
+  }
+
+  &.bs-popover-right {
+    .arrow {
+      &::before {
+        border-right-color: transparent;
+      }
+      &::after {
+        border-right-color: $tooltip-bg;
+      }
+    }
+  }
+}
+
 //.popover.tooltip {
 //  $background-color: rgba(0, 0, 0, 0.8);
 //  background-color: $background-color;

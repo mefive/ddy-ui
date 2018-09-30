@@ -1,0 +1,9 @@
+@import "../style/variables";
+
+.tooltip-trigger {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding-left: 10px;
+  padding-right: 10px;
+  white-space: nowrap;
+}

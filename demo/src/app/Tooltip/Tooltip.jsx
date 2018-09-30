@@ -1,87 +1,96 @@
 import React from 'react';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
 
-import style from './style/index.scss';
 import Tooltip from '../../../../src/Tooltip/Tooltip';
 import Popover from '../../../../src/Popover';
+
+import './style.scss';
 
 class ShowcaseTooltip extends React.PureComponent {
   render() {
     return (
       <ShowcaseContainer title="Tooltip">
-        <div className="mt-2" style={{ width: 2000 }}>
+        <div className="d-flex flex-wrap ml-n1 mt-n2">
           <Tooltip title="top">
-            <div className={style.trigger}>Top</div>
+            <div className="tooltip-trigger ml-1 mt-2">Top</div>
           </Tooltip>
 
           <Tooltip
             title="bottom"
-            placement={{
-              vertical: Popover.PLACEMENT_BOTTOM,
-              horizontal: Popover.PLACEMENT_CENTER,
-            }}
+            placement={Popover.placement.BOTTOM}
+            dark
           >
-            <div className={style.trigger}>Bottom</div>
+            <div className="tooltip-trigger ml-1 mt-2">Bottom</div>
           </Tooltip>
 
           <Tooltip
             title="left"
-            placement={{
-              vertical: Popover.PLACEMENT_CENTER,
-              horizontal: Popover.PLACEMENT_LEFT,
-            }}
+            placement={Popover.placement.LEFT}
           >
-            <div className={style.trigger}>Left</div>
+            <div className="tooltip-trigger ml-1 mt-2">Left</div>
           </Tooltip>
 
           <Tooltip
             title="right"
-            placement={{
-              vertical: Popover.PLACEMENT_CENTER,
-              horizontal: Popover.PLACEMENT_RIGHT,
-            }}
+            placement={Popover.placement.RIGHT}
           >
-            <div className={style.trigger}>Right</div>
-          </Tooltip>
-
-          <Tooltip
-            title="bottom left"
-            placement={{
-              vertical: Popover.PLACEMENT_BOTTOM,
-              horizontal: Popover.PLACEMENT_LEFT_ALIGN,
-            }}
-          >
-            <div className={style.trigger}>Bottom Left</div>
-          </Tooltip>
-
-          <Tooltip
-            title="bottom right"
-            placement={{
-              vertical: Popover.PLACEMENT_BOTTOM,
-              horizontal: Popover.PLACEMENT_RIGHT_ALIGN,
-            }}
-          >
-            <div className={style.trigger}>Bottom Right</div>
+            <div className="tooltip-trigger ml-1 mt-2">Right</div>
           </Tooltip>
 
           <Tooltip
             title="top left"
-            placement={{
-              vertical: Popover.PLACEMENT_TOP,
-              horizontal: Popover.PLACEMENT_LEFT_ALIGN,
-            }}
+            placement={Popover.placement.TOP_LEFT}
           >
-            <div className={style.trigger}>Top Left</div>
+            <div className="tooltip-trigger ml-1 mt-2">Top Left</div>
           </Tooltip>
 
           <Tooltip
             title="top right"
-            placement={{
-              vertical: Popover.PLACEMENT_TOP,
-              horizontal: Popover.PLACEMENT_RIGHT_ALIGN,
-            }}
+            placement={Popover.placement.TOP_RIGHT}
           >
-            <div className={style.trigger}>Top Right</div>
+            <div className="tooltip-trigger ml-1 mt-2">Top Right</div>
+          </Tooltip>
+
+          <Tooltip
+            title="bottom left"
+            placement={Popover.placement.BOTTOM_LEFT}
+          >
+            <div className="tooltip-trigger ml-1 mt-2">Bottom Left</div>
+          </Tooltip>
+
+          <Tooltip
+            title="bottom right"
+            placement={Popover.placement.BOTTOM_RIGHT}
+          >
+            <div className="tooltip-trigger ml-1 mt-2">Bottom Right</div>
+          </Tooltip>
+
+          <Tooltip
+            title="left top"
+            placement={Popover.placement.LEFT_TOP}
+          >
+            <div className="tooltip-trigger ml-1 mt-2">Left Top</div>
+          </Tooltip>
+
+          <Tooltip
+            title="left bottom"
+            placement={Popover.placement.LEFT_BOTTOM}
+          >
+            <div className="tooltip-trigger ml-1 mt-2">Left Bottom</div>
+          </Tooltip>
+
+          <Tooltip
+            title="right top"
+            placement={Popover.placement.RIGHT_TOP}
+          >
+            <div className="tooltip-trigger ml-1 mt-2">Right Top</div>
+          </Tooltip>
+
+          <Tooltip
+            title="right bottom"
+            placement={Popover.placement.RIGHT_BOTTOM}
+          >
+            <div className="tooltip-trigger ml-1 mt-2">Right Bottom</div>
           </Tooltip>
         </div>
       </ShowcaseContainer>
