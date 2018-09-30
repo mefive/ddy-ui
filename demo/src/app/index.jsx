@@ -20,7 +20,7 @@ import Select from './Select';
 import Dialog from './Dialog';
 // import Form from './Form';
 import Grid from './Grid';
-// import Slider from './Slider';
+import Slider from './Slider';
 // import SwitchShowCase from './Switch';
 // import Sortable from './Sortable';
 // import Animate from './Animate';
@@ -108,7 +108,7 @@ ReactDOM.render(
         <Route exact path="/dialog" component={Dialog} />
         {/*<Route exact path="/form" component={Form} />*/}
         <Route exact path="/grid" component={Grid} />
-        {/*<Route exact path="/slider" component={Slider} />*/}
+        <Route exact path="/slider" component={Slider} />
         {/*<Route exact path="/switch" component={SwitchShowCase} />*/}
         {/*<Route exact path="/sortable" component={Sortable} />*/}
         {/*<Route exact path="/animate" component={Animate} />*/}

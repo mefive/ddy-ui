@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import contains from 'dom-helpers/query/contains';
 
-import './style/index.scss';
 import Clickable from '../Clickable';
 import Draggable from '../Draggable';
+
+import './style.scss';
 
 const propTypes = {
   value: PropTypes.oneOfType([PropTypes.any]),

@@ -27,6 +27,18 @@ class ShowcaseSlider extends React.PureComponent {
           <span className="ml-3 align-middle">{this.state.value}</span>
         </div>
 
+        <div className="mt-2">
+          <div className="d-inline-block">
+            <Slider
+              width={200}
+              value={this.state.value}
+              onChange={value => this.setState({ value })}
+            />
+          </div>
+
+          <span className="ml-3 align-middle">{this.state.value}</span>
+        </div>
+
       </ShowcaseContainer>
     );
   }
