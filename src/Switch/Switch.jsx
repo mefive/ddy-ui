@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import Clickable from '../Clickable';
 
-import './style/index.scss';
+import './style.scss';
 
 const propTypes = {
   value: PropTypes.bool,
