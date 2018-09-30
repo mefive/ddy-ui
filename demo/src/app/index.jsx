@@ -13,10 +13,10 @@ import './style/index.scss';
 // import Table from './Table';
 import DatePicker from './DatePicker';
 import DateRangePicker from './DateRangePicker';
-// import Trigger from './Trigger';
+import Trigger from './Trigger';
 import Tooltip from './Tooltip';
-// import Portal from './Portal';
-// import Select from './Select';
+import Portal from './Portal';
+import Select from './Select';
 // import Dialog from './Dialog';
 // import Form from './Form';
 import Grid from './Grid';
@@ -101,10 +101,10 @@ ReactDOM.render(
         {/*<Route exact path="/table" component={Table} />*/}
         <Route exact path="/datePicker" component={DatePicker} />
         <Route exact path="/dateRangePicker" component={DateRangePicker} />
-        {/*<Route exact path="/trigger" component={Trigger} />*/}
+        <Route exact path="/trigger" component={Trigger} />
         <Route exact path="/tooltip" component={Tooltip} />
-        {/*<Route exact path="/portal" component={Portal} />*/}
-        {/*<Route exact path="/select" component={Select} />*/}
+        <Route exact path="/portal" component={Portal} />
+        <Route exact path="/select" component={Select} />
         {/*<Route exact path="/dialog" component={Dialog} />*/}
         {/*<Route exact path="/form" component={Form} />*/}
         <Route exact path="/grid" component={Grid} />

@@ -3,65 +3,57 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
-import './style/index.scss';
-
 import Trigger from '../Trigger';
 import Popover from '../Popover/index';
 import Clickable from '../Clickable';
 
-const propTypes = {
-  className: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.any,
-    title: PropTypes.string.isRequired,
-  })),
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.array,
-    PropTypes.bool,
-  ]),
-  width: PropTypes.number,
-  optionsHeight: PropTypes.number,
-  getPopoverContainer: PropTypes.func,
-  placement: PropTypes.shape({
-    vertical: PropTypes.string,
-    horizontal: PropTypes.string,
-  }),
-  title: PropTypes.string,
-  defaultTitle: PropTypes.string,
-  onChange: PropTypes.func,
-  disabled: PropTypes.bool,
-  popoverClassName: PropTypes.string,
-  renderTitle: PropTypes.func,
-  renderOption: PropTypes.func,
-  multiple: PropTypes.bool,
-  max: PropTypes.number,
-};
-
-const defaultProps = {
-  width: null,
-  className: null,
-  optionsHeight: 200,
-  defaultTitle: '请选择',
-  onChange: () => null,
-  placement: {
-    vertical: Popover.PLACEMENT_BOTTOM,
-    horizontal: Popover.PLACEMENT_CENTER,
-  },
-  getPopoverContainer: null,
-  value: null,
-  options: [],
-  disabled: false,
-  title: null,
-  popoverClassName: null,
-  renderTitle: null,
-  renderOption: null,
-  multiple: false,
-  max: null,
-};
+import './style.scss';
 
 class Select extends React.PureComponent {
+  static propTypes = {
+    className: PropTypes.string,
+    options: PropTypes.arrayOf(PropTypes.shape({
+      value: PropTypes.any,
+      title: PropTypes.string.isRequired,
+    })),
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.array,
+      PropTypes.bool,
+    ]),
+    width: PropTypes.number,
+    optionsHeight: PropTypes.number,
+    getPopoverContainer: PropTypes.func,
+    title: PropTypes.string,
+    defaultTitle: PropTypes.string,
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool,
+    popoverClassName: PropTypes.string,
+    renderTitle: PropTypes.func,
+    renderOption: PropTypes.func,
+    multiple: PropTypes.bool,
+    max: PropTypes.number,
+  };
+
+  static defaultProps = {
+    width: null,
+    className: null,
+    optionsHeight: 200,
+    defaultTitle: '请选择',
+    onChange: () => null,
+    getPopoverContainer: null,
+    value: null,
+    options: [],
+    disabled: false,
+    title: null,
+    popoverClassName: null,
+    renderTitle: null,
+    renderOption: null,
+    multiple: false,
+    max: null,
+  };
+
   constructor(props) {
     super(props);
 
@@ -69,11 +61,7 @@ class Select extends React.PureComponent {
       active: false,
       triggerWidth: 0,
       multipleSelection: [],
-      placement: this.props.placement,
     };
-
-    this.confirmSelection = this.confirmSelection.bind(this);
-    this.setActive = this.setActive.bind(this);
   }
 
   componentDidMount() {
@@ -88,7 +76,7 @@ class Select extends React.PureComponent {
     }
   }
 
-  setActive(active) {
+  setActive = (active) => {
     const old = this.state.active;
 
     this.setState({ active }, () => {
@@ -100,7 +88,7 @@ class Select extends React.PureComponent {
         this.setTriggerWidth();
       }
     });
-  }
+  };
 
   setTriggerWidth() {
     this.setState({
@@ -158,7 +146,7 @@ class Select extends React.PureComponent {
     }
   }
 
-  confirmSelection() {
+  confirmSelection = () => {
     const { multipleSelection } = this.state;
 
     if (!isEqual(multipleSelection, this.props.value)) {
@@ -167,7 +155,7 @@ class Select extends React.PureComponent {
 
     this.setState({ multipleSelection: [] });
     this.setActive(false);
-  }
+  };
 
   render() {
     return (
@@ -175,15 +163,13 @@ class Select extends React.PureComponent {
         active={this.state.active}
         disabled={this.props.disabled}
         getPopoverContainer={this.props.getPopoverContainer}
-        enterClassName={this.state.placement.vertical === Popover.PLACEMENT_BOTTOM
-          ? 'slide-down-in' : 'slide-up-in'}
-        leaveClassName={this.state.placement.vertical === Popover.PLACEMENT_BOTTOM
-          ? 'slide-down-out' : 'slide-up-out'}
+        enterClassName="slide-down-in"
+        leaveClassName="slide-down-out"
         popover={
           <Popover
-            placement={this.state.placement}
-            onPlacementChange={placement => this.setState({ placement })}
+            placement={Popover.placement.BOTTOM}
             offset={5}
+            hasArrow={false}
             className={classNames(
               'select-popup',
               this.props.popoverClassName,
@@ -204,7 +190,7 @@ class Select extends React.PureComponent {
                 }}
                 ref={(el) => { this.optionsWrapper = el; }}
               >
-                <ul>
+                <div className="selections">
                   {this.props.options != null && this.props.options.map(i => (
                     <Clickable
                       onClick={(e) => {
@@ -213,8 +199,8 @@ class Select extends React.PureComponent {
                       }}
                       key={i.value}
                     >
-                      <li
-                        className={classNames({
+                      <div
+                        className={classNames('selection', {
                           active: this.props.multiple
                             ? this.state.multipleSelection.indexOf(i.value) !== -1
                             : i.value === this.props.value,
@@ -233,10 +219,10 @@ class Select extends React.PureComponent {
                           ? this.props.renderOption(i.value)
                           : i.title
                         }
-                      </li>
+                      </div>
                     </Clickable>
                   ))}
-                </ul>
+                </div>
               </div>
 
               {this.props.multiple && (
@@ -267,7 +253,7 @@ class Select extends React.PureComponent {
         >
           <div
             className={classNames(
-              'select-trigger',
+              'custom-select',
               { active: this.state.active },
             )}
             ref={(el) => { this.trigger = el; }}
@@ -283,8 +269,5 @@ class Select extends React.PureComponent {
     );
   }
 }
-
-Select.propTypes = propTypes;
-Select.defaultProps = defaultProps;
 
 export default Select;

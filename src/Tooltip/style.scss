@@ -5,6 +5,7 @@
 .popover.tooltip {
   background-color: $tooltip-bg;
   border: none;
+  z-index: $zindex-tooltip;
 
   .popover-body {
     color: $tooltip-color;

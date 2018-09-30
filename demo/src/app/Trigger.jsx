@@ -1,11 +1,9 @@
 import React from 'react';
-import classNames from 'classnames';
 
-import ShowcaseContainer from '../ShowcaseContainer';
+import ShowcaseContainer from './ShowcaseContainer/index';
 
-import style from './style/index.scss';
-import Trigger from '../../../../src/Trigger';
-import Popover from '../../../../src/Popover/Popover';
+import Trigger from '../../../src/Trigger';
+import Popover from '../../../src/Popover/Popover';
 
 class ShowcaseTrigger extends React.PureComponent {
   constructor(props) {
@@ -21,18 +19,18 @@ class ShowcaseTrigger extends React.PureComponent {
           <div key={`${index + 1}`} className="mt-1">
             <Trigger
               action="click"
-              getPopoverContainer={() => this.wrapper}
-              enterClassName="move-right-in"
-              leaveClassName="move-right-out"
+              enterClassName="move-up-in"
+              leaveClassName="move-up-out"
               popover={(
                 <Popover
-                  className={classNames(
-                    'p-3',
-                    style.popover,
-                  )}
                   ref={(el) => { this.popoverElements[index] = el; }}
                 >
-                  Popover Content
+                  <div className="popover-header">
+                    Popover Header
+                  </div>
+                  <div className="popover-body">
+                    Popover Content
+                  </div>
                 </Popover>
               )}
             >
