@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 import remove from 'lodash/remove';
 import { isOlderIE } from '../utils/browser';
 
-import './style/index.scss';
+import './style.scss';
 
 const INIT = 'init';
 const MOUNTED = 'mounted';
@@ -140,7 +140,7 @@ class Animate extends React.PureComponent {
       className.push(this.props.activeClass);
     }
 
-    if (status === MOUNTED) {
+    if (status === INIT || status === MOUNTED) {
       className.push(this.props.enterClassName);
     }
 

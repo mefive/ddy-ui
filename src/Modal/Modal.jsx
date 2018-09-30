@@ -112,15 +112,24 @@ class Modal extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
-        {this.props.visible && (
-          <Portal>
-            <div className="modal-backdrop show" />
-          </Portal>
-        )}
+        <Animate
+          enterClassName="modal-fade-in"
+          enterDuration={300}
+          leaveClassName="modal-fade-out"
+          leaveDuration={300}
+        >
+          {this.props.visible && (
+            <Portal>
+              <div className="modal-backdrop show" />
+            </Portal>
+          )}
+        </Animate>
 
         <Animate
           enterClassName="scale-in"
+          enterDuration={300}
           leaveClassName="scale-out"
+          leaveDuration={300}
         >
           {this.props.visible && (
             <Portal>
