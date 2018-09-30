@@ -1,12 +1,23 @@
 @import "../style/variables";
 
 .popover {
-  position: absolute;
   top: 0;
   left: 0;
-  background-color: $white;
+  z-index: $zindex-dropdown;
 
-  &.placed {
-    opacity: 1;
+  &.bs-popover-top,
+  &.bs-popover-bottom {
+    .arrow {
+      left: 50%;
+      margin-left: -0.5 * ($popover-arrow-width);
+    }
+  }
+
+  &.bs-popover-left,
+  &.bs-popover-right {
+    .arrow {
+      top: 50%;
+      margin-top: -0.5 * ($popover-arrow-height);
+    }
   }
 }

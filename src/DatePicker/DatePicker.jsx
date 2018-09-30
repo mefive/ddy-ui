@@ -40,10 +40,6 @@ class DatePicker extends React.PureComponent {
 
     this.state = {
       active: false,
-      placement: {
-        vertical: Popover.PLACEMENT_BOTTOM,
-        horizontal: Popover.PLACEMENT_CENTER,
-      },
       cursorWidth: 0,
     };
 
@@ -126,16 +122,14 @@ class DatePicker extends React.PureComponent {
 
         <Trigger
           disabled={this.props.disabled}
-          enterClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-in' : 'slide-down-in'}
-          leaveClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-out' : 'slide-down-out'}
+          enterClassName="slide-down-in"
+          leaveClassName="slide-down-out"
           active={this.state.active}
           getPopoverContainer={this.props.getPopoverContainer}
           popover={(
             <Popover
-              placement={this.state.placement}
-              onPlacementChange={placement => this.setState({ placement })}
-              className="date-picker-popover"
-              offset={10}
+              placement={Popover.placement.BOTTOM}
+              className="p-2"
             >
               <Calendar
                 type={this.props.type}

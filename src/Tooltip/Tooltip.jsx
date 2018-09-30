@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Trigger from '../Trigger';
 import Popover from '../Popover';
 
-import './style/index.scss';
+import './style.scss';
 
 const propTypes = {
   title: PropTypes.string,

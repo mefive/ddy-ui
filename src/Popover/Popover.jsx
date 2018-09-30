@@ -2,64 +2,42 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
 
 import './style.scss';
 
-const PLACEMENT_TOP = 'top';
-const PLACEMENT_TOP_ALIGN = 'top-align';
-const PLACEMENT_BOTTOM = 'bottom';
-const PLACEMENT_BOTTOM_ALIGN = 'bottom-align';
-const PLACEMENT_LEFT = 'left';
-const PLACEMENT_LEFT_ALIGN = 'left-align';
-const PLACEMENT_RIGHT = 'right';
-const PLACEMENT_RIGHT_ALIGN = 'right-align';
-const PLACEMENT_CENTER = 'center';
+const TOP = 'top';
+const BOTTOM = 'bottom';
+const LEFT = 'left';
+const RIGHT = 'right';
 
 class Popover extends React.PureComponent {
-  static PLACEMENT_TOP = PLACEMENT_TOP;
-  static PLACEMENT_TOP_ALIGN = PLACEMENT_TOP_ALIGN;
-  static PLACEMENT_BOTTOM = PLACEMENT_BOTTOM;
-  static PLACEMENT_BOTTOM_ALIGN = PLACEMENT_BOTTOM_ALIGN;
-  static PLACEMENT_LEFT = PLACEMENT_LEFT;
-  static PLACEMENT_LEFT_ALIGN = PLACEMENT_LEFT_ALIGN;
-  static PLACEMENT_RIGHT = PLACEMENT_RIGHT;
-  static PLACEMENT_RIGHT_ALIGN = PLACEMENT_RIGHT_ALIGN;
-  static PLACEMENT_CENTER = PLACEMENT_CENTER;
+  static placement = {
+    TOP,
+    BOTTOM,
+    LEFT,
+    RIGHT,
+  };
 
   static propTypes = {
     className: PropTypes.string,
-    defaultPlacement: PropTypes.shape({
-      vertical: PropTypes.string,
-      horizontal: PropTypes.string,
-    }),
-    placement: PropTypes.shape({
-      vertical: PropTypes.string,
-      horizontal: PropTypes.string,
-    }),
-    adjustPlacement: PropTypes.bool,
-    onPlacementChange: PropTypes.func,
+    placement: PropTypes.string,
     container: PropTypes.instanceOf(Node),
     anchor: PropTypes.instanceOf(Node),
     offset: PropTypes.number,
     children: PropTypes.node,
     style: PropTypes.shape({}),
+    hasArrow: PropTypes.bool,
   };
 
   static defaultProps = {
     className: null,
     container: null,
     anchor: null,
-    defaultPlacement: {
-      vertical: PLACEMENT_TOP,
-      horizontal: PLACEMENT_CENTER,
-    },
-    placement: null,
-    adjustPlacement: true,
-    onPlacementChange: () => {},
-    offset: 10,
+    placement: TOP,
+    offset: 0,
     children: null,
     style: {},
+    hasArrow: true,
   };
 
   constructor(props) {
@@ -67,31 +45,13 @@ class Popover extends React.PureComponent {
 
     this.state = {
       style: null,
-      placement: { ...this.getPlacement() },
     };
   }
 
   componentDidMount() {
     this.hasMounted = true;
     window.addEventListener('resize', this.onResize);
-
-    if (this.props.adjustPlacement) {
-      const adjustPlacement = this.getAdjustedPlacement();
-
-      if (!isEqual(adjustPlacement, this.getPlacement())) {
-        this.setPlacement(adjustPlacement, this.place);
-      } else {
-        this.place();
-      }
-    } else {
-      this.place();
-    }
-  }
-
-  componentWillReceiveProps({ placement }) {
-    if (placement !== this.props.placement) {
-      this.setState({ placement: { ...placement } }, this.place);
-    }
+    this.place();
   }
 
   componentWillUnmount() {
@@ -99,107 +59,7 @@ class Popover extends React.PureComponent {
     window.removeEventListener('resize', this.onResize);
   }
 
-  onResize = debounce(() => {
-    this.place();
-  });
-
-  getPlacement() {
-    if (this.props.placement != null) {
-      return this.props.placement;
-    }
-
-    if (this.state == null) {
-      return this.props.defaultPlacement;
-    }
-
-    return this.state.placement;
-  }
-
-  setPlacement(placement, callback = () => {}) {
-    if (this.props.placement != null) {
-      this.props.onPlacementChange(placement);
-    } else {
-      this.setState({ placement }, callback);
-    }
-  }
-
-  getAdjustedPlacement() {
-    const placement = { ...this.getPlacement() };
-
-    if (this.node == null || this.props.anchor == null) {
-      return placement;
-    }
-
-    const {
-      left, top, right, bottom, height: anchorHeight, width: anchorWidth,
-    } = this.props.anchor.getBoundingClientRect();
-
-    const { height, width } = this.node.getBoundingClientRect();
-
-    const toBottom = window.innerHeight - bottom;
-    const toRight = window.innerWidth - right;
-
-    const notEnough = new Set();
-
-    if (top < height) {
-      notEnough.add(PLACEMENT_TOP);
-    }
-
-    if ((top + anchorHeight) < height) {
-      notEnough.add(PLACEMENT_BOTTOM_ALIGN);
-    }
-
-    if (toBottom < height) {
-      notEnough.add(PLACEMENT_BOTTOM);
-    }
-
-    if ((toBottom + anchorHeight) < height) {
-      notEnough.add(PLACEMENT_TOP_ALIGN);
-    }
-
-    if (left < width) {
-      notEnough.add(PLACEMENT_LEFT);
-    }
-
-    if ((left + anchorWidth) < width) {
-      notEnough.add(PLACEMENT_RIGHT_ALIGN);
-    }
-
-    if (toRight < width) {
-      notEnough.add(PLACEMENT_RIGHT);
-    }
-
-    if ((toRight + anchorWidth) < width) {
-      notEnough.add(PLACEMENT_LEFT_ALIGN);
-    }
-
-    const oppositePlacements = [
-      [PLACEMENT_TOP, PLACEMENT_BOTTOM],
-      [PLACEMENT_BOTTOM_ALIGN, PLACEMENT_TOP_ALIGN],
-      [PLACEMENT_LEFT, PLACEMENT_RIGHT],
-      [PLACEMENT_RIGHT_ALIGN, PLACEMENT_LEFT_ALIGN],
-    ];
-
-    const correct = (k, p) => {
-      for (let i = 0; i < oppositePlacements.length; i += 1) {
-        const pair = oppositePlacements[i];
-
-        const index = pair.indexOf(p);
-
-        if (index !== -1) {
-          if (notEnough.has(pair[index]) && !notEnough.has(pair[index === 0 ? 1 : 0])) {
-            placement[k] = pair[index === 0 ? 1 : 0];
-          }
-          break;
-        }
-      }
-    };
-
-    correct('vertical', placement.vertical);
-    correct('horizontal', placement.horizontal);
-
-    return placement;
-  }
+  onResize = debounce(() => this.place());
 
   place = () => {
     if (!this.hasMounted || this.props.container == null || this.props.anchor == null) {
@@ -221,37 +81,57 @@ class Popover extends React.PureComponent {
     let marginLeft = 0;
     let marginTop = 0;
 
-    const placement = this.getPlacement();
+    // offset
+    let { offset } = this.props;
 
-    switch (placement.vertical) {
-      case PLACEMENT_TOP: {
-        marginTop = -this.props.offset;
+    if (this.props.hasArrow) {
+      offset += 10;
+    }
+
+    switch (this.props.placement) {
+      case TOP: {
+        marginTop = -offset;
+        break;
+      }
+
+      case BOTTOM: {
+        marginTop = offset;
+        break;
+      }
+
+      case LEFT: {
+        marginLeft = -offset;
+        break;
+      }
+
+      case RIGHT: {
+        marginLeft = offset;
+        break;
+      }
+
+      default:
+        break;
+    }
+
+    // placement
+    switch (this.props.placement) {
+      case TOP: {
         top = anchorRect.top - popoverHeight - containerRect.top;
         break;
       }
 
-      case PLACEMENT_TOP_ALIGN: {
-        marginTop = 0;
-        top = anchorRect.top - containerRect.top;
-        break;
-      }
-
-      case PLACEMENT_BOTTOM: {
-        marginTop = this.props.offset;
-        top = (anchorRect.top + anchorHeight) - containerRect.top;
-        console.log(top)
-        break;
-      }
-
-      case PLACEMENT_BOTTOM_ALIGN: {
-        marginTop = this.props.offset;
+      case BOTTOM: {
         top = (anchorRect.top + anchorHeight) - containerRect.top;
         break;
       }
 
-      case PLACEMENT_CENTER: {
-        marginTop = 0;
-        top = (anchorRect.top - containerRect.top - (popoverHeight / 2)) + (anchorHeight / 2);
+      case LEFT: {
+        left = anchorRect.left - popoverWidth - containerRect.left;
+        break;
+      }
+
+      case RIGHT: {
+        left = (anchorRect.left + anchorWidth) - containerRect.left;
         break;
       }
 
@@ -259,41 +139,23 @@ class Popover extends React.PureComponent {
         break;
     }
 
-    switch (placement.horizontal) {
-      case PLACEMENT_LEFT: {
-        left = anchorRect.left - this.props.offset - popoverWidth - containerRect.left;
-        marginLeft = 0;
+    // align
+    switch (this.props.placement) {
+      case TOP:
+      case BOTTOM: {
+        left = (anchorRect.left - containerRect.left) + (0.5 * (anchorWidth - popoverWidth));
         break;
       }
 
-      case PLACEMENT_LEFT_ALIGN: {
-        left = anchorRect.left - containerRect.left;
-        marginLeft = 0;
-        break;
-      }
-
-      case PLACEMENT_RIGHT: {
-        left = (anchorRect.left + anchorWidth + this.props.offset) - containerRect.left;
-        marginLeft = 0;
-        break;
-      }
-
-      case PLACEMENT_RIGHT_ALIGN: {
-        left = (anchorRect.left + anchorWidth) - popoverWidth - containerRect.left;
-        marginLeft = 0;
-        break;
-      }
-
-      case PLACEMENT_CENTER: {
-        left = (anchorRect.left + (anchorWidth / 2)) - containerRect.left;
-        marginLeft = -(popoverWidth / 2);
+      case LEFT:
+      case RIGHT: {
+        top = (anchorRect.top - containerRect.top) + (0.5 * (anchorHeight - popoverHeight));
         break;
       }
 
       default:
         break;
     }
-
 
     if (this.props.container !== document.body) {
       top += this.props.container.scrollTop;
@@ -316,15 +178,12 @@ class Popover extends React.PureComponent {
   };
 
   render() {
-    const placement = this.getPlacement();
-
     return (
       <div
         className={
           classNames(
             'popover',
-            `place-${placement.vertical}`,
-            `place-${placement.horizontal}`,
+            `bs-popover-${this.props.placement}`,
             this.props.className,
           )
         }
@@ -336,6 +195,8 @@ class Popover extends React.PureComponent {
       >
         <div>
           {this.props.children}
+
+          {this.props.hasArrow && (<div className="arrow" />)}
         </div>
       </div>
     );

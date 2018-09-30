@@ -53,10 +53,6 @@ class DateRangePicker extends React.PureComponent {
       active: false,
       start: this.props.start,
       end: this.props.end,
-      placement: {
-        vertical: Popover.PLACEMENT_BOTTOM,
-        horizontal: Popover.PLACEMENT_CENTER,
-      },
       cursorWidth: 0,
     };
 
@@ -176,17 +172,15 @@ class DateRangePicker extends React.PureComponent {
 
         <Trigger
           active={this.state.active}
-          enterClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-in' : 'slide-down-in'}
-          leaveClassName={this.state.placement.vertical === Popover.PLACEMENT_TOP ? 'slide-up-out' : 'slide-down-out'}
+          enterClassName="slide-down-in"
+          leaveClassName="slide-down-out"
           disabled={this.props.disabled}
           getPopoverContainer={this.props.getPopoverContainer}
           onActiveChange={this.setActive}
           popover={
             <Popover
-              className="date-range-popover"
-              placement={this.state.placement}
-              onPlacementChange={placement => this.setState({ placement })}
-              offset={10}
+              className="p-2"
+              placement={Popover.placement.BOTTOM}
             >
               <Row>
                 <Col span={6}>
@@ -216,7 +210,7 @@ class DateRangePicker extends React.PureComponent {
               </Row>
 
               <div
-                className="actions"
+                className="text-right"
               >
                 <div
                   className={classNames(
