@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import scrollTop from 'dom-helpers/query/scrollTop';
-
-import './style/index.scss';
 import Ghost from './Ghost';
+
+import './style.scss';
 
 const propTypes = {
   children: PropTypes.node,
