@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
 
 import Trigger from '../Trigger';
 import Popover from '../Popover/index';

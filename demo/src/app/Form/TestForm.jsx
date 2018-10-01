@@ -26,12 +26,12 @@ const defaultProps = {
 };
 
 const labelCol = {
-  xs: 6,
+  md: 6,
   alignRight: true,
 };
 
 const wrapperCol = {
-  xs: 6,
+  md: 6,
 };
 
 class TestForm extends React.PureComponent {
@@ -74,7 +74,7 @@ class TestForm extends React.PureComponent {
               minLength: 3,
             }],
           })((
-            <Input id="name" onBlur={() => validate('name')} />
+            <Input className="form-control" id="name" onBlur={() => validate('name')} />
           ))}
         </FormItem>
 
@@ -82,6 +82,7 @@ class TestForm extends React.PureComponent {
           label="Gender"
           labelCol={labelCol}
           wrapperCol={wrapperCol}
+          labelClassName="pt-0"
         >
           {getFieldDecorator('gender')((
             <RadioGroup
@@ -111,40 +112,40 @@ class TestForm extends React.PureComponent {
           labelCol={labelCol}
           wrapperCol={wrapperCol}
         >
-          <div className="form-item-line-height">
+          <div className="form-control-plaintext">
             {dataSource.age}
           </div>
         </FormItem>
 
-        <FormItem
-          label="Avatar"
-          labelCol={labelCol}
-          wrapperCol={wrapperCol}
-        >
-          {getFieldDecorator('avatar', {
-            rules: [{
-              validator: (avatar) => {
-                if (avatar != null && typeof avatar === 'object') {
-                  if (!avatar.type.startsWith('image')) {
-                    return false;
-                  }
-                }
+        {/*<FormItem*/}
+          {/*label="Avatar"*/}
+          {/*labelCol={labelCol}*/}
+          {/*wrapperCol={wrapperCol}*/}
+        {/*>*/}
+          {/*{getFieldDecorator('avatar', {*/}
+            {/*rules: [{*/}
+              {/*validator: (avatar) => {*/}
+                {/*if (avatar != null && typeof avatar === 'object') {*/}
+                  {/*if (!avatar.type.startsWith('image')) {*/}
+                    {/*return false;*/}
+                  {/*}*/}
+                {/*}*/}
 
-                return true;
-              },
-              message: '请选择图片',
-            }, {
-              required: true,
-              message: '图片必传',
-            }],
-          })((
-            <ImageUploader width={80} uploadUrl="/api/upload/images" />
-          ))}
-        </FormItem>
+                {/*return true;*/}
+              {/*},*/}
+              {/*message: '请选择图片',*/}
+            {/*}, {*/}
+              {/*required: true,*/}
+              {/*message: '图片必传',*/}
+            {/*}],*/}
+          {/*})((*/}
+            {/*<ImageUploader width={80} uploadUrl="/api/upload/images" />*/}
+          {/*))}*/}
+        {/*</FormItem>*/}
 
         <div className="mt-2">
           <Row>
-            <Col xs={{ span: 6, offset: 6 }}>
+            <Col md={{ span: 6, offset: 6 }}>
               <Clickable onClick={this.onSubmit}>
                 <div className="btn btn-primary">
                   提交

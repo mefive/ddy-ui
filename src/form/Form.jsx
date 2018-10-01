@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import './style/index.scss';
 
 const propTypes = {
   className: PropTypes.string,
@@ -33,7 +32,7 @@ class Form extends React.PureComponent {
           {this.props.children}
         </div>
 
-        <input type="submit" className="hidden" />
+        <input type="submit" className="d-none" />
       </form>
     );
   }

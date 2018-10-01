@@ -4,12 +4,15 @@ import classNames from 'classnames';
 
 import { Row, Col } from '../grid';
 
+import './style.scss';
+
 const propTypes = {
   label: PropTypes.string,
   id: PropTypes.string,
   children: PropTypes.node,
   required: PropTypes.bool,
   className: PropTypes.string,
+  labelClassName: PropTypes.string,
 
   labelCol: PropTypes.shape({
     alignRight: PropTypes.bool,
@@ -23,6 +26,7 @@ const defaultProps = {
   children: null,
   required: false,
   className: null,
+  labelClassName: null,
 
   labelCol: {
     alignRight: false,
@@ -53,17 +57,17 @@ class FormItem extends React.PureComponent {
     return (
       <Row
         className={classNames(
-          'form-item',
+          'form-group',
           this.props.className,
-          { 'has-error': error != null },
         )}
       >
         {this.props.label != null && (
           <Col
             {...this.props.labelCol}
             className={classNames(
-              'label-col',
-              { right: this.props.labelCol.alignRight },
+              'col-form-label',
+              this.props.labelClassName,
+             { right: this.props.labelCol.alignRight },
             )}
           >
             <label
@@ -77,11 +81,11 @@ class FormItem extends React.PureComponent {
           </Col>
         )}
 
-        <Col {...this.props.wrapperCol} className="form-item">
+        <Col {...this.props.wrapperCol}>
           {this.props.children}
 
           {error && (
-            <div className="error">
+            <div className="invalid-feedback">
               {error}
             </div>
           )}

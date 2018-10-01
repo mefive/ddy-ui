@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import FileUploader from '../FileUploader';
 
-import style from './style/index.scss';
+import style from './style.scss';
 
 const propTypes = {
   uploadUrl: PropTypes.string.isRequired,

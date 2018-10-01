@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './style/index.scss';
+import Input from '../Input';
 
 const propTypes = {
   value: PropTypes.oneOfType([PropTypes.any]),
@@ -11,20 +12,28 @@ const propTypes = {
     title: PropTypes.string,
   })),
   onChange: PropTypes.func,
-  renderLabel: PropTypes.func,
+  renderOption: PropTypes.func,
   className: PropTypes.string,
+  name: PropTypes.string,
 };
 
 const defaultProps = {
   value: null,
   options: [],
   onChange: () => null,
-  renderLabel: null,
+  renderOption: null,
   className: null,
+  name: null,
 };
 
 class RadioGroup extends React.PureComponent {
+  static getId(value) {
+    return `form-check-option-id-${value}`;
+  }
+
   render() {
+    const { renderOption } = this.props;
+
     return (
       <div
         className={classNames(
@@ -32,20 +41,27 @@ class RadioGroup extends React.PureComponent {
           this.props.className,
         )}
       >
-        {this.props.options.map(option => (
-          <label key={option.value}>
-            <input
-              type="radio"
-              checked={option.value === this.props.value}
-              onChange={(e) => {
-              this.props.onChange(option.value, e);
-            }}
-            />
-            <span>
-              {this.props.renderLabel == null ? option.title : this.props.renderLabel(option)}
-            </span>
-          </label>
-      ))}
+        {this.props.options.map(option => (renderOption
+          ? renderOption(option)
+          : (
+            <div className="form-check">
+              <Input
+                id={RadioGroup.getId(option.value)}
+                onChange={this.props.onChange}
+                type="radio"
+                checked={option.value === this.props.value}
+                className="form-check-input"
+                name={this.props.name}
+              />
+
+              <label
+                htmlFor={RadioGroup.getId(option.value)}
+                className="form-check-label"
+              >
+                {option.title}
+              </label>
+            </div>
+          )))}
       </div>
     );
   }

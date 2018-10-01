@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
@@ -45,7 +46,9 @@ const withForm = (WrappedComponent) => {
         this.rules[name] = options.rules;
 
         return React.cloneElement(Item, {
-          ...Item.props,
+          className: classNames(Item.props.className, {
+            'is-invalid': error != null,
+          }),
           value: this.props.dataSource[name],
           onChange: (value) => {
             if (isFunction(Item.props.onChange)) {
@@ -55,6 +58,7 @@ const withForm = (WrappedComponent) => {
             this.clearError(name);
             this.props.onChange(name, value);
           },
+          name,
           error,
         });
       };
