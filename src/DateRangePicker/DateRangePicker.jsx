@@ -179,7 +179,7 @@ class DateRangePicker extends React.PureComponent {
           onActiveChange={this.setActive}
           popover={
             <Popover
-              className="p-2"
+              className="p-2 shadow"
               placement={Popover.placement.BOTTOM}
             >
               <Row>

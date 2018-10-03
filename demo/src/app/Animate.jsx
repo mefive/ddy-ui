@@ -1,5 +1,6 @@
 import React from 'react';
 import ShowcaseContainer from './ShowcaseContainer/ShowcaseContainer';
+import { CSSTransition, Transition } from 'react-transition-group';
 import Animate from '../../../src/Animate';
 import Clickable from '../../../src/Clickable';
 
@@ -27,12 +28,10 @@ class AnimateShowcase extends React.PureComponent {
           <div className="mt-2">
             <Animate
               enterClassName="slide-down-in"
-              enterDuration={500}
               leaveClassName="slide-down-out"
+              visible={this.state.show}
             >
-              {this.state.show && (
-                <div style={{ width: 50, height: 50, background: '#000' }} />
-              )}
+              <div style={{ width: 50, height: 50, background: '#000' }} />
             </Animate>
           </div>
         </div>

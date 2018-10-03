@@ -48,8 +48,8 @@ class ShowcaseDialog extends React.PureComponent {
           visible={this.state.alert}
           onClose={() => this.setState({ alert: false })}
         >
-          {range(200).map(() => (
-            <h5>Hello mefive</h5>
+          {range(200).map((v, index) => (
+            <h5 key={`${index + 1}`}>Hello mefive</h5>
           ))}
         </Alert>
 

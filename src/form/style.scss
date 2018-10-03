@@ -3,10 +3,17 @@
 
 .form {
   .required {
-    color: $red;
-    font-size: 16px;
-    margin-right: 10px;
-    vertical-align: middle;
+    position: relative;
+    &:before {
+      content: '*';
+      color: $red;
+      font-size: 16px;
+      margin-right: 0.25rem;
+      vertical-align: middle;
+      left: 0;
+      top: 0;
+
+    }
   }
 
   .col-form-label {

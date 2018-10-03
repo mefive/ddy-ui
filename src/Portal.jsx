@@ -32,17 +32,11 @@ class Portal extends React.PureComponent {
   }
 
   render() {
-    const children = React.cloneElement(
-      this.props.children,
-      {
-        className: classNames(
-          this.props.children.props ? this.props.children.props.className : null,
-          this.props.className,
-        ),
-      },
-    );
+    const child = React.Children.only(this.props.children);
 
-    return ReactDOM.createPortal(children, this.container);
+    return ReactDOM.createPortal(React.cloneElement(child, {
+      className: classNames(child.props.className, this.props.className),
+    }), this.container);
   }
 }
 

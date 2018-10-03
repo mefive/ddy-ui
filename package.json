@@ -53,8 +53,9 @@
     "odometer": "^0.4.8",
     "prop-types": "^15.6.0",
     "querystring": "^0.2.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-transition-group": "^2.5.0"
   },
   "devDependencies": {
     "@types/prop-types": "^15.5.2",

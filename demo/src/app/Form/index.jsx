@@ -15,7 +15,8 @@ class ShowcaseForm extends React.PureComponent {
         birthDate: '1985-12-20',
         age: 32,
         gender: 'male',
-        avatar: null,
+        intro: '',
+        rememberMe: true,
       },
       alert: false,
     };
@@ -46,10 +47,6 @@ class ShowcaseForm extends React.PureComponent {
             />
           </Col>
         </Row>
-
-        <div className="mt-2">
-          {JSON.stringify(this.state.dataSource)}
-        </div>
 
         <Alert
           visible={this.state.alert}

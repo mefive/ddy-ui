@@ -47,7 +47,7 @@ class Tooltip extends React.PureComponent {
         defaultActive={this.props.defaultActive}
         popover={(
           <Popover
-            className={classNames('tooltip', this.props.className)}
+            className={classNames('popover-tooltip shadow', this.props.className)}
             style={this.props.style}
             placement={this.props.placement}
           >
@@ -63,8 +63,9 @@ class Tooltip extends React.PureComponent {
         )}
         enterClassName="scale-in"
         leaveClassName="scale-out"
-        enterDuration={100}
-        leaveDuration={100}
+        activeClass="show"
+        enterDuration={200}
+        leaveDuration={200}
         getPopoverContainer={this.props.getPopoverContainer}
         onActiveChange={this.props.onActiveChange}
       >

@@ -72,10 +72,8 @@ class FormItem extends React.PureComponent {
           >
             <label
               htmlFor={this.getLabelFor()}
+              className={classNames({ required: this.props.required })}
             >
-              {this.props.required && (
-                <span className="required">*</span>
-              )}
               {this.props.label}
             </label>
           </Col>

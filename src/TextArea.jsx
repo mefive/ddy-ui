@@ -1,26 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const propTypes = {
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  onChange: PropTypes.func,
-  maxLength: PropTypes.number,
-  showCounter: PropTypes.bool,
-  autoFocus: PropTypes.bool,
-};
-
-const defaultProps = {
-  value: null,
-  onChange: () => {},
-  maxLength: null,
-  showCounter: false,
-  autoFocus: false,
-};
-
 class TextArea extends React.PureComponent {
+  static propTypes = {
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    onChange: PropTypes.func,
+    maxLength: PropTypes.number,
+    showCounter: PropTypes.bool,
+    autoFocus: PropTypes.bool,
+    className: PropTypes.string,
+  };
+
+  static defaultProps = {
+    value: null,
+    onChange: () => {},
+    maxLength: null,
+    showCounter: false,
+    autoFocus: false,
+    className: null,
+  };
+
   componentDidMount() {
     if (this.props.autoFocus) {
       this.input.focus();
@@ -31,8 +33,9 @@ class TextArea extends React.PureComponent {
     const { showCounter, autoFocus, ...props } = this.props;
 
     return (
-      <span>
+      <React.Fragment>
         <textarea
+          className={this.props.className}
           ref={autoFocus ? (el) => { this.input = el; } : null}
           {...props}
           value={props.value || ''}
@@ -44,12 +47,9 @@ class TextArea extends React.PureComponent {
             {this.props.value == null ? 0 : `${this.props.value}`.length}/{this.props.maxLength}
           </div>
         )}
-      </span>
+      </React.Fragment>
     );
   }
 }
-
-TextArea.propTypes = propTypes;
-TextArea.defaultProps = defaultProps;
 
 export default TextArea;

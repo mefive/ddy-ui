@@ -52,8 +52,6 @@ class Input extends React.PureComponent {
       props.indeterminate = true;
     }
 
-    console.log('props', props);
-
     return (
       <input
         {...props}
@@ -98,7 +96,7 @@ class Input extends React.PureComponent {
           }
         }}
       />
-    )
+    );
   }
 
   render() {

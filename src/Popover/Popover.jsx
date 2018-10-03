@@ -71,7 +71,6 @@ class Popover extends React.PureComponent {
   componentDidMount() {
     this.hasMounted = true;
     window.addEventListener('resize', this.onResize);
-    this.place();
   }
 
   componentWillUnmount() {

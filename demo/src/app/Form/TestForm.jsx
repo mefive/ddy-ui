@@ -9,7 +9,8 @@ import Col from '../../../../src/grid/Col';
 import Clickable from '../../../../src/Clickable';
 import { withForm } from '../../../../src/form';
 import RadioGroup from '../../../../src/RadioGroup/RadioGroup';
-import ImageUploader from '../../../../src/ImageUploader/ImageUploader';
+import Checkbox from '../../../../src/Checkbox';
+import TextArea from '../../../../src/TextArea';
 
 const propTypes = {
   dataSource: PropTypes.shape({
@@ -26,12 +27,12 @@ const defaultProps = {
 };
 
 const labelCol = {
-  md: 6,
+  span: 3,
   alignRight: true,
 };
 
 const wrapperCol = {
-  md: 6,
+  span: 9,
 };
 
 class TestForm extends React.PureComponent {
@@ -84,7 +85,11 @@ class TestForm extends React.PureComponent {
           wrapperCol={wrapperCol}
           labelClassName="pt-0"
         >
-          {getFieldDecorator('gender')((
+          {getFieldDecorator('gender', {
+            rules: [{
+              required: true,
+            }],
+          })((
             <RadioGroup
               options={[{
                 value: 'male',
@@ -117,35 +122,31 @@ class TestForm extends React.PureComponent {
           </div>
         </FormItem>
 
-        {/*<FormItem*/}
-          {/*label="Avatar"*/}
-          {/*labelCol={labelCol}*/}
-          {/*wrapperCol={wrapperCol}*/}
-        {/*>*/}
-          {/*{getFieldDecorator('avatar', {*/}
-            {/*rules: [{*/}
-              {/*validator: (avatar) => {*/}
-                {/*if (avatar != null && typeof avatar === 'object') {*/}
-                  {/*if (!avatar.type.startsWith('image')) {*/}
-                    {/*return false;*/}
-                  {/*}*/}
-                {/*}*/}
+        <FormItem
+          label="Introduction"
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
+        >
+          {getFieldDecorator('intro', {
+            rules: [{
+              required: true,
+            }],
+          })((
+            <TextArea maxLength={256} className="form-control" />
+          ))}
+        </FormItem>
 
-                {/*return true;*/}
-              {/*},*/}
-              {/*message: '请选择图片',*/}
-            {/*}, {*/}
-              {/*required: true,*/}
-              {/*message: '图片必传',*/}
-            {/*}],*/}
-          {/*})((*/}
-            {/*<ImageUploader width={80} uploadUrl="/api/upload/images" />*/}
-          {/*))}*/}
-        {/*</FormItem>*/}
+        <Row className="form-group">
+          <Col span={wrapperCol.span} offset={labelCol.span}>
+            {getFieldDecorator('rememberMe')((
+              <Checkbox label="Remember me" />
+            ))}
+          </Col>
+        </Row>
 
-        <div className="mt-2">
+        <div className="mt-4">
           <Row>
-            <Col md={{ span: 6, offset: 6 }}>
+            <Col md={{ span: 6, offset: labelCol.span }}>
               <Clickable onClick={this.onSubmit}>
                 <div className="btn btn-primary">
                   提交

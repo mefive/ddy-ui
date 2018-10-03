@@ -129,7 +129,7 @@ class DatePicker extends React.PureComponent {
           popover={(
             <Popover
               placement={Popover.placement.BOTTOM}
-              className="p-2"
+              className="p-2 shadow"
             >
               <Calendar
                 type={this.props.type}

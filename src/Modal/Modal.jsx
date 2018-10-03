@@ -117,12 +117,11 @@ class Modal extends React.PureComponent {
           enterDuration={300}
           leaveClassName="modal-fade-out"
           leaveDuration={300}
+          visible={this.props.visible}
         >
-          {this.props.visible && (
-            <Portal>
-              <div className="modal-backdrop show" />
-            </Portal>
-          )}
+          <Portal>
+            <div className="modal-backdrop show" />
+          </Portal>
         </Animate>
 
         <Animate
@@ -130,49 +129,48 @@ class Modal extends React.PureComponent {
           enterDuration={300}
           leaveClassName="scale-out"
           leaveDuration={300}
+          visible={this.props.visible}
         >
-          {this.props.visible && (
-            <Portal>
+          <Portal>
+            <div
+              className={classNames(
+                'modal',
+                this.props.className,
+              )}
+            >
               <div
-                className={classNames(
-                  'modal',
-                  this.props.className,
-                )}
+                className="modal-dialog"
+                ref={this.dialog}
+                style={{
+                  marginLeft: this.state.marginLeft,
+                  marginTop: this.state.marginTop,
+                  minWidth: this.props.width,
+                }}
               >
-                <div
-                  className="modal-dialog"
-                  ref={this.dialog}
-                  style={{
-                    marginLeft: this.state.marginLeft,
-                    marginTop: this.state.marginTop,
-                    minWidth: this.props.width,
-                  }}
-                >
-                  <div className="modal-content">
-                    <div className="modal-header" ref={this.dialogHeader}>
-                      <h5 className="modal-title">{this.props.title}</h5>
-                      {this.props.onClose != null && (
-                      <Clickable onClick={this.props.onClose}>
-                        <div className="close">
-                          <i className="fas fa-times" />
-                        </div>
-                      </Clickable>
-                        )}
-                    </div>
+                <div className="modal-content">
+                  <div className="modal-header" ref={this.dialogHeader}>
+                    <h5 className="modal-title">{this.props.title}</h5>
+                    {this.props.onClose != null && (
+                    <Clickable onClick={this.props.onClose}>
+                      <div className="close">
+                        <i className="fas fa-times" />
+                      </div>
+                    </Clickable>
+                      )}
+                  </div>
 
-                    <div
-                      style={{
-                          maxHeight: this.state.bodyMaxHeight,
-                          overflowY: 'auto',
-                        }}
-                    >
-                      {this.props.children}
-                    </div>
+                  <div
+                    style={{
+                        maxHeight: this.state.bodyMaxHeight,
+                        overflowY: 'auto',
+                      }}
+                  >
+                    {this.props.children}
                   </div>
                 </div>
               </div>
-            </Portal>
-          )}
+            </div>
+          </Portal>
         </Animate>
       </React.Fragment>
     );

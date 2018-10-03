@@ -172,7 +172,7 @@ class Select extends React.PureComponent {
             offset={5}
             hasArrow={false}
             className={classNames(
-              'select-popup',
+              'select-popup shadow',
               this.props.popoverClassName,
             )}
           >
