@@ -1,3 +1,16 @@
 $fa-font-path: "../../../../src/style/fa/webfonts";
 @import "../../../../src/style/index";
 $body-bg: #EFF3F6;
+
+.showcase-nav {
+  transition-property: box-shadow, background;
+  transition-duration: .2s;
+  display: block;
+  color: $gray-600;
+
+  &:hover {
+    box-shadow: $box-shadow;
+    color: $yiq-text-dark;
+    text-decoration: none;
+  }
+}

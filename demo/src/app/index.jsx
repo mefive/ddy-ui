@@ -101,7 +101,7 @@ const Port = () => (
     <div className="row">
       {links.map(({ url, title, icon }) => (
         <div key={url} className="col-lg-3 col-md-4 col-sm-6">
-          <NavLink to={url} className="jumbotron bg-light text-black-50 shadow d-block">
+          <NavLink to={url} className="jumbotron showcase-nav">
             <div className="lead text-center">
               <div>
                 {title}
