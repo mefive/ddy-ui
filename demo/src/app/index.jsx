@@ -10,7 +10,7 @@ import {
 import './style/index.scss';
 
 // pages
-// import Table from './Table';
+import Table from './Table';
 import DatePicker from './DatePicker';
 import DateRangePicker from './DateRangePicker';
 import Trigger from './Trigger';
@@ -98,7 +98,7 @@ ReactDOM.render(
   <div className="container pt-3">
     <Router>
       <Switch>
-        {/*<Route exact path="/table" component={Table} />*/}
+        <Route exact path="/table" component={Table} />
         <Route exact path="/datePicker" component={DatePicker} />
         <Route exact path="/dateRangePicker" component={DateRangePicker} />
         <Route exact path="/trigger" component={Trigger} />

@@ -254,7 +254,6 @@ class TableHeader extends React.PureComponent {
                       : this.props.columnsWidth[index] || column.width || null,
                     position: 'relative',
                   }}
-                  ref={`${index}`}
                 >
                   {column.renderColumn
                     ? column.renderColumn(column)

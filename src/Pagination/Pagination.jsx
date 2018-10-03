@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-import './style/index.scss';
 import Clickable from '../Clickable';
+
+import './style.scss';
 
 const propTypes = {
   total: PropTypes.number,
@@ -66,7 +66,7 @@ class Pagination extends React.PureComponent {
     return (
       <div
         className={classNames(
-          'pagination',
+          'pagination justify-content-end',
           { [this.props.className]: !!this.props.className },
         )}
       >
@@ -83,7 +83,7 @@ class Pagination extends React.PureComponent {
               { disabled: isFirstPage },
             )}
           >
-            <i className="icon icon-angle-left" />
+            <i className="fas fa-angle-left" />
           </div>
         </Clickable>
 
@@ -148,7 +148,7 @@ class Pagination extends React.PureComponent {
               { disabled: isLastPage },
             )}
           >
-            <i className="icon icon-angle-right" />
+            <i className="fas fa-angle-right" />
           </div>
         </Clickable>
       </div>

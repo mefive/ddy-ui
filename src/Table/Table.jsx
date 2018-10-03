@@ -6,7 +6,7 @@ import isFunction from 'lodash/isFunction';
 import debounce from 'lodash/debounce';
 import sortBy from 'lodash/sortBy';
 
-import './style/index.scss';
+import './style.scss';
 
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';

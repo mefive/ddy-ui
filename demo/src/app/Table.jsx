@@ -66,7 +66,7 @@ function getColumns() {
     key: index,
     title: c,
     // sortKey: `${i}`,
-    filterable: true,
+    // filterable: true,
     noWrap: true,
   }));
 }
@@ -108,35 +108,33 @@ class ShowcaseTable extends React.Component {
 
   render() {
     return (
-      <div id="table">
-        <ShowcaseContainer title="Table">
-          <div>
-            <div className="table-container">
-              <Table
-                columns={this.state.columns}
-                dataSource={this.state.dataSource}
-                height={500}
-                fixHeader
-                fixColumnCount={2}
-                rowSelection={{
-                  onChange: selectedRowKeys =>
-                    this.setState({ selectedRowKeys }),
-                  selectedRowKeys: this.state.selectedRowKeys,
-                }}
-                defaultSort={{
-                  key: '2',
-                  direction: Table.ASC,
-                }}
-                // rowKey="2"
-                enablePagination
-                page={this.state.page}
-                rowsPerPage={50}
-                onPageChange={page => this.setState({ page })}
-              />
-            </div>
+      <ShowcaseContainer title="Table">
+        <div>
+          <div className="table-container">
+            <Table
+              columns={this.state.columns}
+              dataSource={this.state.dataSource}
+              height={500}
+              // fixHeader
+              // fixColumnCount={2}
+              rowSelection={{
+                onChange: selectedRowKeys =>
+                  this.setState({ selectedRowKeys }),
+                selectedRowKeys: this.state.selectedRowKeys,
+              }}
+              // defaultSort={{
+              //   key: '2',
+              //   direction: Table.ASC,
+              // }}
+              // rowKey="2"
+              enablePagination
+              page={this.state.page}
+              rowsPerPage={50}
+              onPageChange={page => this.setState({ page })}
+            />
           </div>
-        </ShowcaseContainer>
-      </div>
+        </div>
+      </ShowcaseContainer>
     );
   }
 }
