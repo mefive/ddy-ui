@@ -115,7 +115,7 @@ class ShowcaseTable extends React.Component {
               columns={this.state.columns}
               dataSource={this.state.dataSource}
               height={500}
-              // fixHeader
+              fixHeader
               // fixColumnCount={2}
               rowSelection={{
                 onChange: selectedRowKeys =>

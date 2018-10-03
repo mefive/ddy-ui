@@ -447,26 +447,29 @@ class Table extends React.PureComponent {
         width: 100,
         align: 'center',
         renderColumn: () => dataSource && (
-          <input
-            type="checkbox"
-            checked={(() =>
-                dataSource != null && dataSource.length > 0
-                && dataSource.every((record, recordIndex) => {
-                  const key = this.getRowKey(record, recordIndex);
-                  return this.props.rowSelection.selectedRowKeys.indexOf(key) !== -1;
-                })
-            )()}
-            onChange={(e) => {
-              const { checked } = e.target;
+          <React.Fragment>
+            <input
+              type="checkbox"
+              className="custom-control-input"
+              checked={(() =>
+                  dataSource != null && dataSource.length > 0
+                  && dataSource.every((record, recordIndex) => {
+                    const key = this.getRowKey(record, recordIndex);
+                    return this.props.rowSelection.selectedRowKeys.indexOf(key) !== -1;
+                  })
+              )()}
+              onChange={(e) => {
+                const { checked } = e.target;
 
-              if (checked) {
-                this.props.rowSelection.onChange(dataSource.map((record, recordIndex) =>
-                  this.getRowKey(record, recordIndex)));
-              } else {
-                this.props.rowSelection.onChange([]);
-              }
-            }}
-          />
+                if (checked) {
+                  this.props.rowSelection.onChange(dataSource.map((record, recordIndex) =>
+                    this.getRowKey(record, recordIndex)));
+                } else {
+                  this.props.rowSelection.onChange([]);
+                }
+              }}
+            />
+          </React.Fragment>
         ),
         render: (record, recordIndex) => {
           const key = this.getRowKey(record, recordIndex);
@@ -691,7 +694,7 @@ class Table extends React.PureComponent {
     return (
       <div
         className={classNames(
-          'table',
+          'table table-hover',
           { [this.props.className]: !!this.props.className },
           { 'has-horizontal-scrollbar': this.state.hasHorizontalScrollbar },
           { 'has-vertical-scrollbar': this.state.hasVerticalScrollbar },
