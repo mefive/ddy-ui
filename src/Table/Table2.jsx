@@ -16,6 +16,10 @@ class Table extends React.PureComponent {
     })),
     dataSource: PropTypes.arrayOf(PropTypes.object),
     rowKey: PropTypes.string,
+    page: PropTypes.number,
+    onPageChange: PropTypes.func,
+    totalPages: PropTypes.number,
+    rowsPerPage: PropTypes.number,
   };
 
   static defaultProps = {
@@ -24,47 +28,65 @@ class Table extends React.PureComponent {
     columns: [],
     dataSource: null,
     rowKey: null,
+    page: 1,
+    onPageChange: () => {},
+    totalPages: null,
+    rowsPerPage: null,
   };
+
+  getPagedDataSource(dataSource) {
+    const { page, totalPages, rowsPerPage } = this.props;
+
+    if (totalPages != null) {
+      return dataSource;
+    }
+
+    const start = page * rowsPerPage;
+
+    return dataSource.slice(start, start + rowsPerPage);
+  }
 
   render() {
     const { dataSource, columns, rowKey } = this.props;
 
     return (
-      <div
-        className={classNames(
-          'table-container table-responsive',
-          this.props.className,
-        )}
-      >
-        <table className="table">
-          <caption>{this.props.caption}</caption>
-          <thead>
-            <tr>
-              {columns.map(col => (
-                <th
-                  key={col.key}
-                  scope="col"
-                  width={col.width}
-                >
-                  {col.title}
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {dataSource != null && dataSource.map((row, index) => (
-              <tr key={rowKey != null ? row[rowKey] : index}>
+      <React.Fragment>
+        <div
+          className={classNames(
+            'table-container table-responsive',
+            this.props.className,
+          )}
+        >
+          <table className="table">
+            <caption>{this.props.caption}</caption>
+            <thead>
+              <tr>
                 {columns.map(col => (
-                  <td key={col.key}>
-                    {col.render != null ? col.render(row) : row[col.key]}
-                  </td>
+                  <th
+                    key={col.key}
+                    scope="col"
+                    width={col.width}
+                  >
+                    {col.title}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+
+            <tbody>
+              {dataSource != null && dataSource.map((row, index) => (
+                <tr key={rowKey != null ? row[rowKey] : index}>
+                  {columns.map(col => (
+                    <td key={col.key}>
+                      {col.render != null ? col.render(row) : row[col.key]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </React.Fragment>
     );
   }
 }
