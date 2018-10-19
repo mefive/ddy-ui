@@ -24,11 +24,9 @@
   .modal-dialog {
     position: absolute;
     width: 80%;
-    left: 0;
-    top: 0;
     opacity: 0;
 
-    @include border-radius($border-radius-base);
+    @include border-radius($border-radius);
 
     left: 50%;
     top: 50%;
@@ -37,7 +35,7 @@
       .dialog-content {
         font-size: $font-size-base;
         line-height: 1.5;
-        background-color: $white-color;
+        background-color: $white;
 
         border-top-left-radius: rem(10px);
         border-top-right-radius: rem(10px);
@@ -92,7 +90,6 @@
       opacity: 1;
     }
   }
-
 
   &.enter {
     .modal-dialog {

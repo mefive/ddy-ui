@@ -46,15 +46,19 @@ class Animate extends React.PureComponent {
         unmountOnExit
       >
         {(state) => {
-          const child = React.Children.only(this.props.children);
+          if (this.props.children) {
+            const child = React.Children.only(this.props.children);
 
-          return React.cloneElement(child, {
-            className: classNames(child.props.child, 'animation', {
-              [this.props.enterClassName]: state === 'entering',
-              [this.props.activeClass]: state === 'entered',
-              [this.props.leaveClassName]: state === 'exiting' || state === 'exited',
-            }),
-          });
+            return React.cloneElement(child, {
+              className: classNames(child.props.className, 'animation', {
+                [this.props.enterClassName]: state === 'entering',
+                [this.props.activeClass]: state === 'entered',
+                [this.props.leaveClassName]: state === 'exiting' || state === 'exited',
+              }),
+            });
+          }
+
+          return null;
         }}
       </Transition>
     );

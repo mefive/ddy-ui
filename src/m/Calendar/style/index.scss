@@ -48,7 +48,7 @@
 
     &.active {
       color: #fff;
-      background-color: $primary-color;
+      background-color: $primary;
     }
     &.disable {
       cursor: not-allowed !important;
@@ -99,11 +99,11 @@
       }
 
       &.current {
-        background-color: $primary-color;
+        background-color: $primary;
         color: $white-color;
         @include border-radius(2px);
         &:hover {
-          background-color: $primary-color !important;
+          background-color: $primary !important;
         }
       }
 

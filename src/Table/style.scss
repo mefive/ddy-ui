@@ -1,29 +1,6 @@
 @import "~compass-mixins";
 @import "../style/variables";
 
-.table-toolbar {
-  padding: 10px;
-
-  .batch-action,
-  .batch-checkbox {
-    display: inline-block;
-  }
-
-  .batch-checkbox {
-    margin-right: 20px;
-    input {
-      margin-right: 10px;
-    }
-  }
-
-  .batch-action {
-    & + .batch-action {
-      margin-left: 5px;
-    }
-    @include ellipsis();
-  }
-}
-
 .table-filter-popover {
   box-shadow: 0 1px 6px rgba(0,0,0,.2);
 
@@ -87,20 +64,9 @@
     border-collapse: collapse !important;
     width: 100%;
 
-    th {
-      text-align: left;
-      line-height: 58px;
-      font-size: 14px;
-      color: #000;
-      > div {
-        padding: 0 20px;
-      }
-    }
-
     tr.header {
       td {
-        background-color: #F7F8F9;
-        line-height: 58px;
+        background-color: $table-head-bg;
       }
     }
 
@@ -112,24 +78,9 @@
     }
 
     > tbody {
-      td {
-        text-align: left;
-        padding: 10px;
-      }
-
       tr {
         border-bottom: 1px solid $border-color;
       }
-    }
-
-    .row-container {
-      td {
-        padding: 13px 20px;
-      }
-    }
-
-    .row-select {
-      padding-left: 10px;
     }
 
     .detail-trigger-cell {
@@ -153,10 +104,6 @@
 
       table {
         padding: 0;
-
-        thead th{
-          padding-left: 10px;
-        }
 
         td {
           @include ellipsis();
@@ -236,9 +183,6 @@
   tbody {
     tr {
       transition: background-color .2s;
-    }
-    td {
-      padding-left: 20px;
     }
   }
 

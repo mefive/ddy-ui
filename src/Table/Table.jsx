@@ -10,9 +10,9 @@ import './style.scss';
 
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
-import Pagination from '../Pagination/Pagination';
+import Pagination from '../Pagination';
 import Portal from '../Portal';
-import Loading from '../Loading/Loading';
+import Loading from '../Loading';
 
 const ASC = 'asc';
 const DESC = 'desc';

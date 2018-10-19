@@ -9,7 +9,6 @@ import Popover from '../Popover';
 import Trigger from '../Trigger';
 import Clickable from '../Clickable';
 
-import '../Select/style/index.scss';
 import './style.scss';
 
 class AutoComplete extends React.PureComponent {

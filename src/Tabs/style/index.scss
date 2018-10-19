@@ -7,12 +7,12 @@
     padding-bottom: 3px;
 
     &:hover {
-      color: $primary-color;
+      color: $primary;
     }
 
     &.current {
-      color: $primary-color;
-      border-bottom: 3px solid $primary-color;
+      color: $primary;
+      border-bottom: 3px solid $primary;
     }
   }
 }

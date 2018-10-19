@@ -1,0 +1,14 @@
+@import "../style/variables";
+@import "../../../../src/style/mixins/rem";
+
+.custom-table {
+  thead th {
+    background: #F5F6FA;
+    border-bottom: 1px $border-color;
+    font-weight: $font-weight-base;
+  }
+
+  th, td {
+    padding: rem(10px) rem(20px);
+  }
+}

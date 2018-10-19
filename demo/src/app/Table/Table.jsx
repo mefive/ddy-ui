@@ -1,8 +1,11 @@
 import React from 'react';
-import ShowcaseContainer from './ShowcaseContainer';
-import Table from '../../../src/Table/Table';
+import ShowcaseContainer from '../ShowcaseContainer';
+import Table from '../../../../src/Table';
 
-const columns = ['原始渠道号', '周编号', '周新增', '0周广告点击', '0周广告收益', '1周广告点击', '1周广告收益', '新增成本'];
+import './style.scss';
+
+// const columns = ['原始渠道号', '周编号', '周新增', '0周广告点击', '0周广告收益', '1周广告点击', '1周广告收益', '新增成本'];
+const columns = ['原始渠道号', '周编号', '周新增'];
 
 const rawRows = [
   ['android_oem_oppo', null, 1653044, 0, null, 0, 0, -588445.889978826],
@@ -50,7 +53,7 @@ const rawRows = [
 let rows = [];
 
 (function () {
-  for (let i = 0; i < 50; i += 1) {
+  for (let i = 0; i < 1; i += 1) {
     rows = rows.concat(rawRows.map(r => r.map((c) => {
       if (c == null) {
         return null;
@@ -110,29 +113,27 @@ class ShowcaseTable extends React.Component {
     return (
       <ShowcaseContainer title="Table">
         <div>
-          <div className="table-container">
-            <Table
-              columns={this.state.columns}
-              dataSource={this.state.dataSource}
-              height={500}
-              fixHeader
-              // fixColumnCount={2}
-              rowSelection={{
-                onChange: selectedRowKeys =>
-                  this.setState({ selectedRowKeys }),
-                selectedRowKeys: this.state.selectedRowKeys,
-              }}
-              // defaultSort={{
-              //   key: '2',
-              //   direction: Table.ASC,
-              // }}
-              // rowKey="2"
-              enablePagination
-              page={this.state.page}
-              rowsPerPage={50}
-              onPageChange={page => this.setState({ page })}
-            />
-          </div>
+          <Table
+            className="custom-table"
+            columns={this.state.columns}
+            dataSource={this.state.dataSource}
+            // height={500}
+            // fixHeader
+            // fixColumnCount={2}
+            // rowSelection={{
+            //   onChange: selectedRowKeys =>
+            //     this.setState({ selectedRowKeys }),
+            //   selectedRowKeys: this.state.selectedRowKeys,
+            // }}
+            // defaultSort={{
+            //   key: '2',
+            //   direction: Table.ASC,
+            // }}
+            enablePagination
+            page={this.state.page}
+            rowsPerPage={10}
+            onPageChange={page => this.setState({ page })}
+          />
         </div>
       </ShowcaseContainer>
     );

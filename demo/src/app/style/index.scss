@@ -1,6 +1,9 @@
-$fa-font-path: "../../../../src/style/fa/webfonts";
+@import "variables";
 @import "../../../../src/style/index";
-$body-bg: #EFF3F6;
+
+html {
+  font-size: 14px;
+}
 
 .showcase-nav {
   transition-property: box-shadow, background;
