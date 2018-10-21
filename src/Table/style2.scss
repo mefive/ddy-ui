@@ -1,0 +1,18 @@
+@import '~compass-mixins';
+
+.table-container {
+  position: relative;
+
+  thead th,
+  tbody td {
+    vertical-align: middle;
+  }
+
+  &.loading {
+    table {
+      opacity: .5;
+      @include filter(blur(0.5px));
+      transition: opacity .2s;
+    }
+  }
+}

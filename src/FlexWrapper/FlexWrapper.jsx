@@ -47,7 +47,6 @@ class FlexWrapper extends React.PureComponent {
       return;
     }
 
-
     if (this.props.absolute) {
       if (this.state.absoluteTop != null) {
         return;

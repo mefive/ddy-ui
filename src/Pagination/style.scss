@@ -2,7 +2,6 @@
 @import "../style/variables";
 
 .pagination {
-  margin-top: 20px;
   text-align: right;
 
   .page-item {
@@ -26,6 +25,7 @@
 
     &.disabled {
       cursor: not-allowed;
+      color: $gray-300;
       &:hover {
         border-color: $border-color;
         color: $yiq-text-dark;

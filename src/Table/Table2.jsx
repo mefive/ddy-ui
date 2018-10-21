@@ -2,6 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
+import Loading from '../Loading';
+import TableHeader from './TableHeader2';
+import TableBody from './TableBody2';
+import Pagination from '../Pagination';
+
 import './style2.scss';
 
 class Table extends React.PureComponent {
@@ -16,10 +21,14 @@ class Table extends React.PureComponent {
     })),
     dataSource: PropTypes.arrayOf(PropTypes.object),
     rowKey: PropTypes.string,
-    page: PropTypes.number,
-    onPageChange: PropTypes.func,
-    totalPages: PropTypes.number,
-    rowsPerPage: PropTypes.number,
+    pagination: PropTypes.shape({
+      page: PropTypes.number,
+      enablePagination: PropTypes.bool,
+      onPageChange: PropTypes.func,
+      totalPages: PropTypes.number,
+      rowsPerPage: PropTypes.number,
+    }),
+    loading: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -28,26 +37,35 @@ class Table extends React.PureComponent {
     columns: [],
     dataSource: null,
     rowKey: null,
-    page: 1,
-    onPageChange: () => {},
-    totalPages: null,
-    rowsPerPage: null,
+    pagination: null,
+    loading: false,
   };
 
   getPagedDataSource(dataSource) {
-    const { page, totalPages, rowsPerPage } = this.props;
+    if (this.props.pagination == null) {
+      return dataSource;
+    }
+
+    const { page, totalPages, rowsPerPage } = this.props.pagination;
 
     if (totalPages != null) {
       return dataSource;
     }
 
-    const start = page * rowsPerPage;
+    const start = (page - 1) * rowsPerPage;
 
     return dataSource.slice(start, start + rowsPerPage);
   }
 
   render() {
-    const { dataSource, columns, rowKey } = this.props;
+    const {
+      columns, rowKey, pagination, loading,
+    } = this.props;
+    let dataSource = this.props.dataSource || [];
+
+    if (pagination != null) {
+      dataSource = this.getPagedDataSource(dataSource);
+    }
 
     return (
       <React.Fragment>
@@ -55,37 +73,36 @@ class Table extends React.PureComponent {
           className={classNames(
             'table-container table-responsive',
             this.props.className,
+            { loading },
           )}
         >
           <table className="table">
-            <caption>{this.props.caption}</caption>
-            <thead>
-              <tr>
-                {columns.map(col => (
-                  <th
-                    key={col.key}
-                    scope="col"
-                    width={col.width}
-                  >
-                    {col.title}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+            {this.props.caption != null && (
+              <caption>{this.props.caption}</caption>
+            )}
 
-            <tbody>
-              {dataSource != null && dataSource.map((row, index) => (
-                <tr key={rowKey != null ? row[rowKey] : index}>
-                  {columns.map(col => (
-                    <td key={col.key}>
-                      {col.render != null ? col.render(row) : row[col.key]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+            <TableHeader columns={columns} />
+
+            <TableBody columns={columns} dataSource={dataSource} />
           </table>
+
+          {loading && (
+            <Loading>加载中...</Loading>
+          )}
+
+          {!loading && dataSource.length === 0 && (
+            <Loading>
+              没有数据
+            </Loading>
+          )}
         </div>
+
+        {pagination != null && (
+          <Pagination
+            {...pagination}
+            total={(this.props.dataSource || []).length}
+          />
+        )}
       </React.Fragment>
     );
   }

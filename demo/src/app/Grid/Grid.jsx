@@ -26,19 +26,22 @@ class Grid extends React.PureComponent {
 
   render() {
     return (
-      <ShowcaseContainer title="Grid">
-        <Row gutter={GUTTER}>
-          {(() => {
-            const cols = [];
+      <div>
+        <h3>Grid</h3>
+        <ShowcaseContainer title="Grid">
+          <Row gutter={GUTTER}>
+            {(() => {
+              const cols = [];
 
-            for (let i = 0; i < 20; i += 1) {
-              cols.push(this.renderCol(i));
-            }
+              for (let i = 0; i < 20; i += 1) {
+                cols.push(this.renderCol(i));
+              }
 
-            return cols;
-          })()}
-        </Row>
-      </ShowcaseContainer>
+              return cols;
+            })()}
+          </Row>
+        </ShowcaseContainer>
+      </div>
     );
   }
 }

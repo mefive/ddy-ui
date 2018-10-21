@@ -5,25 +5,25 @@ import Clickable from '../Clickable';
 
 import './style.scss';
 
-const propTypes = {
-  total: PropTypes.number,
-  page: PropTypes.number,
-  totalPages: PropTypes.number,
-  rowsPerPage: PropTypes.number,
-  onChange: PropTypes.func,
-  className: PropTypes.string,
-};
-
-const defaultProps = {
-  total: null,
-  page: 1,
-  totalPages: null,
-  rowsPerPage: null,
-  onChange: () => {},
-  className: null,
-};
-
 class Pagination extends React.PureComponent {
+  static propTypes = {
+    total: PropTypes.number,
+    page: PropTypes.number,
+    totalPages: PropTypes.number,
+    rowsPerPage: PropTypes.number,
+    onChange: PropTypes.func,
+    className: PropTypes.string,
+  };
+
+  static defaultProps = {
+    total: null,
+    page: 1,
+    totalPages: null,
+    rowsPerPage: null,
+    onChange: () => {},
+    className: null,
+  };
+
   getItem(page) {
     return (
       <span
@@ -155,8 +155,5 @@ class Pagination extends React.PureComponent {
     );
   }
 }
-
-Pagination.propTypes = propTypes;
-Pagination.defaultProps = defaultProps;
 
 export default Pagination;
