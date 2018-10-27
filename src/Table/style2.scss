@@ -1,14 +1,34 @@
 @import '~compass-mixins';
 
 .table-container {
-  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .table-responsive {
+    position: relative;
+    flex: 1;
+  }
+
+  .table-header-fixed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+  }
+
+  .table-body-scrollable {
+    height: 100%;
+    overflow-y: auto;
+  }
 
   thead th,
   tbody td {
     vertical-align: middle;
   }
 
-  &.loading {
+  .loading {
     table {
       opacity: .5;
       @include filter(blur(0.5px));

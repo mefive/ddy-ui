@@ -23,16 +23,18 @@ class PaginationTable extends React.PureComponent {
   render() {
     return (
       <ShowcaseContainer title="Pagination">
-        <Table
-          className="custom-table"
-          columns={this.state.columns}
-          dataSource={this.state.dataSource}
-          pagination={{
-            page: this.state.page,
-            onChange: page => this.setState({ page }, this.fetchData),
-            rowsPerPage: 5,
-          }}
-        />
+        <div className="d-flex flex-column">
+          <Table
+            className="custom-table"
+            columns={this.state.columns}
+            dataSource={this.state.dataSource}
+            pagination={{
+              page: this.state.page,
+              onChange: page => this.setState({ page }, this.fetchData),
+              rowsPerPage: 5,
+            }}
+          />
+        </div>
       </ShowcaseContainer>
     );
   }

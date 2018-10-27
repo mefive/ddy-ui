@@ -1,0 +1,56 @@
+@import "~compass-mixins";
+@import "~compass-mixins/lib/animation/core";
+
+:local(.container) {
+  display: inline-block;
+  position: relative;
+  background-color: #fff;
+  padding: 0 10px;
+  font-size: 20px;
+  line-height: 40px;
+}
+
+:local(.card) {
+  overflow-y: hidden;
+}
+
+:local(.splitter) {
+  position: absolute;
+  height: 1px;
+  background-color: #314a96;
+  left: 0px;
+  right: 0px;
+}
+
+:local(.animation) {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #fff;
+
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+}
+
+:local(.fold) {
+  @include animation-name(fold);
+  @include animation-fill-mode(forwards);
+  @include animation-duration(1s);
+}
+
+:local(.unfold) {
+  @include animation-name(unfold);
+}
+
+@include keyframes(fold) {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-180deg);
+  }
+}
+
+@include keyframes(unfold) {
+
+}

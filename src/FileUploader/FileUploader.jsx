@@ -173,7 +173,7 @@ class FileUploader extends React.PureComponent {
 
     return (
       <div>
-        <div className="p-relative cursor-pointer">
+        <div className="position-relative cursor-pointer">
           {this.renderInput()}
 
           {child != null && React.cloneElement(child, {

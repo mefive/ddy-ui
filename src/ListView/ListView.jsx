@@ -80,7 +80,7 @@ class ListView extends React.PureComponent {
         {this.props.dataSource.map((item, index) => item && this.props.renderRow(item, index))}
 
         {this.props.noData && (this.props.renderNoData != null ? this.props.renderNoData() : (
-          <FlexWrapper className="p-relative">
+          <FlexWrapper className="position-relative">
             <Loading>没有数据</Loading>
           </FlexWrapper>
         ))}

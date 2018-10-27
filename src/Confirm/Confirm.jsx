@@ -45,7 +45,7 @@ class Confirm extends React.PureComponent {
           <Clickable
             onClick={this.props.onClose}
           >
-            <div className="btn btn-secondary ml-1">
+            <div className="btn btn-white ml-1">
               {this.props.cancelText}
             </div>
           </Clickable>

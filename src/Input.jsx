@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 
 const propTypes = {
@@ -37,7 +38,7 @@ class Input extends React.PureComponent {
 
   renderInput() {
     const {
-      getDom, onEnter, indeterminate, value, ...props
+      getDom, onEnter, indeterminate, value, className, ...props
     } = this.props;
 
     if (['file', 'checkbox', 'radio'].indexOf(props.type) === -1) {
@@ -55,6 +56,8 @@ class Input extends React.PureComponent {
     return (
       <input
         {...props}
+
+        className={classNames('form-control', className)}
 
         value={value || ''}
 

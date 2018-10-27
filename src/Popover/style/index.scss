@@ -1,0 +1,14 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: $white;
+  z-index: $z-index-base;
+
+  &.placed {
+    @include opacity(1);
+  }
+}

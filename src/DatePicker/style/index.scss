@@ -1,0 +1,76 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+@import "../../style/mixins/triangle";
+
+.date-picker {
+  .value {
+    cursor: pointer;
+    line-height: 30px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-base;
+    padding: 0 8px;
+
+    &.active {
+      box-shadow: 0 0 3px 1px rgba(0, 128, 236, 0.34);
+      border-color: $primary;
+    }
+  }
+
+  .backward,
+  .forward {
+    cursor: pointer;
+    color: $primary;
+    border: 1px solid $border-color;
+    padding: 8px;
+    border-radius: $border-radius-base;
+    background-color: $white;
+  }
+}
+
+.date-picker-popover {
+  padding: 4px;
+  border-radius: $border-radius-base;
+  border: 1px solid $border-color;
+
+  &.place-top {
+    &:before {
+      @include triangle(bottom, $border-color, 0.5em);
+      position: absolute;
+      left: 50%;
+      margin-left: -7px;
+      top: 100%;
+      z-index: 2;
+      margin-top: 1px;
+    }
+
+    &:after {
+      @include triangle(bottom, $white, 0.5em);
+      position: absolute;
+      left: 50%;
+      margin-left: -7px;
+      top: 100%;
+      z-index: 3;
+    }
+  }
+
+  &.place-bottom {
+    &:before {
+      @include triangle(top, $border-color, 0.5em);
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      z-index: 2;
+      margin-bottom: 1px;
+      margin-left: -7px;
+    }
+
+    &:after {
+      @include triangle(top, $white, 0.5em);
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      margin-left: -7px;
+      z-index: 3;
+    }
+  }
+}

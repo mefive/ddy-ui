@@ -74,12 +74,13 @@ class Col extends React.PureComponent {
     return (
       <div
         className={classNames(
+          'col',
           this.props.className,
           this.getBreakPointClassNames(),
         )}
         style={{
-          paddingLeft: gutter == null ? null : gutter / 2,
-          paddingRight: gutter == null ? null : gutter / 2,
+          paddingLeft: gutter == null ? 0 : gutter / 2,
+          paddingRight: gutter == null ? 0 : gutter / 2,
           ...this.props.style,
         }}
       >

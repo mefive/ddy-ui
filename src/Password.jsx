@@ -15,7 +15,7 @@ class Password extends React.PureComponent {
     const { showPlaintext } = this.state;
 
     return (
-      <div className="p-relative">
+      <div className="position-relative">
         <Input
           {...this.props}
           style={{ paddingRight: 60 }}
@@ -27,7 +27,7 @@ class Password extends React.PureComponent {
             this.setState({ showPlaintext: !showPlaintext })}
         >
           <span
-            className="text-primary p-absolute text-sm"
+            className="text-primary position-absolute text-sm"
             style={{
               right: 10,
               top: 8,

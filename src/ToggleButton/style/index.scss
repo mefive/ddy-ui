@@ -1,0 +1,62 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+
+.toggle-button {
+  position: relative;
+
+  .button-bg {
+    position: relative;
+    border-radius: 25% / 50%;
+    width: 100%;
+    height: 100%;
+    // border: 1px  solid #e8eae9;
+    box-shadow: inset 0 0 0 1px #e8eae9;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #fbfbfb;
+    transition: all .4s ease;
+
+    .button {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #FFF;
+      border: 1px solid #ddd;
+      transition: all .4s ease;
+    }
+  }
+}
+
+.toggle-flip-button {
+  position: relative;
+
+  .true-button, .false-button {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    border-radius: 4px;
+    transition: all .4s ease;
+    cursor: pointer;
+    transform: rotateY(-180deg);
+    box-shadow: 0 0 0 1px #EEE;
+  }
+  .true-button {
+    background-color: #02C66F;
+  }
+  .false-button {
+    background-color: #FF3A19;
+  }
+  .active {
+    transform: rotateY(0);
+  }
+}

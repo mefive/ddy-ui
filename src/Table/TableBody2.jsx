@@ -7,8 +7,12 @@ class TableBody extends React.PureComponent {
     columns: PropTypes.arrayOf(PropTypes.shape({
       key: PropTypes.any,
       render: PropTypes.func,
+      align: PropTypes.string,
     })).isRequired,
-    dataSource: PropTypes.arrayOf(PropTypes.object),
+    dataSource: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     rowKey: PropTypes.string,
   };
 
@@ -41,7 +45,12 @@ class TableBody extends React.PureComponent {
         {dataSource.map((row, index) => (
           <tr key={rowKey === null ? index : row[rowKey]}>
             {columns.map(col => (
-              <td key={col.key}>
+              <td
+                key={col.key}
+                style={{
+                  textAlign: col.align,
+                }}
+              >
                 {col.render == null
                   ? row[col.key]
                   : col.render(row, index)}

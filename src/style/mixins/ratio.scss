@@ -1,7 +1,7 @@
 @mixin ratio() {
   .ratio {
     display: inline-block;
-    color: $white-color;
+    color: $white;
     background-color: #ff5b1a;
     @include border-radius($border-radius-base);
     padding: 4px 6px;
@@ -23,7 +23,7 @@
     div {
       width: 5px;
       height: 2px;
-      background-color: $primary-color;
+      background-color: $primary;
       display: inline-block;
       vertical-align: middle;
 

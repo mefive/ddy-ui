@@ -24,8 +24,8 @@ class Row extends React.PureComponent {
       <div
         className={classNames('row', this.props.className)}
         style={{
-          marginLeft: gutter == null ? null : gutter / -2,
-          marginRight: gutter == null ? null : gutter / -2,
+          marginLeft: gutter == null ? 0 : gutter / -2,
+          marginRight: gutter == null ? 0 : gutter / -2,
           ...this.props.style,
         }}
       >

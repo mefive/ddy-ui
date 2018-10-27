@@ -22,7 +22,7 @@ class SlideDownConfirm extends React.PureComponent {
     return (
       <SlideDownPopover visible={this.props.visible}>
         <div
-          className="p-absolute"
+          className="position-absolute"
           style={{
             bottom: 40,
             top: 0,
@@ -35,7 +35,7 @@ class SlideDownConfirm extends React.PureComponent {
         </div>
 
         <div
-          className="p-absolute text-center border-0 border-primary"
+          className="position-absolute text-center border-0 border-primary"
           style={{
             bottom: 0,
             left: 0,

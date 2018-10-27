@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 class TextArea extends React.PureComponent {
   static propTypes = {
@@ -30,14 +31,17 @@ class TextArea extends React.PureComponent {
   }
 
   render() {
-    const { showCounter, autoFocus, ...props } = this.props;
+    const {
+      className, showCounter, autoFocus, ...props
+    } = this.props;
 
     return (
       <React.Fragment>
         <textarea
-          className={this.props.className}
-          ref={autoFocus ? (el) => { this.input = el; } : null}
           {...props}
+
+          className={classNames('form-control', className)}
+          ref={autoFocus ? (el) => { this.input = el; } : null}
           value={props.value || ''}
           onChange={e => this.props.onChange(e.target.value, e)}
         />

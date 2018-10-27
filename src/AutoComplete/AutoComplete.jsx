@@ -231,10 +231,7 @@ class AutoComplete extends React.PureComponent {
           leaveClassName="slide-down-out"
           popover={(
             <Popover
-              placement={{
-                vertical: Popover.PLACEMENT_BOTTOM,
-                horizontal: Popover.PLACEMENT_CENTER,
-              }}
+              placement={Popover.placement.BOTTOM}
               offset={5}
               className={
                 classNames(

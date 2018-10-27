@@ -1,0 +1,73 @@
+@import "~compass-mixins";
+@import "~compass-mixins/lib/animation/core";
+@import "../../style/variables";
+
+@mixin full-screen {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.full-screen-modal {
+  z-index: $z-index-base;
+  @include full-screen;
+  padding: 0 200px;
+
+  &.enter {
+    .full-screen-modal-body {
+      @include animation-name(scaleIn);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
+    }
+
+    .full-screen-modal-mask,
+    .full-screen-modal-close {
+      @include animation-name(fadeIn);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
+    }
+  }
+
+  &.leave {
+    .full-screen-modal-body {
+      @include animation-name(scaleOut);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
+    }
+    .full-screen-modal-mask,
+    .full-screen-modal-close {
+      @include animation-name(fadeOut);
+      @include animation-duration(0.2s);
+      @include animation-fill-mode(forwards);
+    }
+  }
+}
+
+.full-screen-modal-mask {
+  @include full-screen;
+  background-color: rgba(255, 255, 255, .8);
+}
+
+.full-screen-modal-body {
+  position: relative;
+  height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 0 12px 1px rgba(193, 193, 193, 0.83);
+}
+
+.full-screen-modal-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+
+  .icon {
+    font-size: 44px;
+    color: #4a4a4a;
+    cursor: pointer;
+  }
+}
+

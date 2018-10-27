@@ -69,7 +69,7 @@ class FlexWrapper extends React.PureComponent {
         ref={(el) => { this.container = el; }}
         className={classNames(
           this.props.className,
-          { 'p-relative': this.props.absolute },
+          { 'position-relative': this.props.absolute },
           { [style.absolute]: this.props.absolute && this.state.absoluteTop != null },
         )}
         style={{
