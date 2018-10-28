@@ -79,8 +79,8 @@ class Table extends React.PureComponent {
 
   componentDidMount() {
     if (this.props.height != null) {
-      this.syncColumnsWidth();
-      window.addEventListener('resize', this.syncColumnsWidth);
+      this.updateColumnsWidth();
+      window.addEventListener('resize', this.updateColumnsWidth);
     }
   }
 
@@ -91,8 +91,31 @@ class Table extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.syncColumnsWidth);
+    window.removeEventListener('resize', this.updateColumnsWidth);
   }
+
+  onScroll = () => {
+    const tableHeaderFixed = this.tableHeaderFixed.current;
+    const tableContainerColumnFixed = this.tableContainerColumnFixed.current;
+    const tableColumnFixed = this.tableColumnFixed.current;
+
+    const tableScrollLeft = scrollLeft(this.table.current);
+    const tableScrollTop = scrollTop(this.table.current);
+
+    if (tableHeaderFixed) {
+      scrollLeft(tableHeaderFixed, tableScrollLeft);
+    }
+
+    if (tableColumnFixed) {
+      scrollTop(tableColumnFixed, tableScrollTop);
+
+      if (tableScrollLeft > 0) {
+        classHelper.addClass(tableContainerColumnFixed, 'shadow');
+      } else {
+        classHelper.removeClass(tableContainerColumnFixed, 'shadow');
+      }
+    }
+  };
 
   getPagedDataSource(dataSource) {
     if (this.props.pagination == null) {
@@ -125,7 +148,7 @@ class Table extends React.PureComponent {
     this.setState({ columns: [...fixed, ...rest] });
   };
 
-  syncColumnsWidth = throttle(() => {
+  updateColumnsWidth = throttle(() => {
     let columnsWidth = {};
 
     const columns = this.table.current.querySelectorAll('thead th');
@@ -142,29 +165,6 @@ class Table extends React.PureComponent {
 
     this.setState({ columnsWidth });
   });
-
-  syncScroll = () => {
-    const tableHeaderFixed = this.tableHeaderFixed.current;
-    const tableContainerColumnFixed = this.tableContainerColumnFixed.current;
-    const tableColumnFixed = this.tableColumnFixed.current;
-
-    const tableScrollLeft = scrollLeft(this.table.current);
-    const tableScrollTop = scrollTop(this.table.current);
-
-    if (tableHeaderFixed) {
-      scrollLeft(tableHeaderFixed, tableScrollLeft);
-    }
-
-    if (tableColumnFixed) {
-      scrollTop(tableColumnFixed, tableScrollTop);
-
-      if (tableScrollLeft > 0) {
-        classHelper.addClass(tableContainerColumnFixed, 'shadow');
-      } else {
-        classHelper.removeClass(tableContainerColumnFixed, 'shadow');
-      }
-    }
-  };
 
   render() {
     const {
@@ -197,7 +197,7 @@ class Table extends React.PureComponent {
             </div>
           )}
 
-          <div className="table-body-scrollable" ref={this.table} onScroll={height && this.syncScroll}>
+          <div className="table-body-scrollable" ref={this.table} onScroll={height && this.onScroll}>
             <table className="table">
               {this.props.caption != null && (
                 <caption>{this.props.caption}</caption>
