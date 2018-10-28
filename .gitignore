@@ -3,7 +3,7 @@
 /.vscode/
 /.idea/
 /lib/
-/dist/
+**/dist/
 
 npm-debug.log
 package-lock.json
