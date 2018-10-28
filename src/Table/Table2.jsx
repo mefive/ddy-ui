@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import query from 'dom-helpers/query';
 import scrollLeft from 'dom-helpers/query/scrollLeft';
+import scrollTop from 'dom-helpers/query/scrollTop';
+import classHelper from 'dom-helpers/class';
 import throttle from 'lodash/throttle';
 
 import Loading from '../Loading';
@@ -21,6 +23,9 @@ class Table extends React.PureComponent {
       key: PropTypes.any,
       render: PropTypes.func,
       width: PropTypes.number,
+      align: PropTypes.string,
+      noWrap: PropTypes.bool,
+      fixed: PropTypes.bool,
     })),
     dataSource: PropTypes.oneOfType([
       PropTypes.array,
@@ -39,6 +44,7 @@ class Table extends React.PureComponent {
       PropTypes.number,
       PropTypes.string,
     ]),
+    noWrap: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -50,6 +56,7 @@ class Table extends React.PureComponent {
     pagination: null,
     loading: false,
     height: null,
+    noWrap: false,
   };
 
   constructor(props) {
@@ -57,16 +64,29 @@ class Table extends React.PureComponent {
 
     this.table = React.createRef();
     this.tableHeaderFixed = React.createRef();
+    this.tableContainerColumnFixed = React.createRef();
+    this.tableColumnFixed = React.createRef();
 
     this.state = {
+      columns: [],
       columnsWidth: {},
     };
+  }
+
+  componentWillMount() {
+    this.updateColumns();
   }
 
   componentDidMount() {
     if (this.props.height != null) {
       this.syncColumnsWidth();
       window.addEventListener('resize', this.syncColumnsWidth);
+    }
+  }
+
+  componentWillReceiveProps({ columns }) {
+    if (columns !== this.props.columns) {
+      this.updateColumns(columns);
     }
   }
 
@@ -90,6 +110,21 @@ class Table extends React.PureComponent {
     return dataSource.slice(start, start + rowsPerPage);
   }
 
+  updateColumns = (columns = this.props.columns) => {
+    const fixed = [];
+    const rest = [];
+
+    columns.forEach((col) => {
+      if (col.fixed) {
+        fixed.push(col);
+      } else {
+        rest.push(col);
+      }
+    });
+
+    this.setState({ columns: [...fixed, ...rest] });
+  };
+
   syncColumnsWidth = throttle(() => {
     let columnsWidth = {};
 
@@ -109,19 +144,42 @@ class Table extends React.PureComponent {
   });
 
   syncScroll = () => {
+    const tableHeaderFixed = this.tableHeaderFixed.current;
+    const tableContainerColumnFixed = this.tableContainerColumnFixed.current;
+    const tableColumnFixed = this.tableColumnFixed.current;
+
     const tableScrollLeft = scrollLeft(this.table.current);
-    scrollLeft(this.tableHeaderFixed.current, tableScrollLeft);
+    const tableScrollTop = scrollTop(this.table.current);
+
+    if (tableHeaderFixed) {
+      scrollLeft(tableHeaderFixed, tableScrollLeft);
+    }
+
+    if (tableColumnFixed) {
+      scrollTop(tableColumnFixed, tableScrollTop);
+
+      if (tableScrollLeft > 0) {
+        classHelper.addClass(tableContainerColumnFixed, 'shadow');
+      } else {
+        classHelper.removeClass(tableContainerColumnFixed, 'shadow');
+      }
+    }
   };
 
   render() {
     const {
-      columns, pagination, loading, height,
+      pagination, loading, height, noWrap,
     } = this.props;
+
+    const { columns } = this.state;
+
     let dataSource = this.props.dataSource || [];
 
     if (pagination != null) {
       dataSource = this.getPagedDataSource(dataSource);
     }
+
+    const columnsFixed = columns.filter(({ fixed }) => fixed);
 
     return (
       <div
@@ -134,7 +192,7 @@ class Table extends React.PureComponent {
           {height != null && (
             <div className="table-header-fixed" ref={this.tableHeaderFixed}>
               <table className="table">
-                <TableHeader columns={columns} columnsWidth={this.state.columnsWidth} fixed />
+                <TableHeader columns={columns} columnsWidth={this.state.columnsWidth} />
               </table>
             </div>
           )}
@@ -145,11 +203,31 @@ class Table extends React.PureComponent {
                 <caption>{this.props.caption}</caption>
               )}
 
-              <TableHeader columns={columns} />
+              <TableHeader columns={columns} noWrap={noWrap} />
 
-              <TableBody columns={columns} dataSource={dataSource} />
+              <TableBody columns={columns} dataSource={dataSource} noWrap={noWrap} />
             </table>
           </div>
+
+          {columnsFixed.length > 0 && (
+            <div className="table-column-fixed" ref={this.tableContainerColumnFixed}>
+              {height != null && (
+                <div className="table-header-fixed">
+                  <table className="table">
+                    <TableHeader columns={columnsFixed} columnsWidth={this.state.columnsWidth} />
+                  </table>
+                </div>
+              )}
+
+              <div className="table-body-scrollable" ref={this.tableColumnFixed}>
+                <table className="table">
+                  <TableHeader columns={columnsFixed} noWrap={noWrap} />
+
+                  <TableBody columns={columnsFixed} dataSource={dataSource} noWrap={noWrap} />
+                </table>
+              </div>
+            </div>
+          )}
 
           {loading && (
             <Loading>加载中...</Loading>

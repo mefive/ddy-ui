@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { flattenWith } from '../utils/array';
 
 class TableBody extends React.PureComponent {
@@ -8,17 +9,20 @@ class TableBody extends React.PureComponent {
       key: PropTypes.any,
       render: PropTypes.func,
       align: PropTypes.string,
+      noWrap: PropTypes.bool,
     })).isRequired,
     dataSource: PropTypes.oneOfType([
       PropTypes.array,
       PropTypes.object,
     ]),
     rowKey: PropTypes.string,
+    noWrap: PropTypes.bool,
   };
 
   static defaultProps = {
     dataSource: null,
     rowKey: null,
+    noWrap: false,
   };
 
   getLeafColumns() {
@@ -33,7 +37,7 @@ class TableBody extends React.PureComponent {
   }
 
   render() {
-    const { dataSource, rowKey } = this.props;
+    const { dataSource, rowKey, noWrap } = this.props;
     const columns = this.getLeafColumns();
 
     if (dataSource == null) {
@@ -50,6 +54,7 @@ class TableBody extends React.PureComponent {
                 style={{
                   textAlign: col.align,
                 }}
+                className={classNames({ 'text-nowrap': noWrap || col.noWrap })}
               >
                 {col.render == null
                   ? row[col.key]

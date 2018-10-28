@@ -18,6 +18,18 @@
     overflow: hidden;
   }
 
+  .table-column-fixed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: white;
+
+    .table-body-scrollable {
+      overflow-y: hidden;
+    }
+  }
+
   .table-body-scrollable {
     height: 100%;
     overflow-y: auto;
