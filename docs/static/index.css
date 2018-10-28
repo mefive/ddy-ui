@@ -10681,7 +10681,10 @@ html {
     top: 0;
     left: 0;
     right: 0;
-    overflow: hidden; }
+    overflow: hidden;
+    background-color: #ffffff; }
+    .table-container .table-header-fixed .table {
+      margin-bottom: 0; }
   .table-container .table-column-fixed {
     position: absolute;
     top: 0;
@@ -10702,6 +10705,8 @@ html {
     -moz-filter: blur(0.5px);
     filter: blur(0.5px);
     transition: opacity .2s; }
+  .table-container.fixed-header .table-body-scrollable thead {
+    opacity: 0; }
 
 .switch {
   width: 44px;

@@ -193,20 +193,13 @@ class Table extends React.PureComponent {
           this.props.className,
           'table-container',
           { loading },
+          { 'fixed-header': height != null },
         )}
       >
         <div
           className="table-responsive"
           style={{ height: height === 'flex' ? null : height }}
         >
-          {height != null && (
-            <div className="table-header-fixed" ref={this.tableHeaderFixed}>
-              <table className="table">
-                <TableHeader columns={columns} columnsWidth={this.state.columnsWidth} />
-              </table>
-            </div>
-          )}
-
           <div className="table-body-scrollable" ref={this.table} onScroll={height && this.onScroll}>
             <table className="table">
               {this.props.caption != null && (
@@ -219,16 +212,16 @@ class Table extends React.PureComponent {
             </table>
           </div>
 
+          {height != null && (
+            <div className="table-header-fixed" ref={this.tableHeaderFixed}>
+              <table className="table">
+                <TableHeader columns={columns} columnsWidth={this.state.columnsWidth} />
+              </table>
+            </div>
+          )}
+
           {columnsFixed.length > 0 && (
             <div className="table-column-fixed" ref={this.tableContainerColumnFixed}>
-              {height != null && (
-                <div className="table-header-fixed">
-                  <table className="table">
-                    <TableHeader columns={columnsFixed} columnsWidth={this.state.columnsWidth} />
-                  </table>
-                </div>
-              )}
-
               <div className="table-body-scrollable" ref={this.tableColumnFixed}>
                 <table className="table">
                   <TableHeader columns={columnsFixed} noWrap={noWrap} />
@@ -236,6 +229,14 @@ class Table extends React.PureComponent {
                   <TableBody columns={columnsFixed} dataSource={dataSource} noWrap={noWrap} />
                 </table>
               </div>
+
+              {height != null && (
+                <div className="table-header-fixed">
+                  <table className="table">
+                    <TableHeader columns={columnsFixed} columnsWidth={this.state.columnsWidth} />
+                  </table>
+                </div>
+              )}
             </div>
           )}
         </div>

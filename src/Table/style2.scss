@@ -17,6 +17,11 @@
     left: 0;
     right: 0;
     overflow: hidden;
+    background-color: #ffffff;
+
+    .table {
+      margin-bottom: 0;
+    }
   }
 
   .table-column-fixed {
@@ -46,6 +51,14 @@
       opacity: .5;
       @include filter(blur(0.5px));
       transition: opacity .2s;
+    }
+  }
+
+  &.fixed-header {
+    .table-body-scrollable {
+      thead {
+        opacity: 0;
+      }
     }
   }
 }
