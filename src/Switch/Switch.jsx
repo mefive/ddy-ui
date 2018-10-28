@@ -6,25 +6,27 @@ import Clickable from '../Clickable';
 
 import './style.scss';
 
-const propTypes = {
-  value: PropTypes.bool,
-  onChange: PropTypes.func,
-  trueText: PropTypes.string,
-  falseText: PropTypes.string,
-  width: PropTypes.number,
-  disabled: PropTypes.bool,
-};
-
-const defaultProps = {
-  value: null,
-  onChange: () => {},
-  trueText: '开',
-  falseText: '关',
-  width: null,
-  disabled: false,
-};
-
 class Switch extends React.PureComponent {
+  static propTypes = {
+    value: PropTypes.bool,
+    onChange: PropTypes.func,
+    trueText: PropTypes.string,
+    falseText: PropTypes.string,
+    width: PropTypes.number,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+  };
+
+  static defaultProps = {
+    value: null,
+    onChange: () => {},
+    trueText: null,
+    falseText: null,
+    width: null,
+    disabled: false,
+    className:  null,
+  };
+
   constructor(props) {
     super(props);
 
@@ -61,6 +63,7 @@ class Switch extends React.PureComponent {
       >
         <div
           className={classNames(
+            this.props.className,
             'switch',
             { ready: this.state.ready },
             { checked: value },
@@ -83,8 +86,5 @@ class Switch extends React.PureComponent {
     );
   }
 }
-
-Switch.propTypes = propTypes;
-Switch.defaultProps = defaultProps;
 
 export default Switch;

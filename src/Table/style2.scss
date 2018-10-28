@@ -4,6 +4,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+  position: relative;
 
   .table-responsive {
     position: relative;
@@ -40,8 +41,8 @@
     vertical-align: middle;
   }
 
-  .loading {
-    table {
+  &.loading {
+    .table-responsive {
       opacity: .5;
       @include filter(blur(0.5px));
       transition: opacity .2s;

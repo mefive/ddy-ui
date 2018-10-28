@@ -84,9 +84,15 @@ class Table extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps({ columns }) {
+  componentWillReceiveProps({ columns, height }) {
     if (columns !== this.props.columns) {
       this.updateColumns(columns);
+    }
+  }
+
+  componentDidUpdate({ height }) {
+    if (height == null && this.props.height != null) {
+      this.updateColumnsWidth();
     }
   }
 
@@ -183,7 +189,11 @@ class Table extends React.PureComponent {
 
     return (
       <div
-        className={classNames(this.props.className, 'table-container')}
+        className={classNames(
+          this.props.className,
+          'table-container',
+          { loading },
+        )}
       >
         <div
           className="table-responsive"
@@ -228,17 +238,17 @@ class Table extends React.PureComponent {
               </div>
             </div>
           )}
-
-          {loading && (
-            <Loading>加载中...</Loading>
-          )}
-
-          {!loading && dataSource.length === 0 && (
-            <Loading>
-              没有数据
-            </Loading>
-          )}
         </div>
+
+        {loading && (
+          <Loading>加载中...</Loading>
+        )}
+
+        {!loading && dataSource.length === 0 && (
+          <Loading>
+            没有数据
+          </Loading>
+        )}
 
         {pagination != null && (
           <Pagination
