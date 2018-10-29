@@ -67,7 +67,7 @@ class FormItem extends React.PureComponent {
             className={classNames(
               'col-form-label',
               this.props.labelClassName,
-             { right: this.props.labelCol.alignRight },
+             { 'text-right pr-2': this.props.labelCol.alignRight },
             )}
           >
             <label

@@ -8,11 +8,11 @@ import classHelper from 'dom-helpers/class';
 import throttle from 'lodash/throttle';
 
 import Loading from '../Loading';
-import TableHeader from './TableHeader2';
-import TableBody from './TableBody2';
+import TableHeader from './TableHeader';
+import TableBody from './TableBody';
 import Pagination from '../Pagination';
 
-import './style2.scss';
+import './style.scss';
 
 class Table extends React.PureComponent {
   static propTypes = {
@@ -84,7 +84,7 @@ class Table extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps({ columns, height }) {
+  componentWillReceiveProps({ columns }) {
     if (columns !== this.props.columns) {
       this.updateColumns(columns);
     }

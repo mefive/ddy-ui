@@ -2,6 +2,8 @@
 /// @param {Direction} $direction - Triangle direction, either `top`, `right`, `bottom` or `left`
 /// @param {Color} $color [currentcolor] - Triangle color
 /// @param {Length} $size [1em] - Triangle size
+@import "~compass-mixins";
+
 @mixin triangle($direction, $color: currentcolor, $size: 1em, $ratio: 1.5) {
   @if not index(top right bottom left, $direction) {
     @error "Direction must be either `top`, `right`, `bottom` or `left`.";

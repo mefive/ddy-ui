@@ -24,7 +24,7 @@ class Switch extends React.PureComponent {
     falseText: null,
     width: null,
     disabled: false,
-    className:  null,
+    className: null,
   };
 
   constructor(props) {

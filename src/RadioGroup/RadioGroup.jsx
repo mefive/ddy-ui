@@ -44,7 +44,7 @@ class RadioGroup extends React.PureComponent {
         {this.props.options.map(option => (renderOption
           ? renderOption(option)
           : (
-            <div className="custom-radio custom-control">
+            <div className="custom-radio custom-control" key={option.value}>
               <Input
                 id={RadioGroup.getId(option.value)}
                 onChange={this.props.onChange}

@@ -1,6 +1,5 @@
 @import "~compass-mixins";
 @import "variables";
-@import "./mixins/grid";
 
 html {
   font-size: $font-size-base;
@@ -21,7 +20,7 @@ body {
   font-size: $font-size-base;
   // font-weight: 300;
   line-height: $line-height-base;
-  color: $text-color;
+  color: $body-color;
   background-color: $body-background-color;
 
   //&.has-modal {
@@ -52,7 +51,5 @@ a {
     text-decoration: none;
 }
 
-// grid
-@include make-row(0);
-@include make-cols(12, 0);
+
 

@@ -7,4 +7,15 @@
 
 [role="button"] {
   cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+
+.btn-white {
+  border: 1px solid $border-color;
+}
+
+.text-sm {
+  font-size: $font-size-sm;
 }
