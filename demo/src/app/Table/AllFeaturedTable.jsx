@@ -1,7 +1,7 @@
 import React from 'react';
 import { dailyBasicKeys, dailyBaiscKeyNames, dailyBaiscDataSource } from './rawData';
 import ShowcaseContainer from '../ShowcaseContainer';
-import Table from '../../../../src/Table';
+import Table from '../../../../src/Table2';
 import Switch from '../../../../src/Switch/Switch';
 
 class AllFeaturedTable extends React.PureComponent {

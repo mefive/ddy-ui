@@ -2,7 +2,7 @@ import React from 'react';
 
 import { dailyBasicKeys, dailyBaiscKeyNames, dailyBaiscDataSource } from './rawData';
 import ShowcaseContainer from '../ShowcaseContainer';
-import Table from '../../../../src/Table';
+import Table from '../../../../src/Table2';
 
 class ColumnsFixedTable extends React.PureComponent {
   constructor(props) {

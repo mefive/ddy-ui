@@ -1,6 +1,6 @@
 import React from 'react';
 import ShowcaseContainer from '../ShowcaseContainer';
-import Table from '../../../../src/Table';
+import Table from '../../../../src/Table2';
 import { employeeDataSource, employeeKeys } from './rawData';
 
 class NestedColumnsTable extends React.PureComponent {
