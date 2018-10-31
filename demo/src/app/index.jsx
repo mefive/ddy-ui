@@ -8,6 +8,9 @@ import {
   NavLink,
 } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '@fortawesome/free-solid-svg-icons';
+
 import './style/index.scss';
 
 // pages
@@ -31,63 +34,63 @@ import Animate from './Animate';
 const links = [{
   url: 'table',
   title: 'Table',
-  icon: 'table',
+  icon: icons.faTable,
 }, {
   url: 'grid',
   title: 'Grid',
-  icon: 'th',
+  icon: icons.faTh,
 }, {
   url: 'datePicker',
   title: 'DatePicker',
-  icon: 'calendar-alt',
+  icon: icons.faCalendarAlt,
 }, {
   url: 'dateRangePicker',
   title: 'DateRangePicker',
-  icon: 'calendar',
+  icon: icons.faCalendar,
 }, {
   url: 'trigger',
   title: 'Trigger',
-  icon: 'anchor',
+  icon: icons.faAnchor,
 }, {
   url: 'tooltip',
   title: 'Tooltip',
-  icon: 'comment-alt',
+  icon: icons.faCommentAlt,
 }, {
   url: 'portal',
   title: 'Portal',
-  icon: 'door-open',
+  icon: icons.faDoorOpen,
 }, {
   url: 'select',
   title: 'Select',
-  icon: 'list-ul',
+  icon: icons.faListUl,
 }, {
   url: 'dialog',
   title: 'Dialog',
-  icon: 'window-restore',
+  icon: icons.faWindowRestore,
 }, {
   url: 'form',
   title: 'Form',
-  icon: 'list-alt',
+  icon: icons.faListAlt,
 }, {
   url: 'slider',
   title: 'Slider',
-  icon: 'sliders-h',
+  icon: icons.faSlidersH,
 }, {
   url: 'switch',
   title: 'Switch',
-  icon: 'toggle-on',
+  icon: icons.faToggleOn,
 }, {
   url: 'sortable',
   title: 'Sortable',
-  icon: 'hand-paper',
+  icon: icons.faHandPaper,
 }, {
   url: 'carousel',
   title: 'Carousel',
-  icon: 'images',
+  icon: icons.faImages,
 }, {
   url: 'animate',
   title: 'Animate',
-  icon: 'film',
+  icon: icons.faFilm,
 }, {
   url: 'contextMenu',
   title: 'ContextMenu',
@@ -107,8 +110,9 @@ const Port = () => (
               <div>
                 {title}
               </div>
+
               <div className="mt-2 h3">
-                <i className={`text-xl fas fa-${icon}`} />
+                {icon && (<FontAwesomeIcon icon={icon} />)}
               </div>
             </div>
           </NavLink>
