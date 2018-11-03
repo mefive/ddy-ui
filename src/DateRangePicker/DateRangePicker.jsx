@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 import Trigger from '../Trigger';
 import Popover from '../Popover';
@@ -53,14 +55,7 @@ class DateRangePicker extends React.PureComponent {
       active: false,
       start: this.props.start,
       end: this.props.end,
-      cursorWidth: 0,
     };
-
-    this.cursor = React.createRef();
-  }
-
-  componentDidMount() {
-    this.setCursorWidth();
   }
 
   componentWillReceiveProps({ start, end }) {
@@ -69,10 +64,6 @@ class DateRangePicker extends React.PureComponent {
     ) {
       this.setState({ start, end });
     }
-  }
-
-  setCursorWidth() {
-    this.setState({ cursorWidth: this.cursor.current.clientWidth });
   }
 
   setActive = (active) => {
@@ -104,12 +95,7 @@ class DateRangePicker extends React.PureComponent {
 
   render() {
     return (
-      <div
-        className={classNames(
-          'date-range-picker',
-          { 'disable-cursor': this.props.disableCursor },
-        )}
-      >
+      <div className="date-range-picker">
         {!this.props.disableCursor && (
           <Clickable
             onClick={() => {
@@ -136,37 +122,9 @@ class DateRangePicker extends React.PureComponent {
               }
             }}
           >
-            <i className="fas fa-angle-left backward float-left" ref={this.cursor} />
-          </Clickable>
-        )}
-
-        {!this.props.disableCursor && (
-          <Clickable
-            onClick={() => {
-              if (this.props.type === Calendar.TYPE_MONTH) {
-                const start = moment(this.props.start).add(1, 'M');
-                const end = moment(this.props.end).add(1, 'M');
-
-                if (this.props.max == null || end <= moment(this.props.max)) {
-                  this.props.onChange({
-                    start: start.format('YYYY-MM'),
-                    end: end.format('YYYY-MM'),
-                  });
-                }
-              } else {
-                const start = moment(this.props.start).add(1, 'd');
-                const end = moment(this.props.end).add(1, 'd');
-
-                if (this.props.max == null || end <= moment(this.props.max)) {
-                  this.props.onChange({
-                    start: start.format('YYYY-MM-DD'),
-                    end: end.format('YYYY-MM-DD'),
-                  });
-                }
-              }
-            }}
-          >
-            <i className="fas fa-angle-right forward float-right" />
+            <div className="cursor-move mr-1">
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </div>
           </Clickable>
         )}
 
@@ -240,12 +198,7 @@ class DateRangePicker extends React.PureComponent {
             </Popover>
           }
         >
-          <div
-            style={{
-              marginLeft: this.state.cursorWidth + 10,
-              marginRight: this.state.cursorWidth + 10,
-            }}
-          >
+          <div className="trigger">
             <Focusable>
               <div
                 className={classNames(
@@ -258,6 +211,38 @@ class DateRangePicker extends React.PureComponent {
             </Focusable>
           </div>
         </Trigger>
+
+        {!this.props.disableCursor && (
+          <Clickable
+            onClick={() => {
+              if (this.props.type === Calendar.TYPE_MONTH) {
+                const start = moment(this.props.start).add(1, 'M');
+                const end = moment(this.props.end).add(1, 'M');
+
+                if (this.props.max == null || end <= moment(this.props.max)) {
+                  this.props.onChange({
+                    start: start.format('YYYY-MM'),
+                    end: end.format('YYYY-MM'),
+                  });
+                }
+              } else {
+                const start = moment(this.props.start).add(1, 'd');
+                const end = moment(this.props.end).add(1, 'd');
+
+                if (this.props.max == null || end <= moment(this.props.max)) {
+                  this.props.onChange({
+                    start: start.format('YYYY-MM-DD'),
+                    end: end.format('YYYY-MM-DD'),
+                  });
+                }
+              }
+            }}
+          >
+            <div className="cursor-move ml-1">
+              <FontAwesomeIcon icon={faAngleRight} />
+            </div>
+          </Clickable>
+        )}
       </div>
     );
   }

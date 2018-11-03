@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import { addClass, removeClass } from 'dom-helpers/class';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Portal from '../Portal';
 import Animate from '../Animate';
@@ -153,7 +155,7 @@ class Modal extends React.PureComponent {
                     {this.props.onClose != null && (
                     <Clickable onClick={this.props.onClose}>
                       <div className="close">
-                        <i className="fas fa-times" />
+                        <FontAwesomeIcon icon={faTimes} />
                       </div>
                     </Clickable>
                       )}

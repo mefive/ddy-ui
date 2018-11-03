@@ -3,9 +3,13 @@
 @import "../style/mixins/triangle";
 
 .date-range-picker {
-  .backward,
-  .forward {
-    cursor: pointer;
+  display: flex;
+
+  .trigger {
+    flex-grow: 1;
+  }
+
+  .cursor-move {
     font-size: $font-size-base;
     line-height: $input-btn-line-height;
     padding: $custom-select-padding-y $custom-select-padding-x;

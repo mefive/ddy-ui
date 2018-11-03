@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import Trigger from '../Trigger';
 import Calendar from '../Calendar';
 import Popover from '../Popover';
-
-import './style.scss';
 import Focusable from '../Focusable';
 import Clickable from '../Clickable';
+
+import './style.scss';
 
 class DatePicker extends React.PureComponent {
   static propTypes = {
@@ -40,18 +42,7 @@ class DatePicker extends React.PureComponent {
 
     this.state = {
       active: false,
-      cursorWidth: 0,
     };
-
-    this.cursor = React.createRef();
-  }
-
-  componentDidMount() {
-    this.setCursorWidth();
-  }
-
-  setCursorWidth() {
-    this.setState({ cursorWidth: this.cursor.current.clientWidth });
   }
 
   select = (value) => {
@@ -108,16 +99,9 @@ class DatePicker extends React.PureComponent {
         style={{ width: this.props.width }}
       >
         <Clickable onClick={this.moveBack}>
-          <i
-            className="fas fa-angle-left backward float-left"
-            ref={this.cursor}
-          />
-        </Clickable>
-
-        <Clickable onClick={this.moveNext}>
-          <i
-            className="fas fa-angle-right forward float-right"
-          />
+          <div className="cursor-move mr-1">
+            <FontAwesomeIcon icon={faAngleLeft} />
+          </div>
         </Clickable>
 
         <Trigger
@@ -142,12 +126,7 @@ class DatePicker extends React.PureComponent {
           )}
           onActiveChange={this.changeActive}
         >
-          <div
-            style={{
-              marginLeft: this.state.cursorWidth + 10,
-              marginRight: this.state.cursorWidth + 10,
-            }}
-          >
+          <div className="trigger">
             <Focusable>
               <div
                 className={classNames(
@@ -160,6 +139,12 @@ class DatePicker extends React.PureComponent {
             </Focusable>
           </div>
         </Trigger>
+
+        <Clickable onClick={this.moveNext}>
+          <div className="cursor-move ml-1">
+            <FontAwesomeIcon icon={faAngleRight} />
+          </div>
+        </Clickable>
       </div>
     );
   }

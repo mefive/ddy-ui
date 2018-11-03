@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '@fortawesome/free-solid-svg-icons';
 
 import Trigger from '../Trigger';
 import Popover from '../Popover/index';
@@ -212,7 +214,7 @@ class Select extends React.PureComponent {
                         }}
                       >
                         {this.props.multiple && i.value === this.props.value && (
-                          <i className="icon icon-check" />
+                          <FontAwesomeIcon icon={icons.faCheck} />
                         )}
 
                         {this.props.renderOption
@@ -259,10 +261,6 @@ class Select extends React.PureComponent {
             ref={(el) => { this.trigger = el; }}
           >
             {this.props.title || this.getTitle()}
-
-            <div className="trigger-icon">
-              <i className="icon icon-caret-down" />
-            </div>
           </div>
         </div>
       </Trigger>

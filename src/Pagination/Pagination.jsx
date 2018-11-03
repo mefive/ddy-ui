@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+
 import Clickable from '../Clickable';
 
 import './style.scss';
@@ -83,7 +86,7 @@ class Pagination extends React.PureComponent {
               { disabled: isFirstPage },
             )}
           >
-            <i className="fas fa-angle-left" />
+            <FontAwesomeIcon icon={faAngleLeft} />
           </div>
         </Clickable>
 
@@ -148,7 +151,7 @@ class Pagination extends React.PureComponent {
               { disabled: isLastPage },
             )}
           >
-            <i className="fas fa-angle-right" />
+            <FontAwesomeIcon icon={faAngleRight} />
           </div>
         </Clickable>
       </div>
