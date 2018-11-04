@@ -2,8 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import style from './style/index.scss';
-
 const propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
@@ -19,7 +17,7 @@ const defaultProps = {
 class ShowcaseContainer extends React.PureComponent {
   render() {
     return (
-      <div className="card">
+      <div className={classNames('card', this.props.className)}>
         <div className="card-header">
           {this.props.title}
         </div>

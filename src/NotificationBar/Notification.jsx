@@ -3,27 +3,31 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const TYPR_ERROR = 'error';
-const TYPE_SUCC = 'succ';
-
-const propTypes = {
-  wait: PropTypes.number,
-  onRemove: PropTypes.func,
-  className: PropTypes.string,
-  type: PropTypes.string,
-  message: PropTypes.string,
-};
-
-const defaultProps = {
-  wait: 3000,
-  onRemove: () => {},
-  className: null,
-  type: TYPE_SUCC,
-  message: null,
-};
+const TYPE_SUCCESS = 'success';
 
 class Notification extends React.PureComponent {
+  static TYPE_ERROR = TYPR_ERROR;
+
+  static TYPE_SUCCESS = TYPE_SUCCESS;
+
+  static propTypes = {
+    wait: PropTypes.number,
+    onRemove: PropTypes.func,
+    className: PropTypes.string,
+    type: PropTypes.string,
+    message: PropTypes.string,
+  };
+
+  static defaultProps = {
+    wait: 3000,
+    onRemove: () => {},
+    className: null,
+    type: TYPE_SUCCESS,
+    message: null,
+  };
+
   componentDidMount() {
-    this.waitTimer = setTimeout(
+    this.timer = setTimeout(
       () => this.props.onRemove(),
       this.props.wait,
     );
@@ -41,8 +45,8 @@ class Notification extends React.PureComponent {
       <div
         className={classNames(
             'notification',
-            { 'alert-success': this.props.type === Notification.type.SUCC },
-            { 'alert-error': this.props.type === Notification.type.ERROR },
+            { 'alert-success': this.props.type === Notification.TYPE_SUCCESS },
+            { 'alert-error': this.props.type === Notification.TYPE_ERROR },
             this.props.className,
           )}
       >
@@ -51,13 +55,5 @@ class Notification extends React.PureComponent {
     );
   }
 }
-
-Notification.propTypes = propTypes;
-Notification.defaultProps = defaultProps;
-
-Notification.type = {
-  ERROR: TYPR_ERROR,
-  SUCC: TYPE_SUCC,
-};
 
 export default Notification;

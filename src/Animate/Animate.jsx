@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Transition from 'react-transition-group/Transition';
+import { Transition, TransitionGroup } from 'react-transition-group';
 
 import './style.scss';
 
@@ -13,7 +13,6 @@ class Animate extends React.PureComponent {
     leaveDuration: PropTypes.number,
     activeClass: PropTypes.string,
     children: PropTypes.node,
-    visible: PropTypes.bool,
     onEnter: PropTypes.func,
     onEntering: PropTypes.func,
     onEntered: PropTypes.func,
@@ -26,7 +25,6 @@ class Animate extends React.PureComponent {
     leaveClassName: 'leave',
     activeClass: 'active',
     children: null,
-    visible: false,
     onEnter: () => {},
     onEntering: () => {},
     onEntered: () => {},
@@ -34,33 +32,32 @@ class Animate extends React.PureComponent {
 
   render() {
     return (
-      <Transition
-        in={this.props.visible}
-        timeout={{
-          enter: this.props.enterDuration,
-          exit: this.props.leaveDuration,
-        }}
-        onEnter={this.props.onEnter}
-        onEntering={this.props.onEntering}
-        onEntered={this.props.onEntered}
-        unmountOnExit
-      >
-        {(state) => {
-          if (this.props.children) {
-            const child = React.Children.only(this.props.children);
-
-            return React.cloneElement(child, {
-              className: classNames(child.props.className, 'animation', {
-                [this.props.enterClassName]: state === 'entering',
-                [this.props.activeClass]: state === 'entered',
-                [this.props.leaveClassName]: state === 'exiting' || state === 'exited',
-              }),
-            });
-          }
-
-          return null;
-        }}
-      </Transition>
+      <TransitionGroup>
+        {this.props.children && React.Children.map(this.props.children, child => {
+          return (
+            <Transition
+              key={child.key || 'single'}
+              in
+              timeout={{
+                enter: this.props.enterDuration,
+                exit: this.props.leaveDuration,
+              }}
+              onEnter={this.props.onEnter}
+              onEntering={this.props.onEntering}
+              onEntered={this.props.onEntered}
+              unmountOnExit
+            >
+              {state => React.cloneElement(child, {
+                className: classNames(child.props.className, 'animation', {
+                  [this.props.enterClassName]: state === 'entering',
+                  [this.props.activeClass]: state === 'entered',
+                  [this.props.leaveClassName]: state === 'exiting' || state === 'exited',
+                }),
+              })}
+            </Transition>
+          );
+        })}
+      </TransitionGroup>
     );
   }
 }
