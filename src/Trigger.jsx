@@ -174,32 +174,33 @@ class Trigger extends React.PureComponent {
         leaveDuration={this.props.leaveDuration}
         activeClass={this.props.activeClass}
         onEnter={() => this.popover.place()}
-        visible={this.getActive()}
       >
-        <Portal getContainer={this.props.getPopoverContainer}>
-          {(() => {
-            const popoverElement
-              = this.props.renderPopover ? this.props.renderPopover() : this.props.popover;
+        {this.getActive() && (
+          <Portal getContainer={this.props.getPopoverContainer}>
+            {(() => {
+              const popoverElement
+                = this.props.renderPopover ? this.props.renderPopover() : this.props.popover;
 
-            const container = this.props.getPopoverContainer == null
-              ? document.body
-              : this.props.getPopoverContainer();
+              const container = this.props.getPopoverContainer == null
+                ? document.body
+                : this.props.getPopoverContainer();
 
-            return React.cloneElement(
-              popoverElement,
-              {
-                anchor: this.anchor,
-                container,
-                ref: (el) => {
-                  if (typeof popoverElement.ref === 'function') {
-                    popoverElement.ref(el);
-                  }
-                  this.popover = el;
+              return React.cloneElement(
+                popoverElement,
+                {
+                  anchor: this.anchor,
+                  container,
+                  ref: (el) => {
+                    if (typeof popoverElement.ref === 'function') {
+                      popoverElement.ref(el);
+                    }
+                    this.popover = el;
+                  },
                 },
-              },
-            );
-          })()}
-        </Portal>
+              );
+            })()}
+          </Portal>
+        )}
       </Animate>,
     );
   }
