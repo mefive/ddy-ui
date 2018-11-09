@@ -1,6 +1,0 @@
-@import "~compass-mixins";
-
-.popover.context-menu-popup {
-  width: 100px;
-  @include ellipsis();
-}
