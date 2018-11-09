@@ -13,6 +13,15 @@
   border: 1px solid $border-color;
 }
 
-.text-sm {
+.font-size-base {
+  font-size: $font-size-base;
+}
+
+.font-size-lg {
+  font-size: $font-size-lg;
+}
+
+.font-size-sm {
   font-size: $font-size-sm;
 }
+

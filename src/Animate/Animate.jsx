@@ -33,30 +33,28 @@ class Animate extends React.PureComponent {
   render() {
     return (
       <TransitionGroup>
-        {this.props.children && React.Children.map(this.props.children, child => {
-          return (
-            <Transition
-              key={child.key || 'single'}
-              in
-              timeout={{
+        {this.props.children && React.Children.map(this.props.children, child => (
+          <Transition
+            key={child.key || 'single'}
+            in
+            timeout={{
                 enter: this.props.enterDuration,
                 exit: this.props.leaveDuration,
               }}
-              onEnter={this.props.onEnter}
-              onEntering={this.props.onEntering}
-              onEntered={this.props.onEntered}
-              unmountOnExit
-            >
-              {state => React.cloneElement(child, {
+            onEnter={this.props.onEnter}
+            onEntering={this.props.onEntering}
+            onEntered={this.props.onEntered}
+            unmountOnExit
+          >
+            {state => React.cloneElement(child, {
                 className: classNames(child.props.className, 'animation', {
                   [this.props.enterClassName]: state === 'entering',
                   [this.props.activeClass]: state === 'entered',
                   [this.props.leaveClassName]: state === 'exiting' || state === 'exited',
                 }),
               })}
-            </Transition>
-          );
-        })}
+          </Transition>
+          ))}
       </TransitionGroup>
     );
   }

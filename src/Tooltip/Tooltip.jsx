@@ -20,6 +20,7 @@ class Tooltip extends React.PureComponent {
     action: PropTypes.string,
     onActiveChange: PropTypes.func,
     renderPopover: PropTypes.func,
+    active: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -34,6 +35,7 @@ class Tooltip extends React.PureComponent {
     action: 'hover',
     onActiveChange: () => {},
     renderPopover: null,
+    active: null,
   };
 
   render() {
@@ -66,7 +68,9 @@ class Tooltip extends React.PureComponent {
         activeClass="show"
         enterDuration={200}
         leaveDuration={200}
+        enterDelay={300}
         getPopoverContainer={this.props.getPopoverContainer}
+        active={this.props.active}
         onActiveChange={this.props.onActiveChange}
       >
         {this.props.children}

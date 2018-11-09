@@ -12,10 +12,14 @@ const propTypes = {
   active: PropTypes.bool,
   onActiveChange: PropTypes.func,
   disabled: PropTypes.bool,
+
   enterClassName: PropTypes.string,
   leaveClassName: PropTypes.string,
   enterDuration: PropTypes.number,
   leaveDuration: PropTypes.number,
+  enterDelay: PropTypes.number,
+  leaveDelay: PropTypes.number,
+
   action: PropTypes.string,
   getPopoverContainer: PropTypes.func,
   children: PropTypes.node,
@@ -28,10 +32,14 @@ const defaultProps = {
   defaultActive: false,
   active: null,
   disabled: false,
+
   enterClassName: 'enter',
   leaveClassName: 'leave',
   enterDuration: 200,
   leaveDuration: 200,
+  enterDelay: null,
+  leaveDelay: null,
+
   onActiveChange: () => {},
   getPopoverContainer: null,
   action: 'click',
@@ -44,19 +52,19 @@ class Trigger extends React.PureComponent {
     super(props);
 
     this.state = {
-      active: this.getActive(),
+      active: false,
     };
-
-    this.outsideToggle = this.outsideToggle.bind(this);
-    this.anchorToggle = this.anchorToggle.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.activate = this.activate.bind(this);
-    this.deactivate = this.deactivate.bind(this);
   }
 
   componentWillReceiveProps({ active }) {
     if (active !== this.props.active) {
       this.onActiveChange(active);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.active !== prevProps.active && this.popover != null) {
+      this.popover.place();
     }
   }
 
@@ -66,6 +74,8 @@ class Trigger extends React.PureComponent {
     if (action === 'click') {
       document.removeEventListener('click', this.outsideToggle);
     }
+
+    this.clearTimers();
   }
 
   onActiveChange(active) {
@@ -92,6 +102,11 @@ class Trigger extends React.PureComponent {
 
   setActive(active) {
     if (!this.props.disabled) {
+      if (this.props.onActiveChange != null) {
+        this.props.onActiveChange(active);
+      } else {
+        this.setState({ active });
+      }
       if (this.props.active == null && this.state.active !== active) {
         this.setState({ active }, () => this.onActiveChange(active));
       }
@@ -123,33 +138,57 @@ class Trigger extends React.PureComponent {
     return eventHandlers;
   }
 
-  outsideToggle(e) {
+  outsideToggle = (e) => {
     if (this.popover
       && !contains(this.popover.node, e.target)
       && !contains(this.anchor, e.target)
     ) {
       this.toggle();
     }
-  }
+  };
 
-  anchorToggle(e) {
+  anchorToggle = (e) => {
     e.stopPropagation();
 
     if (contains(this.anchor, e.target)) {
       this.toggle();
     }
-  }
+  };
 
-  toggle() {
+  toggle = () => {
     this.setActive(!this.getActive());
-  }
+  };
 
-  activate() {
-    this.setActive(true);
-  }
+  activate = () => {
+    this.clearTimers();
 
-  deactivate() {
-    this.setActive(false);
+    if (this.props.enterDelay != null) {
+      this.enterDelayTimer = setTimeout(() => this.setActive(true), this.props.enterDelay);
+    } else {
+      this.setActive(true);
+    }
+  };
+
+  deactivate = () => {
+    this.clearTimers();
+
+    if (this.props.leaveDelay != null) {
+      this.leaveDelayTimer = setTimeout(() => this.setActive(false), this.props.leaveDelay);
+    } else {
+      this.setActive(false);
+    }
+  };
+
+  clearTimers() {
+    if (this.enterDelayTimer != null) {
+      clearTimeout(this.enterDelayTimer);
+      this.enterDelayTimer = null;
+    }
+
+    if (this.leaveDelayTimer != null) {
+      clearTimeout(this.leaveDelayTimer);
+      this.leaveDelayTimer = null;
+    }
   }
 
   render() {
@@ -173,7 +212,10 @@ class Trigger extends React.PureComponent {
         enterDuration={this.props.enterDuration}
         leaveDuration={this.props.leaveDuration}
         activeClass={this.props.activeClass}
-        onEnter={() => this.popover.place()}
+        onEnter={() => {
+          console.log('on enter');
+          this.popover.place();
+        }}
       >
         {this.getActive() && (
           <Portal getContainer={this.props.getPopoverContainer}>

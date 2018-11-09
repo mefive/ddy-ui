@@ -74,7 +74,7 @@ class ImageUploader extends React.PureComponent {
         </FileUploader>
 
         {this.state.error && (
-          <div className="mt-1 text-sm text-error">
+          <div className="mt-1 font-size-sm text-error">
             {this.state.error}
           </div>
         )}

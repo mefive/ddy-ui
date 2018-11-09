@@ -136,7 +136,7 @@ class TableFilterPopover extends React.PureComponent {
 
         <div className="p-1">
           {this.props.filterItems.length > 1 && (
-            <div className="text-sm">
+            <div className="font-size-sm">
               <div>
                 <Input
                   type="checkbox"

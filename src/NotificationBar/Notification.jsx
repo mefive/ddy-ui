@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const TYPR_ERROR = 'error';
+const TYPE_ERROR = 'error';
 const TYPE_SUCCESS = 'success';
 
 class Notification extends React.PureComponent {
-  static TYPE_ERROR = TYPR_ERROR;
+  static TYPE_ERROR = TYPE_ERROR;
 
   static TYPE_SUCCESS = TYPE_SUCCESS;
 
@@ -44,11 +44,11 @@ class Notification extends React.PureComponent {
     return (
       <div
         className={classNames(
-            'notification',
-            { 'alert-success': this.props.type === Notification.TYPE_SUCCESS },
-            { 'alert-error': this.props.type === Notification.TYPE_ERROR },
-            this.props.className,
-          )}
+          'notification',
+          { 'alert-success': this.props.type === Notification.TYPE_SUCCESS },
+          { 'alert-danger': this.props.type === Notification.TYPE_ERROR },
+          this.props.className,
+        )}
       >
         {this.props.message}
       </div>

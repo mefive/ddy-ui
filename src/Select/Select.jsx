@@ -10,6 +10,7 @@ import Popover from '../Popover/index';
 import Clickable from '../Clickable';
 
 import './style.scss';
+import Focusable from '../Focusable';
 
 class Select extends React.PureComponent {
   static propTypes = {
@@ -253,15 +254,18 @@ class Select extends React.PureComponent {
           )}
           style={{ width: this.props.width || null }}
         >
-          <div
-            className={classNames(
-              'custom-select',
-              { active: this.state.active },
-            )}
-            ref={(el) => { this.trigger = el; }}
-          >
-            {this.props.title || this.getTitle()}
-          </div>
+          <Focusable>
+            <div
+              className={classNames(
+                'custom-select',
+                { active: this.state.active },
+              )}
+              ref={(el) => { this.trigger = el; }}
+              role="button"
+            >
+              {this.props.title || this.getTitle()}
+            </div>
+          </Focusable>
         </div>
       </Trigger>
     );

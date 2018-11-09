@@ -11,7 +11,9 @@ const propTypes = {
   indeterminate: PropTypes.bool,
   format: PropTypes.func,
   onEnter: PropTypes.func,
+  checked: PropTypes.bool,
   prepend: PropTypes.node,
+  append: PropTypes.node,
   getDom: PropTypes.func,
   className: PropTypes.string,
 };
@@ -25,8 +27,10 @@ const defaultProps = {
   onChange: () => null,
   onEnter: () => {},
   prepend: null,
+  append: null,
   getDom: null,
   className: null,
+  checked: null,
 };
 
 class Input extends React.PureComponent {
@@ -36,17 +40,21 @@ class Input extends React.PureComponent {
     }
   }
 
-  renderInput() {
+  renderInput(className) {
     const {
-      getDom, onEnter, indeterminate, value, className, ...props
+      getDom, onEnter, indeterminate, value, checked, prepend, ...props
     } = this.props;
 
     if (['file', 'checkbox', 'radio'].indexOf(props.type) === -1) {
-      props.value = this.props.value == null ? '' : this.props.value;
+      props.value = value == null ? '' : value;
     }
 
-    if (['checkbox', 'radio'].indexOf(props.type) !== -1) {
-      props.checked = this.props.value;
+    if (props.type === 'checkbox') {
+      props.checked = value;
+    }
+
+    if (props.type === 'radio') {
+      props.checked = checked;
     }
 
     if (indeterminate && props.type === 'checkbox') {
@@ -57,7 +65,7 @@ class Input extends React.PureComponent {
       <input
         {...props}
 
-        className={classNames('form-control', className)}
+        className={className}
 
         value={value || ''}
 
@@ -103,16 +111,25 @@ class Input extends React.PureComponent {
   }
 
   render() {
-    if (this.props.prepend == null) {
-      return this.renderInput();
+    const className = classNames(
+      ['checkbox', 'radio'].indexOf(this.props.type) !== -1 ? 'form-check' : 'form-control',
+      this.props.className,
+    );
+
+    if (this.props.prepend == null && this.props.append == null) {
+      return this.renderInput(className);
     }
 
     return (
-      <span className={this.props.className}>
+      <div className={classNames('d-flex align-items-center justify-content-between', className)}>
         {this.props.prepend}
 
-        {this.renderInput()}
-      </span>
+        <div className="flex-1 w-100">
+          {this.renderInput('border-0')}
+        </div>
+
+        {this.props.append}
+      </div>
     );
   }
 }

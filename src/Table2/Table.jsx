@@ -90,8 +90,10 @@ class Table extends React.PureComponent {
     }
   }
 
-  componentDidUpdate({ height }) {
-    if (height == null && this.props.height != null) {
+  componentDidUpdate({ height, dataSource }) {
+    if ((height == null && this.props.height != null)
+      || dataSource !== this.props.dataSource
+    ) {
       this.updateColumnsWidth();
     }
   }

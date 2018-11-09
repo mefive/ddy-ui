@@ -27,7 +27,7 @@ class Password extends React.PureComponent {
             this.setState({ showPlaintext: !showPlaintext })}
         >
           <span
-            className="text-primary position-absolute text-sm"
+            className="text-primary position-absolute font-size-sm"
             style={{
               right: 10,
               top: 8,

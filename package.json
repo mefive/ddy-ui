@@ -4,6 +4,7 @@
   "description": "React components for common use",
   "main": "./lib",
   "scripts": {
+    "precommit": "lint-staged",
     "test": "npm run test",
     "lint": "eslint ./src/**/*.jsx ./src/**/*.js",
     "build": "rm -rf ./lib && babel src -d lib --copy-files",
@@ -98,5 +99,11 @@
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

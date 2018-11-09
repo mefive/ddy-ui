@@ -3,32 +3,41 @@ import formData from 'form-urlencoded';
 import queryString from 'querystring';
 import omitBy from 'lodash/omitBy';
 
-function handleResponse(promise, url, method) {
+function formatResponse({
+  code, status,
+  message, msg,
+  data,
+}) {
+  return {
+    code: code != null ? code : status,
+    status,
+    message: message != null ? message : msg,
+    data,
+  };
+}
+
+function handleResponse(promise) {
   return promise
     .then((res) => {
-      if (res.status !== 200) {
-        throw Object({ status: res.status });
-      } else {
+      if (res.ok) {
         return res.json();
       }
+
+      return {
+        status: res.status,
+      };
     })
-    .then(({
-      code, data, message, models,
-    }) => {
-      if (+code === 0) {
-        if (data != null) {
-          return data;
-        }
+    .then((response) => {
+      const res = formatResponse(response);
 
-        return models;
-      } else if (code) {
-        console.log('network error', {
-          code, message, url, method, data,
-        });
+      if (res.code === 1 || res.code === 0) {
+        return res.data;
+      }
 
-        throw Object({
-          code, message, url, method, data,
-        });
+      if (res.code === -999) {
+        window.location.href = `${res.data}&targetUrl=${encodeURIComponent(window.location.href)}`;
+      } else {
+        throw res;
       }
 
       return null;
@@ -36,6 +45,13 @@ function handleResponse(promise, url, method) {
 }
 
 export function formatApiParams(api, params) {
+  if (Array.isArray(params)) {
+    return {
+      newApi: api,
+      newParams: params,
+    };
+  }
+
   let newApi = api;
   let newParams = { ...params };
 
@@ -69,6 +85,7 @@ export default {
     return handleResponse(
       fetch(url, {
         credentials: 'include',
+        mode: 'cors',
       }),
       url,
       'get',
@@ -93,8 +110,8 @@ export default {
     );
   },
 
-  postJson(api, params) {
-    const { newApi, newParams } = formatApiParams(api, params);
+  postJson(api, params, data) {
+    const { newApi } = formatApiParams(api, params);
 
     return handleResponse(
       fetch(newApi, {
@@ -104,7 +121,7 @@ export default {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newParams),
+        body: JSON.stringify(data),
       }),
       newApi,
       'post',
@@ -129,8 +146,8 @@ export default {
     );
   },
 
-  putJson(api, params) {
-    const { newApi, newParams } = formatApiParams(api, params);
+  putJson(api, params, data) {
+    const { newApi } = formatApiParams(api, params);
 
     return handleResponse(
       fetch(newApi, {
@@ -140,10 +157,10 @@ export default {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newParams),
+        body: JSON.stringify(data),
       }),
       newApi,
-      'put',
+      'post',
     );
   },
 
@@ -169,6 +186,24 @@ export default {
     );
   },
 
+  deleteJson(api, params, data) {
+    const { newApi } = formatApiParams(api, params);
+
+    return handleResponse(
+      fetch(newApi, {
+        method: 'DELETE',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }),
+      newApi,
+      'post',
+    );
+  },
+
   postFile(api, param) {
     const data = new FormData();
 
@@ -178,6 +213,7 @@ export default {
       fetch(api, {
         method: 'POST',
         mode: 'cors',
+        credentials: 'include',
         body: data,
       }),
       api,
