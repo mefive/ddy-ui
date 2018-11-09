@@ -1,0 +1,13 @@
+@import "~compass-mixins";
+@import "../../../style/variables";
+@import "../../../style/mixins/rem";
+
+.modal.alert {
+  .dialog-actions {
+    .btn {
+      width: 100%;
+      border-bottom-left-radius: rem(10px);
+      border-bottom-right-radius: rem(10px);
+    }
+  }
+}

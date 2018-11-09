@@ -1,0 +1,62 @@
+@import "~compass-mixins";
+@import "../style/variables";
+
+.ddy-auto-complete {
+  position: relative;
+}
+
+.ddy-select-multi-items {
+  padding: 6px 0;
+  margin-left: -5px;
+  margin-top: -5px;
+
+  @include clearfix;
+
+  li {
+    float: left;
+    border: 1px solid $border-color;
+    background-color: #FAFAFA;
+    line-height: 22px;
+    padding: 0 20px 0 10px;
+    border-radius: 2px;
+    margin-left: 5px;
+    margin-top: 5px;
+    position: relative;
+
+    .icon-times {
+      position: absolute;
+      top: 50%;
+      margin-top: -0.5 * 12px;
+      right: 3px;
+      font-size: 12px;
+    }
+  }
+}
+
+.popover.ddy-auto-complete-popover {
+  .wrapper {
+    position: relative;
+  }
+
+  .keyword {
+    padding: 5px 10px;
+  }
+
+  .options {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .no-data {
+    margin: 5px 0;
+    padding: 2px 5px;
+    background-color: #FAFAFA;
+  }
+
+  li {
+    &.selected {
+      background-color: $primary;
+      color: #fff;
+    }
+  }
+}

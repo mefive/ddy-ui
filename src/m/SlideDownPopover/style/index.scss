@@ -1,0 +1,22 @@
+@import "../../../style/mixins/rem";
+@import "../../../style/variables";
+
+.slide-down-popover {
+  position: fixed;
+  top: rem(55px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #273351;
+  color: #A8B6D7;
+  opacity: 0;
+
+  transform: translateY(-150%);
+  transition-property: transform, opacity;
+  transition-duration: .4s;
+
+  &.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

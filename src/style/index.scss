@@ -1,0 +1,27 @@
+@import "variables";
+@import "~bootstrap/scss/bootstrap.scss";
+@import "spacing";
+
+[role="button"] {
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+
+.btn-white {
+  border: 1px solid $border-color;
+}
+
+.font-size-base {
+  font-size: $font-size-base;
+}
+
+.font-size-lg {
+  font-size: $font-size-lg;
+}
+
+.font-size-sm {
+  font-size: $font-size-sm;
+}
+

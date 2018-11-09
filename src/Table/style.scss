@@ -1,0 +1,251 @@
+@import "~compass-mixins";
+@import "../style/variables";
+
+.table-filter-popover {
+  box-shadow: 0 1px 6px rgba(0,0,0,.2);
+
+  .filter-item:hover {
+    background-color: #ebf6ff !important;
+  }
+}
+
+.table {
+  position: relative;
+  background-color: $white;
+  padding-bottom: 20px;
+
+  .table-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .table-body {
+    overflow-y: auto;
+  }
+
+  .table-column-fixed {
+    .table-body {
+      overflow-x: hidden;
+    }
+  }
+
+  &.has-vertical-scrollbar {
+    .table-header {
+      overflow-y: scroll;
+    }
+  }
+
+  &.has-horizontal-scrollbar {
+    .table-column-fixed {
+      .table-body {
+        overflow-x: scroll;
+      }
+    }
+  }
+
+  &,
+  div {
+    @include box-sizing(border-box);
+  }
+
+  .default-no-data,
+  .default-loading {
+    text-align: center;
+    font-size: 14px;
+    line-height: 200px;
+  }
+
+  table {
+    // table-layout: fixed;
+    border-collapse: collapse !important;
+    width: 100%;
+
+    tr.header {
+      td {
+        background-color: $table-head-bg;
+      }
+    }
+
+    .empty-cell {
+      &,
+      & > div {
+        color: transparent !important;
+      }
+    }
+
+    > tbody {
+      tr {
+        border-bottom: 1px solid $border-color;
+      }
+    }
+
+    .detail-trigger-cell {
+      cursor: pointer;
+      text-align: center;
+
+      .icon-plus,
+      .icon-minus {
+        border: 1px solid $border-color;
+        margin-top: 5px;
+      }
+    }
+
+    .detail-container {
+      padding: 0;
+    }
+
+    td.detail-cell {
+      padding: 10px 20px;
+      background-color: #EEEEEE;
+
+      table {
+        padding: 0;
+
+        td {
+          @include ellipsis();
+        }
+      }
+    }
+
+    .detail {
+      text-align: left;
+      display: inline-block;
+      width: 50%;
+      vertical-align: top;
+
+      .detail-field {
+        line-height: 2;
+      }
+
+      label {
+        display: inline-block;
+      }
+    }
+  }
+
+  table > thead {
+    border-radius: 3px;
+    border-bottom: 2px solid $border-color;
+
+    th {
+      color: $yiq-text-dark;
+
+      &:first-child {
+        border-radius:3px 0 0 3px;
+      }
+      &:last-child {
+        border-radius:0 3px 3px 0;
+      }
+
+      &.sortable {
+        cursor: pointer;
+
+        .icon-arrow-up,
+        .icon-arrow-down {
+          vertical-align: middle;
+          font-size: 18px;
+          margin-top: -3px;
+        }
+
+        @include user-select(none);
+      }
+
+      &:first-child {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+      }
+
+      &:last-child {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+      }
+    }
+  }
+
+  thead.invisible {
+    th {
+      padding-top: 0;
+      padding-bottom: 0;
+      line-height: 0 !important;
+      color: transparent;
+
+      > div {
+        height: 0;
+        overflow: hidden;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color .2s;
+    }
+  }
+
+  .table-column-fixed {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: $white;
+    box-shadow: 6px 0 6px -4px rgba(0,0,0, .2);
+    //z-index: $z-index-lg;
+
+    .table-header,
+    .table-body {
+      overflow-y: hidden;
+    }
+
+  }
+
+  &.flexible {
+    position: absolute;
+    // table has fixed top value
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    &.has-pager {
+      .table-column-fixed,
+      .table-column-flow .table-body {
+        // reserve pager's height
+        bottom: 57px;
+      }
+    }
+
+    .table-column-fixed {
+      bottom: 0;
+
+      .table-body {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+    }
+
+    .table-column-flow {
+      .table-body {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+      }
+    }
+
+    .table-header {
+      top: 0 !important;
+    }
+
+    .table-pagination {
+      position: absolute;
+      bottom: 0;
+      text-align: right;
+      width: 100%;
+    }
+  }
+}

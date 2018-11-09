@@ -1,0 +1,74 @@
+@import "~compass-mixins";
+@import "../../../components/style/mixins/triangle";
+@import "../../../components/style/variables";
+
+$form-line-height: 36px;
+
+.form-item-line-height {
+  line-height: $form-line-height;
+}
+
+.form {
+  .required {
+    color: $danger;
+    font-size: 16px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .label-col {
+    &.right {
+      text-align: right;
+      padding-right: 15px;
+    }
+
+    label {
+      //&:after {
+      //  content: ":";
+      //  margin: 0 8px 0 2px;
+      //}
+    }
+  }
+
+  label {
+    line-height: $form-line-height;
+  }
+
+  .form-item + .form-item {
+    margin-top: 10px;
+  }
+
+  .form-item {
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"] {
+      line-height: $form-line-height - (1 * 2) - (7 * 2);
+    }
+  }
+
+  .has-error {
+    input,
+    textarea {
+      border-color: $danger !important;
+      box-shadow: 0 0 3px 1px rgba(238, 68, 16, 0.5);
+    }
+
+    .select-trigger {
+      border-color: $danger;
+    }
+  }
+
+  .error {
+    margin-top: 5px;
+    color: $danger;
+    font-size: $font-size-sm;
+  }
+
+  @media (max-width: $screen-xs) {
+    .label-col {
+      text-align: left !important;
+    }
+  }
+}

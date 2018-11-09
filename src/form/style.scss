@@ -1,0 +1,73 @@
+@import "~compass-mixins";
+@import "../style/variables";
+
+.form {
+  .required {
+    position: relative;
+    &:before {
+      content: '*';
+      color: $red;
+      font-size: 16px;
+      margin-right: 0.25rem;
+      vertical-align: middle;
+      left: 0;
+      top: 0;
+
+    }
+  }
+
+  .col-form-label {
+    &.right {
+      text-align: right;
+      padding-right: 15px;
+    }
+
+    label {
+      //&:after {
+      //  content: ":";
+      //  margin: 0 8px 0 2px;
+      //}
+    }
+  }
+  //
+  //label {
+  //  line-height: $form-line-height;
+  //}
+  //
+  //.form-item + .form-item {
+  //  margin-top: 10px;
+  //}
+  //
+  //.form-item {
+  //  input[type="text"],
+  //  input[type="number"],
+  //  input[type="email"],
+  //  input[type="password"] {
+  //    line-height: $form-line-height - (1 * 2) - (7 * 2);
+  //  }
+  //}
+  //
+  //.has-error {
+  //  input,
+  //  textarea {
+  //    border-color: $red !important;
+  //    box-shadow: 0 0 3px 1px rgba(238, 68, 16, 0.5);
+  //  }
+  //
+  //  .select-trigger {
+  //    border-color: $red;
+  //  }
+  //}
+  //
+  //.error {
+  //  margin-top: 5px;
+  //  color: $red;
+  //  font-size: $font-size-sm;
+  //}
+  //
+  //@media (max-width: map-get($grid-breakpoints, xs)) {
+  //  .label-col {
+  //    text-align: left !important;
+  //  }
+  //}
+}

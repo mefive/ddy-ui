@@ -1,0 +1,18 @@
+@import "../style/variables";
+
+.sortable {
+  position: relative;
+  overflow-y: auto;
+
+  &.is-dragging {
+    .sortable-item {
+      transition-duration: .2s;
+    }
+  }
+}
+
+.sortable-ghost {
+  position: fixed;
+  z-index: $zindex-dropdown;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}

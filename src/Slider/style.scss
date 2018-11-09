@@ -1,0 +1,71 @@
+@import "../style/variables";
+
+.slider {
+  position: relative;
+  padding: 4px 0;
+  display: inline-block;
+  vertical-align: middle;
+
+  &:hover {
+    .slider-track {
+      background-color: $primary;
+    }
+
+    .slider-thumb {
+      border-color: $primary;
+    }
+  }
+}
+
+.slider-min,
+.slider-max {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.slider-min {
+  margin-right: 15px;
+}
+
+.slider-max {
+  margin-left: 15px;
+}
+
+.slider-rail {
+  height: 4px;
+  background-color: $gray-300;
+  border-radius: 4px;
+}
+
+.slider-track {
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  top: 4px;
+  height: 4px;
+  background-color: lighten($primary, 10%);
+  transition: background-color .2s;
+}
+
+.slider-thumb {
+  background-color: $white;
+  top: 0;
+  left: 0;
+  margin-top: 1px;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid lighten($primary, 10%);
+  transition: border-color .2s;
+  border-radius: 100%;
+  cursor: pointer;
+  margin-left: -6px;
+
+  span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}

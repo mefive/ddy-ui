@@ -1,0 +1,61 @@
+@import "~compass-mixins";
+@import "../style/variables";
+
+.select-popup {
+  background-color: $white;
+  border: 1px solid $gray-300;
+
+  border-radius: $border-radius;
+
+  .selection {
+    padding: 6px 12px;
+    @include ellipsis();
+    position: relative;
+
+    cursor: pointer;
+    transition-property: color, background-color;
+    transition-duration: .1s;
+    text-align: left;
+
+    color: $text-muted;
+
+    &:hover {
+      background-color: $primary;
+      color: $white;
+    }
+
+    &.active {
+      background-color: #F3F8FF;
+      color: $primary;
+    }
+
+    .icon-check {
+      position: absolute;
+      right: 12px;
+      top: 10px;
+    }
+  }
+
+  .wrapper {
+    overflow-y: auto;
+  }
+
+  .actions {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+
+    .btn {
+      width: 100%;
+      padding: 6px;
+    }
+  }
+
+  &.slide-down-out {
+    animation-duration: .25s;
+  }
+
+  &.slide-up-out {
+    animation-duration: .25s;
+  }
+}

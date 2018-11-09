@@ -1,0 +1,45 @@
+@import "~compass-mixins";
+@import "../style/variables";
+
+.pagination {
+  text-align: right;
+
+  .page-item {
+    margin: 0 5px;
+    cursor: pointer;
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+
+    padding: 0 5px;
+    border-radius: 3px;
+    border: 1px solid $border-color;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      color: $gray-300;
+      &:hover {
+        border-color: $border-color;
+        color: $yiq-text-dark;
+      }
+    }
+
+    &.current {
+      background-color: $primary;
+      color: $white;
+    }
+  }
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}

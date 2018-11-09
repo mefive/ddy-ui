@@ -1,0 +1,39 @@
+@import "~compass-mixins";
+@import "../style/variables";
+
+.switch {
+  width: 44px;
+  height: 24px;
+  line-height: 24px;
+  padding-left: 5px;
+  padding-right: 5px;
+  position: relative;
+  border-radius: 12px;
+  background: #BFBFBF;
+  color: $white;
+  text-align: right;
+  user-select: none;
+
+  &.checked {
+    background: $primary;
+    text-align: left;
+  }
+
+  &.ready {
+    transition: background-color .2s;
+
+    .switch-ball {
+      transition: left .2s;
+    }
+  }
+}
+
+.switch-ball {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  top: 2px;
+  border-radius: 10px;
+  background: $white;
+}
+

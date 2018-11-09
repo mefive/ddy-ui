@@ -1,0 +1,19 @@
+@import "../../../style/variables";
+@import "../../../style/mixins/rem";
+
+.modal.confirm {
+  .dialog-actions {
+    .btn {
+      width: 50%;
+      border-radius: 0;
+    }
+
+    .btn-default {
+      border-bottom-left-radius: rem(10px);
+    }
+
+    .btn-primary {
+      border-bottom-right-radius: rem(10px);
+    }
+  }
+}

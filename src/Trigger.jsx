@@ -1,0 +1,254 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import contains from 'dom-helpers/query/contains';
+
+import Portal from './Portal';
+import Animate from './Animate';
+
+const propTypes = {
+  popover: PropTypes.node,
+  renderPopover: PropTypes.func,
+  defaultActive: PropTypes.bool,
+  active: PropTypes.bool,
+  onActiveChange: PropTypes.func,
+  disabled: PropTypes.bool,
+
+  enterClassName: PropTypes.string,
+  leaveClassName: PropTypes.string,
+  enterDuration: PropTypes.number,
+  leaveDuration: PropTypes.number,
+  enterDelay: PropTypes.number,
+  leaveDelay: PropTypes.number,
+
+  action: PropTypes.string,
+  getPopoverContainer: PropTypes.func,
+  children: PropTypes.node,
+  activeClass: PropTypes.string,
+};
+
+const defaultProps = {
+  popover: null,
+  renderPopover: null,
+  defaultActive: false,
+  active: null,
+  disabled: false,
+
+  enterClassName: 'enter',
+  leaveClassName: 'leave',
+  enterDuration: 200,
+  leaveDuration: 200,
+  enterDelay: null,
+  leaveDelay: null,
+
+  onActiveChange: () => {},
+  getPopoverContainer: null,
+  action: 'click',
+  children: null,
+  activeClass: 'active',
+};
+
+class Trigger extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      active: false,
+    };
+  }
+
+  componentWillReceiveProps({ active }) {
+    if (active !== this.props.active) {
+      this.onActiveChange(active);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.active !== prevProps.active && this.popover != null) {
+      this.popover.place();
+    }
+  }
+
+  componentWillUnmount() {
+    const { action } = this.props;
+
+    if (action === 'click') {
+      document.removeEventListener('click', this.outsideToggle);
+    }
+
+    this.clearTimers();
+  }
+
+  onActiveChange(active) {
+    if (active) {
+      if (this.props.action === 'click') {
+        document.addEventListener('click', this.outsideToggle);
+      }
+    } else if (this.props.action === 'click') {
+      document.removeEventListener('click', this.outsideToggle);
+    }
+  }
+
+  getActive() {
+    if (this.props.active != null) {
+      return this.props.active;
+    }
+
+    if (this.state == null) {
+      return this.props.defaultActive;
+    }
+
+    return this.state.active;
+  }
+
+  setActive(active) {
+    if (!this.props.disabled) {
+      if (this.props.onActiveChange != null) {
+        this.props.onActiveChange(active);
+      } else {
+        this.setState({ active });
+      }
+      if (this.props.active == null && this.state.active !== active) {
+        this.setState({ active }, () => this.onActiveChange(active));
+      }
+      this.props.onActiveChange(active);
+    }
+  }
+
+  getEventHandler(origin, handler) {
+    return (e) => {
+      if (typeof origin === 'function') {
+        origin(e);
+      }
+      handler(e);
+    };
+  }
+
+  getEventHandlers(child) {
+    const eventHandlers = {};
+
+    if (this.props.action === 'click') {
+      eventHandlers.onClick = this.getEventHandler(child.props.onClick, this.anchorToggle);
+    }
+
+    if (this.props.action === 'hover') {
+      eventHandlers.onMouseEnter = this.getEventHandler(child.props.onMouseEnter, this.activate);
+      eventHandlers.onMouseLeave = this.getEventHandler(child.props.onMouseLeave, this.deactivate);
+    }
+
+    return eventHandlers;
+  }
+
+  outsideToggle = (e) => {
+    if (this.popover
+      && !contains(this.popover.node, e.target)
+      && !contains(this.anchor, e.target)
+    ) {
+      this.toggle();
+    }
+  };
+
+  anchorToggle = (e) => {
+    e.stopPropagation();
+
+    if (contains(this.anchor, e.target)) {
+      this.toggle();
+    }
+  };
+
+  toggle = () => {
+    this.setActive(!this.getActive());
+  };
+
+  activate = () => {
+    this.clearTimers();
+
+    if (this.props.enterDelay != null) {
+      this.enterDelayTimer = setTimeout(() => this.setActive(true), this.props.enterDelay);
+    } else {
+      this.setActive(true);
+    }
+  };
+
+  deactivate = () => {
+    this.clearTimers();
+
+    if (this.props.leaveDelay != null) {
+      this.leaveDelayTimer = setTimeout(() => this.setActive(false), this.props.leaveDelay);
+    } else {
+      this.setActive(false);
+    }
+  };
+
+  clearTimers() {
+    if (this.enterDelayTimer != null) {
+      clearTimeout(this.enterDelayTimer);
+      this.enterDelayTimer = null;
+    }
+
+    if (this.leaveDelayTimer != null) {
+      clearTimeout(this.leaveDelayTimer);
+      this.leaveDelayTimer = null;
+    }
+  }
+
+  render() {
+    const child = React.Children.only(this.props.children);
+
+    return React.cloneElement(
+      child,
+      {
+        ...this.getEventHandlers(child),
+        ref: (el) => {
+          if (typeof child.ref === 'function') {
+            child.ref(el);
+          }
+          this.anchor = el;
+        },
+      },
+      ...React.Children.toArray(child.props.children),
+      <Animate
+        enterClassName={this.props.enterClassName}
+        leaveClassName={this.props.leaveClassName}
+        enterDuration={this.props.enterDuration}
+        leaveDuration={this.props.leaveDuration}
+        activeClass={this.props.activeClass}
+        onEnter={() => {
+          console.log('on enter');
+          this.popover.place();
+        }}
+      >
+        {this.getActive() && (
+          <Portal getContainer={this.props.getPopoverContainer}>
+            {(() => {
+              const popoverElement
+                = this.props.renderPopover ? this.props.renderPopover() : this.props.popover;
+
+              const container = this.props.getPopoverContainer == null
+                ? document.body
+                : this.props.getPopoverContainer();
+
+              return React.cloneElement(
+                popoverElement,
+                {
+                  anchor: this.anchor,
+                  container,
+                  ref: (el) => {
+                    if (typeof popoverElement.ref === 'function') {
+                      popoverElement.ref(el);
+                    }
+                    this.popover = el;
+                  },
+                },
+              );
+            })()}
+          </Portal>
+        )}
+      </Animate>,
+    );
+  }
+}
+
+Trigger.propTypes = propTypes;
+Trigger.defaultProps = defaultProps;
+
+export default Trigger;
