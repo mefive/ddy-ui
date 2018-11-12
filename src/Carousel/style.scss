@@ -1,18 +1,25 @@
 .carousel {
   position: relative;
+  height: 100%;
   overflow: hidden;
+  user-select: none;
+
+  &.ready {
+    .carousel-wrapper {
+      transition-property: left;
+      transition-duration: .5s;
+    }
+  }
 }
 
 .carousel-wrapper {
   position: relative;
   height: 100%;
-  overflow: hidden;
 }
 
 .carousel-item {
-  float: left;
-  width: 100%;
-  position: relative;
+  display: inline-block;
+  vertical-align: top;
 
   & > img {
     width: 100%;
@@ -31,6 +38,7 @@
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
+  padding: 0 10px;
 }
 
 .carousel-page-turner-left {
@@ -40,30 +48,3 @@
 .carousel-page-turner-right {
   right: 10px;
 }
-
-.carousel-indicators {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  overflow: visible;
-  text-align: center;
-}
-
-.carousel-indicator {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 100%;
-
-  & + .carousel-indicator {
-    margin-left: 5px;
-  }
-
-  &.current {
-    background: #000;
-  }
-}
-
-

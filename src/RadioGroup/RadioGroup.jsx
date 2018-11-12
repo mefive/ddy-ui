@@ -58,7 +58,7 @@ class RadioGroup extends React.PureComponent {
                 htmlFor={RadioGroup.getId(option.value)}
                 className="form-check-label"
               >
-                {option.title}
+                {option.render ? option.render(option) : option.title}
               </label>
             </div>
           )))}

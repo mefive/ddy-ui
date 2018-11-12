@@ -11,29 +11,9 @@ import pic7 from './images/7.png';
 import pic8 from './images/8.png';
 import pic9 from './images/9.png';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
-import Carousel from '../../../../src/Carousel/Carousel';
+import Carousel from '../../../../src/Carousel2';
 
-const dataSource = [{
-  url: pic0,
-}, {
-  url: pic1,
-}, {
-  url: pic2,
-}, {
-  url: pic3,
-// }, {
-//   url: pic4,
-// }, {
-//   url: pic5,
-// }, {
-//   url: pic6,
-// }, {
-//   url: pic7,
-// }, {
-//   url: pic8,
-// }, {
-//   url: pic9,
-}];
+const dataSource = [pic0, pic1, pic2];
 
 class CarouselShowcase extends React.PureComponent {
   render() {
@@ -41,7 +21,7 @@ class CarouselShowcase extends React.PureComponent {
       <ShowcaseContainer title="Carousel">
         <div
           style={{ width: 500, height: 500, margin: '0 auto' }}
-          className="border-0"
+          className="border"
         >
           <Carousel
             // dataSource={Array(2).fill(0).map((n, index) => ({
@@ -53,7 +33,6 @@ class CarouselShowcase extends React.PureComponent {
             // }))}
             dataSource={dataSource}
             hasPageTurner
-            interval={0}
           />
         </div>
       </ShowcaseContainer>

@@ -3,66 +3,55 @@ import PropTypes from 'prop-types';
 import throttle from 'lodash/throttle';
 import addClass from 'dom-helpers/class/addClass';
 import removeClass from 'dom-helpers/class/removeClass';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-import './style/index.scss';
 import Clickable from '../Clickable';
-
-const propTypes = {
-  dataSource: PropTypes.arrayOf(PropTypes.shape({
-    url: PropTypes.string,
-    render: PropTypes.func,
-  })),
-  interval: PropTypes.number,
-  hasPageTurner: PropTypes.bool,
-};
-
-const defaultProps = {
-  dataSource: [],
-  interval: 3000,
-  hasPageTurner: false,
-};
+import './style.scss';
 
 const TRANSITION_DURATION = 500;
 
 class Carousel extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    dataSource: PropTypes.arrayOf(PropTypes.shape({
+      url: PropTypes.string,
+      render: PropTypes.func,
+    })),
+    interval: PropTypes.number,
+    hasPageTurner: PropTypes.bool,
+  };
 
-    this.state = {
-      dataSource: [...this.props.dataSource],
-      width: null,
-      current: 0,
-    };
+  static defaultProps = {
+    dataSource: [],
+    interval: null,
+    hasPageTurner: false,
+  };
 
-    this.loopMove = this.loopMove.bind(this);
-    this.start = this.start.bind(this);
-    this.setPadding = this.setPadding.bind(this);
-    this.next = throttle(this.next.bind(this), TRANSITION_DURATION, { trailing: false });
-    this.prev = throttle(this.prev.bind(this), TRANSITION_DURATION, { trailing: false });
-  }
+  state = {
+    dataSource: [...this.props.dataSource],
+    width: null,
+    current: 0,
+  };
 
   componentDidMount() {
-    this.hasMounted = true;
-    this.setWidth();
-    this.setPadding();
+    this.updateWidth();
+    this.updatePadding();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.dataSource !== this.state.dataSource) {
-      setTimeout(() => {
-        if (this.hasMounted) {
-          this.enableTransition();
-        }
-      }, 100);
+      this.enableTransition();
     }
   }
 
   componentWillUnmount() {
-    this.hasMounted = false;
     this.stop();
+    if (this.updatePaddingTimer) {
+      clearTimeout(this.updatePaddingTimer);
+    }
   }
 
-  setWidth() {
+  updateWidth() {
     this.stop();
 
     this.setState({
@@ -70,11 +59,7 @@ class Carousel extends React.PureComponent {
     }, this.start);
   }
 
-  setPadding() {
-    if (!this.hasMounted) {
-      return;
-    }
-
+  updatePadding() {
     const { length } = this.props.dataSource;
 
     let { current, dataSource } = this.state;
@@ -114,41 +99,39 @@ class Carousel extends React.PureComponent {
     });
   }
 
-  start() {
-    if (this.state.dataSource.length < 2
-      || this.props.interval == null
-      || this.props.interval <= 0
+  start = () => {
+    if (this.state.dataSource.length > 1
+      && this.props.interval != null
+      && this.props.interval > 0
     ) {
-      return;
+      this.timer = setTimeout(this.loopMove, this.props.interval);
     }
+  };
 
-    this.timer = setTimeout(this.loopMove, this.props.interval);
-  }
-
-  loopMove() {
+  loopMove = () => {
     this.next();
     this.timer = setTimeout(this.loopMove, this.props.interval);
-  }
+  };
 
-  next(callback = () => {}) {
+  next = throttle((callback = () => {}) => {
     let { current } = this.state;
 
     current += 1;
 
-    setTimeout(this.setPadding, TRANSITION_DURATION);
+    this.updatePaddingTimer = setTimeout(this.updatePadding, TRANSITION_DURATION);
 
     this.setState({ current }, callback);
-  }
+  }, TRANSITION_DURATION, { trailing: false });
 
-  prev(callback = () => {}) {
+  prev = throttle((callback = () => {}) => {
     let { current } = this.state;
 
     current -= 1;
 
-    setTimeout(this.setPadding, TRANSITION_DURATION);
+    this.updatePaddingTimer = setTimeout(this.updatePadding, TRANSITION_DURATION);
 
     this.setState({ current }, callback);
-  }
+  }, TRANSITION_DURATION, { trailing: false });
 
   stop() {
     if (this.timer) {
@@ -205,7 +188,7 @@ class Carousel extends React.PureComponent {
             key="prev"
           >
             <div className="carousel-page-turner-left">
-              <i className="icon icon-angle-left" />
+              <FontAwesomeIcon icon={faAngleLeft} />
             </div>
           </Clickable>,
 
@@ -217,7 +200,7 @@ class Carousel extends React.PureComponent {
             key="next"
           >
             <div className="carousel-page-turner-right">
-              <i className="icon icon-angle-right" />
+              <FontAwesomeIcon icon={faAngleRight} />
             </div>
           </Clickable>,
         ]}
@@ -225,8 +208,5 @@ class Carousel extends React.PureComponent {
     );
   }
 }
-
-Carousel.propTypes = propTypes;
-Carousel.defaultProps = defaultProps;
 
 export default Carousel;

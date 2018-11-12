@@ -4533,7 +4533,7 @@ var Switch = (_temp = _class = function (_React$PureComponent) {
   (0, _createClass3.default)(Switch, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.setWidth();
+      this.updateWidth();
     }
   }, {
     key: 'setWidth',
@@ -8403,7 +8403,7 @@ module.exports = function() {
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  */
 
 function makeEmptyFunction(arg) {
@@ -15626,7 +15626,7 @@ keyCode.isEventKey = function isEventKey(event, nameOrCode) {
       // check codes
       var foundNamedKey = codes[nameOrCode.toLowerCase()]
       if (foundNamedKey) { return foundNamedKey === keyCode; }
-    
+
       // check aliases
       var foundNamedKey = aliases[nameOrCode.toLowerCase()]
       if (foundNamedKey) { return foundNamedKey === keyCode; }
