@@ -15,7 +15,7 @@ import Image from '../../../../src/Image';
 
 class CarouselShowcase extends React.PureComponent {
   state = {
-    dataSource: [pic1, pic2, pic3, pic4, pic5, pic6, pic6, pic7, pic8, pic9],
+    dataSource: [pic1, pic2, pic3],
   };
 
   render() {
@@ -27,9 +27,10 @@ class CarouselShowcase extends React.PureComponent {
         >
           <Carousel
             dataSource={this.state.dataSource}
-            renderItem={url => (
+            renderSlide={url => (
               <Image src={url} mode={Image.MODE_OUTER_CUT} width="100%" height="100%" />
             )}
+            enableLoop
             hasPageTurner
           />
         </div>
