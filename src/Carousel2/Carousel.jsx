@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import addClass from 'dom-helpers/class/addClass';
 import removeClass from 'dom-helpers/class/removeClass';
+import classNames from 'classnames';
 
 import Image from '../Image';
 import Clickable from '../Clickable';
@@ -17,6 +18,7 @@ class Carousel extends React.PureComponent {
     renderSlide: PropTypes.func,
     // interval: PropTypes.number,
     enableLoop: PropTypes.bool,
+    hasIndicator: PropTypes.bool,
     hasPageTurner: PropTypes.bool,
     slideIndex: PropTypes.number,
     transitionDuration: PropTypes.number,
@@ -26,6 +28,7 @@ class Carousel extends React.PureComponent {
     renderSlide: null,
     // interval: null,
     enableLoop: false,
+    hasIndicator: true,
     hasPageTurner: false,
     slideIndex: 0,
     transitionDuration: 500,
@@ -92,6 +95,8 @@ class Carousel extends React.PureComponent {
     const { dataSource } = this.props;
 
     if (this.props.enableLoop || slideIndex > 0) {
+      this.enableTransition();
+
       if (slideIndex === 0 || leadingSlides.length > 0) {
         this.clearRecoverTimer();
 
@@ -118,6 +123,8 @@ class Carousel extends React.PureComponent {
     const { dataSource } = this.props;
 
     if (this.props.enableLoop || slideIndex < dataSource.length - 1) {
+      this.enableTransition();
+
       if (slideIndex === this.props.dataSource.length - 1 || trailingSlides.length > 0) {
         this.clearRecoverTimer();
 
@@ -167,6 +174,7 @@ class Carousel extends React.PureComponent {
   render() {
     const { dataSource } = this.props;
     const {
+      slideIndex,
       leadingSlides,
       trailingSlides,
     } = this.state;
@@ -188,6 +196,14 @@ class Carousel extends React.PureComponent {
 
           {trailingSlides.map((slide, index) => this.renderSlide(slide, dataSource.length + index))}
         </div>
+
+        {this.props.hasIndicator && dataSource.length > 1 && (
+          <ol className="carousel-indicators">
+            {dataSource.map((slide, index) => (
+              <li className={classNames({ active: index === slideIndex })} />
+            ))}
+          </ol>
+        )}
 
         {this.props.hasPageTurner && (
           <React.Fragment>

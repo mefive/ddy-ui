@@ -21,6 +21,16 @@
   height: 100%;
 }
 
+.carousel-indicators {
+  li {
+    background-color: rgba(0, 0, 0, .2);
+
+    &.active {
+      background-color: rgba(0, 0, 0, .5);
+    }
+  }
+}
+
 .carousel-control-prev,
 .carousel-control-next {
   transition: background-color .2s;
