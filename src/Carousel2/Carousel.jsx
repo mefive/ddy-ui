@@ -79,7 +79,7 @@ class Carousel extends React.PureComponent {
   recover = () => {
     this.disableTransition();
     this.setState({ leadingSlides: [], trailingSlides: [] }, () => {
-      this.recoverTimer = setTimeout(this.enableTransition, 50);
+      this.recoverTimer = setTimeout(this.enableTransition, 100);
     });
   };
 
@@ -92,12 +92,20 @@ class Carousel extends React.PureComponent {
     const { dataSource } = this.props;
 
     if (this.props.enableLoop || slideIndex > 0) {
-      if (slideIndex === 0) {
+      if (slideIndex === 0 || leadingSlides.length > 0) {
         this.clearRecoverTimer();
+
+        const prependSlideIndex
+          = dataSource.length - (leadingSlides.length % dataSource.length) - 1;
+
         this.setState({
-          slideIndex: dataSource.length - 1,
-          leadingSlides: [dataSource[dataSource.length - 1], ...leadingSlides],
+          slideIndex: prependSlideIndex,
+          leadingSlides: [
+            dataSource[prependSlideIndex],
+            ...leadingSlides,
+          ],
         });
+
         this.recoverTimer = setTimeout(this.recover, this.props.transitionDuration);
       } else {
         this.setState({ slideIndex: slideIndex - 1 });
@@ -110,9 +118,19 @@ class Carousel extends React.PureComponent {
     const { dataSource } = this.props;
 
     if (this.props.enableLoop || slideIndex < dataSource.length - 1) {
-      if (slideIndex === this.props.dataSource.length - 1) {
+      if (slideIndex === this.props.dataSource.length - 1 || trailingSlides.length > 0) {
         this.clearRecoverTimer();
-        this.setState({ slideIndex: 0, trailingSlides: [...trailingSlides, dataSource[0]] });
+
+        const appendSlideIndex = trailingSlides.length % dataSource.length;
+
+        this.setState({
+          slideIndex: appendSlideIndex,
+          trailingSlides: [
+            ...trailingSlides,
+            dataSource[appendSlideIndex],
+          ],
+        });
+
         this.recoverTimer = setTimeout(this.recover, this.props.transitionDuration);
       } else {
         this.setState({ slideIndex: slideIndex + 1 });
