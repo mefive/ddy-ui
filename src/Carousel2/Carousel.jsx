@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import addClass from 'dom-helpers/class/addClass';
-import removeClass from 'dom-helpers/class/removeClass';
 import classNames from 'classnames';
 
 import Image from '../Image';
@@ -45,6 +43,7 @@ class Carousel extends React.PureComponent {
     slideIndex: this.props.slideIndex,
     leadingSlides: [],
     trailingSlides: [],
+    disableTransition: false,
   };
 
   componentDidMount() {
@@ -80,10 +79,7 @@ class Carousel extends React.PureComponent {
   };
 
   recover = () => {
-    this.disableTransition();
-    this.setState({ leadingSlides: [], trailingSlides: [] }, () => {
-      this.recoverTimer = setTimeout(this.enableTransition, 100);
-    });
+    this.setState({leadingSlides: [], trailingSlides: [], disableTransition: true});
   };
 
   updateWidth = () => {
@@ -95,8 +91,6 @@ class Carousel extends React.PureComponent {
     const { dataSource } = this.props;
 
     if (this.props.enableLoop || slideIndex > 0) {
-      this.enableTransition();
-
       if (slideIndex === 0 || leadingSlides.length > 0) {
         this.clearRecoverTimer();
 
@@ -115,6 +109,8 @@ class Carousel extends React.PureComponent {
       } else {
         this.setState({ slideIndex: slideIndex - 1 });
       }
+
+      this.setState({ disableTransition: false });
     }
   };
 
@@ -123,8 +119,6 @@ class Carousel extends React.PureComponent {
     const { dataSource } = this.props;
 
     if (this.props.enableLoop || slideIndex < dataSource.length - 1) {
-      this.enableTransition();
-
       if (slideIndex === this.props.dataSource.length - 1 || trailingSlides.length > 0) {
         this.clearRecoverTimer();
 
@@ -142,12 +136,10 @@ class Carousel extends React.PureComponent {
       } else {
         this.setState({ slideIndex: slideIndex + 1 });
       }
+
+      this.setState({ disableTransition: false });
     }
   };
-
-  enableTransition = () => removeClass(this.scroller.current, 'disable-transition');
-
-  disableTransition = () => addClass(this.scroller.current, 'disable-transition');
 
   renderSlide = (slide, index) => {
     const { renderSlide } = this.props;
@@ -183,7 +175,10 @@ class Carousel extends React.PureComponent {
       <div className="carousel" ref={this.container}>
         <div
           ref={this.scroller}
-          className="carousel-inner"
+          className={classNames(
+            'carousel-inner',
+            { 'disable-transition': this.state.disableTransition },
+          )}
           style={{
             transform: `translateX(${-this.scrollLeft}px)`,
             transitionDuration: `${this.props.transitionDuration}ms`,
