@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Hammer from 'hammerjs';
 
 import Image from '../Image';
 import Clickable from '../Clickable';
+import { isMobile } from '../utils/browser';
 
 import './style.scss';
 
@@ -44,10 +46,33 @@ class Carousel extends React.PureComponent {
     leadingSlides: [],
     trailingSlides: [],
     disableTransition: false,
+    panningDelta: 0,
   };
 
   componentDidMount() {
     this.updateWidth();
+
+    if (isMobile()) {
+      const hammer = Hammer(this.container.current);
+
+      hammer.on('pan', (e) => {
+        this.setState({ panningDelta: e.deltaX, disableTransition: true  });
+      });
+
+      hammer.on('panend', () => this.setState({ panningDelta: 0, disableTransition: false }));
+
+      hammer.on('swipe', (e) => {
+        this.setState({ panningDelta: 0 });
+
+        if (e.deltaX > 0) {
+          this.prev();
+        }
+
+        if (e.deltaX < 0) {
+          this.next();
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -56,9 +81,13 @@ class Carousel extends React.PureComponent {
 
   get scrollLeft() {
     const {
-      slideIndex, leadingSlides, trailingSlides, width,
+      slideIndex, leadingSlides, trailingSlides, width, panningDelta,
     } = this.state;
     const { dataSource } = this.props;
+
+    if (panningDelta !== 0) {
+      return (slideIndex * width) - panningDelta;
+    }
 
     if (leadingSlides.length > 0) {
       return -leadingSlides.length * width;
@@ -79,7 +108,7 @@ class Carousel extends React.PureComponent {
   };
 
   recover = () => {
-    this.setState({leadingSlides: [], trailingSlides: [], disableTransition: true});
+    this.setState({ leadingSlides: [], trailingSlides: [], disableTransition: true });
   };
 
   updateWidth = () => {
@@ -164,11 +193,14 @@ class Carousel extends React.PureComponent {
   };
 
   render() {
+    const { scrollLeft } = this;
     const { dataSource } = this.props;
     const {
       slideIndex,
       leadingSlides,
       trailingSlides,
+      disableTransition,
+      panningDelta,
     } = this.state;
 
     return (
@@ -177,10 +209,10 @@ class Carousel extends React.PureComponent {
           ref={this.scroller}
           className={classNames(
             'carousel-inner',
-            { 'disable-transition': this.state.disableTransition },
+            { 'disable-transition': disableTransition },
           )}
           style={{
-            transform: `translateX(${-this.scrollLeft}px)`,
+            transform: `translateX(${-scrollLeft}px)`,
             transitionDuration: `${this.props.transitionDuration}ms`,
           }}
         >
@@ -195,12 +227,15 @@ class Carousel extends React.PureComponent {
         {this.props.hasIndicator && dataSource.length > 1 && (
           <ol className="carousel-indicators">
             {dataSource.map((slide, index) => (
-              <li className={classNames({ active: index === slideIndex })} />
+              <li
+                key={`${index + 1}`}
+                className={classNames({ active: index === slideIndex })}
+              />
             ))}
           </ol>
         )}
 
-        {this.props.hasPageTurner && (
+        {this.props.hasPageTurner && !isMobile() && (
           <React.Fragment>
             <Clickable onClick={this.prev}>
               <div className="carousel-control-prev">
