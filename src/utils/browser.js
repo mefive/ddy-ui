@@ -10,3 +10,8 @@ export function isOlderIE() {
   const browser = getBrowser();
   return browser.name === 'IE' && browser.version <= 9;
 }
+
+export function isMobile() {
+  const device = uaParser.getDevice();
+  return device.type === 'mobile';
+}

@@ -14,16 +14,34 @@ import Carousel from '../../../../src/Carousel';
 import Image from '../../../../src/Image';
 
 class CarouselShowcase extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.slider = React.createRef();
+  }
+
   state = {
     dataSource: [pic1, pic2, pic3],
+    height: null,
   };
+
+  componentDidMount() {
+    this.updateHeight();
+  }
+
+  updateHeight() {
+    this.setState({ height: this.slider.current.clientWidth });
+  }
 
   render() {
     return (
       <ShowcaseContainer title="Carousel">
         <div
-          style={{ width: 400, height: 400, margin: '0 auto' }}
           className="border"
+          ref={this.slider}
+          style={{
+            height: this.state.height,
+          }}
         >
           <Carousel
             dataSource={this.state.dataSource}
