@@ -1,209 +1,191 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import throttle from 'lodash/throttle';
 import addClass from 'dom-helpers/class/addClass';
 import removeClass from 'dom-helpers/class/removeClass';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
+import Image from '../Image';
 import Clickable from '../Clickable';
-import './style.scss';
 
-const TRANSITION_DURATION = 500;
+import './style.scss';
 
 class Carousel extends React.PureComponent {
   static propTypes = {
-    dataSource: PropTypes.arrayOf(PropTypes.shape({
-      url: PropTypes.string,
-      render: PropTypes.func,
-    })),
-    interval: PropTypes.number,
+    dataSource: PropTypes.arrayOf(PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({}),
+    ])).isRequired,
+    renderSlide: PropTypes.func,
+    // interval: PropTypes.number,
+    enableLoop: PropTypes.bool,
     hasPageTurner: PropTypes.bool,
+    slideIndex: PropTypes.number,
+    transitionDuration: PropTypes.number,
   };
 
   static defaultProps = {
-    dataSource: [],
-    interval: null,
+    renderSlide: null,
+    // interval: null,
+    enableLoop: false,
     hasPageTurner: false,
+    slideIndex: 0,
+    transitionDuration: 500,
   };
 
+  constructor(props) {
+    super(props);
+    this.container = React.createRef();
+    this.scroller = React.createRef();
+  }
+
   state = {
-    dataSource: [...this.props.dataSource],
-    width: null,
-    current: 0,
+    width: 0,
+    slideIndex: this.props.slideIndex,
+    leadingSlides: [],
+    trailingSlides: [],
   };
 
   componentDidMount() {
     this.updateWidth();
-    this.updatePadding();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.dataSource !== this.state.dataSource) {
-      this.enableTransition();
-    }
   }
 
   componentWillUnmount() {
-    this.stop();
-    if (this.updatePaddingTimer) {
-      clearTimeout(this.updatePaddingTimer);
-    }
+    this.clearRecoverTimer();
   }
 
-  updateWidth() {
-    this.stop();
+  get scrollLeft() {
+    const {
+      slideIndex, leadingSlides, trailingSlides, width,
+    } = this.state;
+    const { dataSource } = this.props;
 
-    this.setState({
-      width: this.container.clientWidth,
-    }, this.start);
+    if (leadingSlides.length > 0) {
+      return -leadingSlides.length * width;
+    }
+
+    if (trailingSlides.length > 0) {
+      return (dataSource.length + (trailingSlides.length - 1)) * width;
+    }
+
+    return slideIndex * width;
   }
 
-  updatePadding() {
-    const { length } = this.props.dataSource;
-
-    let { current, dataSource } = this.state;
-
-    if (length < 2) {
-      return;
+  clearRecoverTimer = () => {
+    if (this.recoverTimer) {
+      clearTimeout(this.recoverTimer);
+      this.recoverTimer = null;
     }
+  };
 
-    if (this.state.current === this.state.dataSource.length - 1 || this.state.current === 0) {
-      this.disableTransition();
-
-      dataSource = [...dataSource];
-
-      if (this.state.current === this.state.dataSource.length - 1) {
-        if (this.state.dataSource[this.state.current] !== this.props.dataSource[0]) {
-          dataSource = [...dataSource, this.props.dataSource[0]];
-        } else {
-          dataSource.splice(-1);
-          current = 1;
-        }
-      }
-
-      if (this.state.current === 0) {
-        if (this.state.dataSource[0] !== this.props.dataSource[length - 1]) {
-          dataSource = [this.props.dataSource[length - 1], ...dataSource];
-          current = 1;
-        } else {
-          dataSource.splice(0, 1);
-          current = length - 1;
-        }
-      }
-    }
-
-    this.setState({
-      dataSource,
-      current,
+  recover = () => {
+    this.disableTransition();
+    this.setState({ leadingSlides: [], trailingSlides: [] }, () => {
+      this.recoverTimer = setTimeout(this.enableTransition, 50);
     });
-  }
+  };
 
-  start = () => {
-    if (this.state.dataSource.length > 1
-      && this.props.interval != null
-      && this.props.interval > 0
-    ) {
-      this.timer = setTimeout(this.loopMove, this.props.interval);
+  updateWidth = () => {
+    this.setState({ width: this.container.current.clientWidth });
+  };
+
+  prev = () => {
+    const { slideIndex, leadingSlides } = this.state;
+    const { dataSource } = this.props;
+
+    if (this.props.enableLoop || slideIndex > 0) {
+      if (slideIndex === 0) {
+        this.clearRecoverTimer();
+        this.setState({
+          slideIndex: dataSource.length - 1,
+          leadingSlides: [dataSource[dataSource.length - 1], ...leadingSlides],
+        });
+        this.recoverTimer = setTimeout(this.recover, this.props.transitionDuration);
+      } else {
+        this.setState({ slideIndex: slideIndex - 1 });
+      }
     }
   };
 
-  loopMove = () => {
-    this.next();
-    this.timer = setTimeout(this.loopMove, this.props.interval);
+  next = () => {
+    const { slideIndex, trailingSlides } = this.state;
+    const { dataSource } = this.props;
+
+    if (this.props.enableLoop || slideIndex < dataSource.length - 1) {
+      if (slideIndex === this.props.dataSource.length - 1) {
+        this.clearRecoverTimer();
+        this.setState({ slideIndex: 0, trailingSlides: [...trailingSlides, dataSource[0]] });
+        this.recoverTimer = setTimeout(this.recover, this.props.transitionDuration);
+      } else {
+        this.setState({ slideIndex: slideIndex + 1 });
+      }
+    }
   };
 
-  next = throttle((callback = () => {}) => {
-    let { current } = this.state;
+  enableTransition = () => removeClass(this.scroller.current, 'disable-transition');
 
-    current += 1;
+  disableTransition = () => addClass(this.scroller.current, 'disable-transition');
 
-    this.updatePaddingTimer = setTimeout(this.updatePadding, TRANSITION_DURATION);
-
-    this.setState({ current }, callback);
-  }, TRANSITION_DURATION, { trailing: false });
-
-  prev = throttle((callback = () => {}) => {
-    let { current } = this.state;
-
-    current -= 1;
-
-    this.updatePaddingTimer = setTimeout(this.updatePadding, TRANSITION_DURATION);
-
-    this.setState({ current }, callback);
-  }, TRANSITION_DURATION, { trailing: false });
-
-  stop() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-  }
-
-  enableTransition() {
-    addClass(this.container, 'ready');
-  }
-
-  disableTransition() {
-    removeClass(this.container, 'ready');
-  }
-
-  render() {
-    const { dataSource, width } = this.state;
+  renderSlide = (slide, index) => {
+    const { renderSlide } = this.props;
+    const { width } = this.state;
 
     return (
       <div
-        className="carousel"
-        ref={(el) => { this.container = el; }}
+        key={`${index + 1}`}
+        className="carousel-item"
+        style={{
+          width,
+          left: index * width,
+        }}
       >
+        {renderSlide != null
+          ? renderSlide(slide)
+          : (
+            <Image width="100%" height="100%" src={slide} />
+          )}
+      </div>
+    );
+  };
+
+  render() {
+    const { dataSource } = this.props;
+    const {
+      leadingSlides,
+      trailingSlides,
+    } = this.state;
+
+    return (
+      <div className="carousel" ref={this.container}>
         <div
-          className="carousel-wrapper"
-          ref={(el) => { this.wrapper = el; }}
+          ref={this.scroller}
+          className="carousel-inner"
           style={{
-            width: width && dataSource.length * width,
-            left: `${-((this.state.width || 0) * this.state.current)}px`,
+            transform: `translateX(${-this.scrollLeft}px)`,
+            transitionDuration: `${this.props.transitionDuration}ms`,
           }}
         >
-          {dataSource.map((item, index) => (
-            <div
-              className="carousel-item"
-              key={`${index + 1}`}
-              style={{ width }}
-            >
-              {item.render != null
-                ? item.render(item)
-                : (
-                  <img src={item.url} alt={item.name || 'image'} />
-                )}
-            </div>
-          ))}
+          {leadingSlides.map((slide, index) =>
+            this.renderSlide(slide, -(leadingSlides.length - index)))}
+
+          {dataSource.map(this.renderSlide)}
+
+          {trailingSlides.map((slide, index) => this.renderSlide(slide, dataSource.length + index))}
         </div>
 
-        {this.props.hasPageTurner && this.props.dataSource.length > 1 && [
-          <Clickable
-            onClick={() => {
-              this.stop();
-              this.prev(this.start);
-            }}
-            key="prev"
-          >
-            <div className="carousel-page-turner-left">
-              <FontAwesomeIcon icon={faAngleLeft} />
-            </div>
-          </Clickable>,
+        {this.props.hasPageTurner && (
+          <React.Fragment>
+            <Clickable onClick={this.prev}>
+              <div className="carousel-control-prev">
+                <div className="carousel-control-prev-icon" />
+              </div>
+            </Clickable>
 
-          <Clickable
-            onClick={() => {
-              this.stop();
-              this.next(this.start);
-            }}
-            key="next"
-          >
-            <div className="carousel-page-turner-right">
-              <FontAwesomeIcon icon={faAngleRight} />
-            </div>
-          </Clickable>,
-        ]}
+            <Clickable onClick={this.next}>
+              <div className="carousel-control-next">
+                <div className="carousel-control-next-icon" />
+              </div>
+            </Clickable>
+          </React.Fragment>
+        )}
       </div>
     );
   }

@@ -10,7 +10,7 @@ import pic7 from './images/7.png';
 import pic8 from './images/8.png';
 import pic9 from './images/9.png';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
-import Carousel from '../../../../src/Carousel2';
+import Carousel from '../../../../src/Carousel';
 import Image from '../../../../src/Image';
 
 class CarouselShowcase extends React.PureComponent {
