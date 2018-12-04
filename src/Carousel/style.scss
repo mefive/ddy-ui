@@ -1,69 +1,62 @@
 .carousel {
-  position: relative;
-  overflow: hidden;
-}
-
-.carousel-wrapper {
-  position: relative;
+  user-select: none;
   height: 100%;
   overflow: hidden;
 }
 
-.carousel-item {
-  float: left;
-  width: 100%;
-  position: relative;
+.carousel-inner {
+  height: 100%;
+  transition-property: transform;
+  overflow: visible;
 
-  & > img {
-    width: 100%;
-    height: auto;
+  &.disable-transition {
+    transition-property: none;
   }
 }
 
-.carousel-page-turner-left,
-.carousel-page-turner-right {
+.carousel-item {
+  display: block;
   position: absolute;
-  top: 50%;
-  margin-top: -30px;
-  line-height: 60px;
-  font-size: 30px;
-  font-weight: bold;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
-}
-
-.carousel-page-turner-left {
-  left: 10px;
-}
-
-.carousel-page-turner-right {
-  right: 10px;
+  top: 0;
+  height: 100%;
 }
 
 .carousel-indicators {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  overflow: visible;
-  text-align: center;
-}
+  li {
+    background-color: rgba(0, 0, 0, .2);
 
-.carousel-indicator {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 100%;
-
-  & + .carousel-indicator {
-    margin-left: 5px;
-  }
-
-  &.current {
-    background: #000;
+    &.active {
+      background-color: rgba(0, 0, 0, .5);
+    }
   }
 }
 
+.carousel-control-prev,
+.carousel-control-next {
+  transition: background-color .2s;
+  &:hover {
+    background: rgba(0, 0, 0, .1);
+  }
+}
 
+//.carousel-page-turner-left,
+//.carousel-page-turner-right {
+//  position: absolute;
+//  top: 50%;
+//  margin-top: -30px;
+//  line-height: 60px;
+//  font-size: 30px;
+//  font-weight: bold;
+//  color: #fff;
+//  background-color: rgba(0, 0, 0, 0.5);
+//  border-radius: 3px;
+//  padding: 0 10px;
+//}
+//
+//.carousel-page-turner-left {
+//  left: 10px;
+//}
+//
+//.carousel-page-turner-right {
+//  right: 10px;
+//}
