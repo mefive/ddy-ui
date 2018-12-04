@@ -1,18 +1,24 @@
 .carousel {
   position: relative;
+  height: 100%;
   overflow: hidden;
+
+  &.ready {
+    .carousel-wrapper {
+      transition-property: left;
+      transition-duration: .5s;
+    }
+  }
 }
 
 .carousel-wrapper {
   position: relative;
   height: 100%;
-  overflow: hidden;
 }
 
 .carousel-item {
-  float: left;
-  width: 100%;
-  position: relative;
+  display: inline-block;
+  vertical-align: top;
 
   & > img {
     width: 100%;
@@ -40,30 +46,3 @@
 .carousel-page-turner-right {
   right: 10px;
 }
-
-.carousel-indicators {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  overflow: visible;
-  text-align: center;
-}
-
-.carousel-indicator {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 100%;
-
-  & + .carousel-indicator {
-    margin-left: 5px;
-  }
-
-  &.current {
-    background: #000;
-  }
-}
-
-

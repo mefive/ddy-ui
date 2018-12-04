@@ -5,8 +5,6 @@ export default (WrappedComponent) => {
   const name = WrappedComponent.displayName || WrappedComponent.name;
 
   class SafeSetState extends React.Component {
-    static displayName = `safe-set-state-${name}`;
-
     static propTypes = {
       forwardedRef: PropTypes.func,
     };
@@ -14,6 +12,8 @@ export default (WrappedComponent) => {
     static defaultProps = {
       forwardedRef: () => {},
     };
+
+    static displayName = `safe-set-state-${name}`;
 
     componentWillUnmount() {
       this.child.setState = () => {};

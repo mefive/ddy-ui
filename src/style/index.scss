@@ -10,18 +10,18 @@
 }
 
 .btn-white {
-  @include button-variant($white, $gray-300);
+  border: 1px solid $border-color;
 }
 
-.font-size-sm {
-  font-size: $font-size-sm;
+.font-size-base {
+  font-size: $font-size-base;
 }
 
 .font-size-lg {
   font-size: $font-size-lg;
 }
 
-.cursor-pointer {
-  cursor: pointer;
+.font-size-sm {
+  font-size: $font-size-sm;
 }
 

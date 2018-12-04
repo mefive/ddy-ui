@@ -8,7 +8,7 @@
   padding: 0 34px 0 12px;
   border: 1px solid $border-color;
   background-color: $white;
-  border-radius: $border-radius-base;
+  border-radius: $border-radius;
   line-height: 36px;
 
   .trigger-icon {
@@ -67,7 +67,7 @@
   background-color: $white;
   border: 1px solid $border-color;
 
-  border-radius: $border-radius-base;
+  border-radius: $border-radius;
 
   li {
     padding: 6px 12px;
@@ -79,7 +79,7 @@
     transition-duration: .1s;
     text-align: left;
 
-    color: $text-light-color;
+    color: $text-muted;
 
     &:hover {
       background-color: $primary;

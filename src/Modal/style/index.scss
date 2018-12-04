@@ -51,7 +51,7 @@ $modal-dialog-header-height: 56px;
         padding: 10px;
         cursor: pointer;
         transition: background-color .1s;
-        color: $text-light-color;
+        color: $text-muted;
         font-size: $close-size;
         margin-top: ($modal-dialog-header-height - ($close-size + 20)) / 2;
         margin-right: 10px;

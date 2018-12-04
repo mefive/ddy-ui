@@ -3,7 +3,7 @@
     display: inline-block;
     color: $white;
     background-color: #ff5b1a;
-    @include border-radius($border-radius-base);
+    @include border-radius($border-radius);
     padding: 4px 6px;
     line-height: 1;
     margin-top: 10px;

@@ -3,25 +3,40 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import keyCode from 'keycode';
 import debounce from 'lodash/debounce';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Input from '../Input';
 import Popover from '../Popover';
 import Trigger from '../Trigger';
 import Clickable from '../Clickable';
 
+import '../Select/style/index.scss';
 import './style.scss';
+import Focusable from '../Focusable';
 
 class AutoComplete extends React.PureComponent {
   static propTypes = {
     className: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.any]),
-    optionCache: PropTypes.shape({}),
+    options: PropTypes.arrayOf(PropTypes.shape({})),
     onChange: PropTypes.func,
     getOptions: PropTypes.func,
     renderOption: PropTypes.func,
     renderTitle: PropTypes.func,
+    renderNoMatch: PropTypes.func,
     popoverClassName: PropTypes.string,
     multiple: PropTypes.bool,
+    showSuggestions: PropTypes.bool,
+    getPopoverContainer: PropTypes.func,
+    debounceInterval: PropTypes.number,
+    disabled: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.shape({
+        add: PropTypes.bool,
+        remove: PropTypes.bool,
+      }),
+    ]),
   };
 
   static defaultProps = {
@@ -31,9 +46,14 @@ class AutoComplete extends React.PureComponent {
     getOptions: async () => [],
     renderOption: opt => opt.title,
     renderTitle: opt => opt.title,
+    renderNoMatch: () => '没有匹配数据',
     popoverClassName: null,
-    optionCache: {},
+    options: [],
     multiple: false,
+    showSuggestions: true,
+    getPopoverContainer: null,
+    debounceInterval: 600,
+    disabled: false,
   };
 
   constructor(props) {
@@ -57,9 +77,9 @@ class AutoComplete extends React.PureComponent {
     this.syncWidth();
   }
 
-  componentWillReceiveProps({ optionCache }) {
-    if (optionCache !== this.props.optionCache) {
-      this.setOptionCache(optionCache);
+  componentWillReceiveProps({ options }) {
+    if (options !== this.props.options) {
+      this.setOptionCache(options);
     }
   }
 
@@ -89,7 +109,9 @@ class AutoComplete extends React.PureComponent {
     if (code === 'down' || code === 'up') {
       e.stopPropagation();
       e.preventDefault();
-      const { options } = this.state;
+
+      const options = this.props.showSuggestions ? this.state.options : this.props.options;
+
       let index = options.findIndex(o => o.value === this.state.selected);
 
       if (code === 'down') {
@@ -107,13 +129,27 @@ class AutoComplete extends React.PureComponent {
     }
   };
 
-  setOptionCache(optionCache = this.props.optionCache) {
-    this.setState({
-      optionCache: {
-        ...this.state.optionCache,
-        ...optionCache,
-      },
-    });
+  get disableAdd() {
+    return this.props.disabled === true || this.props.disabled.add;
+  }
+
+  get disableRemove() {
+    return this.props.disabled === true || this.props.disabled.remove;
+  }
+
+  setOptionCache(options = this.props.options) {
+    if (options) {
+      this.setState({
+        optionCache: {
+          ...this.state.optionCache,
+          ...options.reduce((p, c) => ({ ...p, [c.value]: c }), {}),
+        },
+      });
+    }
+  }
+
+  getOptions() {
+    return this.state.options;
   }
 
   syncWidth() {
@@ -139,13 +175,17 @@ class AutoComplete extends React.PureComponent {
           this.activate();
         }
       });
-  }, 600);
+  }, this.props.debounceInterval);
 
   activate = () => {
     this.setState({
       active: true,
       selected: this.props.multiple ? null : this.props.value,
     }, () => {
+      if (this.props.showSuggestions) {
+        this.search();
+      }
+
       document.addEventListener('click', this.onDocumentClick);
       document.addEventListener('keydown', this.onDocumentKeyDown);
     });
@@ -186,29 +226,31 @@ class AutoComplete extends React.PureComponent {
     }
 
     return (
-      <ul className="ddy-select-multi-items">
+      <div className="ddy-select-multi-items">
         {opts.map((opt, index) => (
-          <li key={opt.value}>
+          <div key={opt.value} className="select-multi-item">
             {this.props.renderTitle(opt)}
 
-            <Clickable
-              onClick={(e) => {
-                e.stopPropagation();
-                const value = [...this.props.value];
-                value.splice(index, 1);
-                this.props.onChange(value);
-              }}
-            >
-              <i className="icon icon-times" />
-            </Clickable>
-          </li>
-          ))}
-      </ul>
+            {!this.disableRemove && (
+              <Clickable
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const value = [...this.props.value];
+                  value.splice(index, 1);
+                  this.props.onChange(value);
+                }}
+              >
+                <FontAwesomeIcon icon={faTimes} className="ml-0" />
+              </Clickable>
+            )}
+          </div>
+        ))}
+      </div>
     );
   }
 
   render() {
-    const { options } = this.state;
+    const options = this.props.showSuggestions ? this.state.options : this.props.options;
 
     return (
       <div
@@ -229,29 +271,34 @@ class AutoComplete extends React.PureComponent {
           action="click"
           enterClassName="slide-down-in"
           leaveClassName="slide-down-out"
+          getPopoverContainer={this.props.getPopoverContainer}
+          disabled={this.disableAdd}
           popover={(
             <Popover
               placement={Popover.placement.BOTTOM}
               offset={5}
               className={
                 classNames(
-                  'select-popup ddy-auto-complete-popover',
+                  'select-popup ddy-auto-complete-popover shadow',
                   this.props.popoverClassName,
                 )}
+              hasArrow={false}
             >
               <div className="wrapper" style={{ width: this.state.width }}>
-                <div className="keyword">
-                  <Input
-                    value={this.state.keyword}
-                    onChange={this.onKeywordChange}
-                    placeholder="请输入关键字"
-                  />
-                </div>
+                {this.props.showSuggestions && (
+                  <div className="keyword">
+                    <Input
+                      value={this.state.keyword}
+                      onChange={this.onKeywordChange}
+                      placeholder="请输入关键字"
+                    />
+                  </div>
+                )}
 
-                <div className="options">
+                <div className="selections" style={{ maxHeight: 200 }}>
                   {options.length > 0
                     ? (
-                      <ul>
+                      <div>
                         {options.map(opt => (
                           <Clickable
                             onClick={() => {
@@ -260,21 +307,22 @@ class AutoComplete extends React.PureComponent {
                             }}
                             key={opt.value}
                           >
-                            <li
-                              className={classNames({
-                                selected: this.state.selected === opt.value,
-                              })}
+                            <div
+                              className={classNames(
+                                'selection',
+                                { selected: this.state.selected === opt.value },
+                              )}
                               onMouseEnter={() => this.setState({ selected: opt.value })}
                             >
                               {this.props.renderOption(opt)}
-                            </li>
+                            </div>
                           </Clickable>
                         ))}
-                      </ul>
+                      </div>
                     )
                     : (
                       <div className="no-data">
-                        没有匹配结果
+                        {this.props.showSuggestions ? this.props.renderNoMatch(this.state.keyword) : '加载中...'}
                       </div>
                     )}
                 </div>
@@ -283,21 +331,20 @@ class AutoComplete extends React.PureComponent {
           )}
         >
           <div
-            className="select"
+            className={classNames('select', { disabled: this.disableAdd })}
             ref={(el) => { this.trigger = el; }}
           >
-            <div
-              className={classNames(
-                'select-trigger',
-                { active: this.state.active },
-              )}
-            >
-              {this.renderTitle()}
-
-              <div className="trigger-icon">
-                <i className="icon icon-caret-down" />
+            <Focusable>
+              <div
+                className={classNames(
+                  'custom-select',
+                  { active: this.state.active },
+                )}
+                role="button"
+              >
+                {this.renderTitle()}
               </div>
-            </div>
+            </Focusable>
           </div>
         </Trigger>
       </div>

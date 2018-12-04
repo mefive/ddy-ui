@@ -112,7 +112,7 @@ class Input extends React.PureComponent {
 
   render() {
     const className = classNames(
-      ['checkbox', 'radio'].indexOf(this.props.type) !== -1 ? 'form-check' : 'form-control',
+      ['checkbox', 'radio'].indexOf(this.props.type) !== -1 ? 'form-check-input' : 'form-control',
       this.props.className,
     );
 

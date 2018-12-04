@@ -75,7 +75,7 @@ class SideNav extends React.PureComponent {
               { 'pl-2': this.props.groupList != null },
             )}
           >
-            {this.props.renderSlide != null ? this.props.renderSlide(data, index) : data.name}
+            {this.props.renderItem != null ? this.props.renderItem(data, index) : data.name}
           </div>
         </Clickable>
       </div>
