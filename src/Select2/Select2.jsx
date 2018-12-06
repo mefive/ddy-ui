@@ -5,6 +5,7 @@ import debounce from 'lodash/debounce';
 import scrollTop from 'dom-helpers/query/scrollTop';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import keyCode from 'keycode';
 
 import Trigger from '../Trigger';
 import Clickable from '../Clickable';
@@ -74,6 +75,7 @@ class Select extends React.PureComponent {
     width: null,
     optionCache: {},
     keyword: null,
+    keyboardNav: null,
   };
 
   componentWillMount() {
@@ -119,6 +121,37 @@ class Select extends React.PureComponent {
     }
   }
 
+  onDocumentKeyDown = (e) => {
+    const code = keyCode(e);
+
+    const { keyboardNav } = this.state;
+
+    if (code === 'down' || code === 'up') {
+      e.stopPropagation();
+      e.preventDefault();
+
+      const { options } = this.props;
+
+      let index = keyboardNav ? options.findIndex(o => o.value === keyboardNav.value) : -1;
+
+      if (code === 'down') {
+        index = Math.min(options.length - 1, index + 1);
+      } else if (code === 'up') {
+        index = Math.max(0, index - 1);
+      }
+
+      this.setState({ keyboardNav: options[index] });
+    }
+
+    if (code === 'enter') {
+      this.onSelect(keyboardNav);
+    }
+
+    if (code === 'esc') {
+      this.setActive(false);
+    }
+  };
+
   setOptionCache(options = []) {
     this.setState({
       optionCache: {
@@ -135,6 +168,9 @@ class Select extends React.PureComponent {
     this.setState({ active }, () => {
       if (active) {
         scrollTop(this.optionsContainer.current, this.popoverScrollTop);
+        document.addEventListener('keydown', this.onDocumentKeyDown);
+      } else {
+        document.removeEventListener('keydown', this.onDocumentKeyDown);
       }
     });
 
@@ -236,7 +272,9 @@ class Select extends React.PureComponent {
                         'select-option',
                         {
                           active: this.props.value === option.value
-                          || (this.props.multiple && this.props.value.indexOf(option.value) !== -1),
+                          || (this.props.multiple && this.props.value.indexOf(option.value) !== -1)
+                          || (this.state.keyboardNav
+                            && this.state.keyboardNav.value === option.value),
                         },
                       )}
                     >
