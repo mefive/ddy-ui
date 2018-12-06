@@ -47,7 +47,7 @@ class Tabs extends React.PureComponent {
             aria-hidden
             onClick={() => this.onChange(option.value)}
           >
-            {this.props.renderTitle != null ? this.props.renderTitle(option) : option.title}
+            {this.props.titleRender != null ? this.props.titleRender(option) : option.title}
           </li>
         ))}
       </ul>

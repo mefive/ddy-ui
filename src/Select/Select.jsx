@@ -33,8 +33,8 @@ class Select extends React.PureComponent {
     onChange: PropTypes.func,
     disabled: PropTypes.bool,
     popoverClassName: PropTypes.string,
-    renderTitle: PropTypes.func,
-    renderOption: PropTypes.func,
+    titleRender: PropTypes.func,
+    optionRender: PropTypes.func,
     multiple: PropTypes.bool,
     max: PropTypes.number,
   };
@@ -95,13 +95,13 @@ class Select extends React.PureComponent {
 
   setTriggerWidth() {
     this.setState({
-      triggerWidth: this.trigger.offsetWidth,
+      triggerWidth: this.anchor.offsetWidth,
     });
   }
 
   getTitle() {
-    if (this.props.renderTitle) {
-      return this.props.renderTitle();
+    if (this.props.titleRender) {
+      return this.props.titleRender();
     }
 
     const {
@@ -218,8 +218,8 @@ class Select extends React.PureComponent {
                           <FontAwesomeIcon icon={icons.faCheck} />
                         )}
 
-                        {this.props.renderOption
-                          ? this.props.renderOption(i.value)
+                        {this.props.optionRender
+                          ? this.props.optionRender(i.value)
                           : i.title
                         }
                       </div>
@@ -260,7 +260,7 @@ class Select extends React.PureComponent {
                 'custom-select',
                 { active: this.state.active },
               )}
-              ref={(el) => { this.trigger = el; }}
+              ref={(el) => { this.anchor = el; }}
               role="button"
             >
               {this.props.title || this.getTitle()}

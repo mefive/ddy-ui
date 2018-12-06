@@ -213,14 +213,13 @@ class Trigger extends React.PureComponent {
         leaveDuration={this.props.leaveDuration}
         activeClass={this.props.activeClass}
         onEnter={() => {
-          console.log('on enter');
           this.popover.place();
         }}
       >
         {this.getActive() && (
           <Portal getContainer={this.props.getPopoverContainer}>
             {(() => {
-              const popoverElement
+              const popover
                 = this.props.renderPopover ? this.props.renderPopover() : this.props.popover;
 
               const container = this.props.getPopoverContainer == null
@@ -228,13 +227,13 @@ class Trigger extends React.PureComponent {
                 : this.props.getPopoverContainer();
 
               return React.cloneElement(
-                popoverElement,
+                popover,
                 {
                   anchor: this.anchor,
                   container,
                   ref: (el) => {
-                    if (typeof popoverElement.ref === 'function') {
-                      popoverElement.ref(el);
+                    if (typeof popover.ref === 'function') {
+                      popover.ref(el);
                     }
                     this.popover = el;
                   },

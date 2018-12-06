@@ -243,11 +243,10 @@ class Popover extends React.PureComponent {
         }}
         ref={(el) => { this.node = el; }}
       >
-        <div>
+        <React.Fragment>
           {this.props.children}
-
           {this.props.hasArrow && (<div className="arrow" />)}
-        </div>
+        </React.Fragment>
       </div>
     );
   }

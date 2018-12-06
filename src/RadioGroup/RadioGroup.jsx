@@ -32,7 +32,7 @@ class RadioGroup extends React.PureComponent {
   }
 
   render() {
-    const { renderOption } = this.props;
+    const { optionRender } = this.props;
 
     return (
       <div

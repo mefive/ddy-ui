@@ -14747,8 +14747,8 @@ var Select = (_temp = _class = function (_React$PureComponent) {
   }, {
     key: 'getTitle',
     value: function getTitle() {
-      if (this.props.renderTitle) {
-        return this.props.renderTitle();
+      if (this.props.titleRender) {
+        return this.props.titleRender();
       }
 
       var _props = this.props,
@@ -14878,7 +14878,7 @@ var Select = (_temp = _class = function (_React$PureComponent) {
                           }
                         },
                         _this2.props.multiple && i.value === _this2.props.value && _react2.default.createElement('i', { className: 'icon icon-check' }),
-                        _this2.props.renderOption ? _this2.props.renderOption(i.value) : i.title
+                        _this2.props.optionRender ? _this2.props.optionRender(i.value) : i.title
                       )
                     );
                   })
@@ -14916,7 +14916,7 @@ var Select = (_temp = _class = function (_React$PureComponent) {
             {
               className: (0, _classnames2.default)('custom-select', { active: this.state.active }),
               ref: function ref(el) {
-                _this2.trigger = el;
+                _this2.anchor = el;
               }
             },
             this.props.title || this.getTitle(),
@@ -14946,8 +14946,8 @@ var Select = (_temp = _class = function (_React$PureComponent) {
   onChange: _propTypes2.default.func,
   disabled: _propTypes2.default.bool,
   popoverClassName: _propTypes2.default.string,
-  renderTitle: _propTypes2.default.func,
-  renderOption: _propTypes2.default.func,
+  titleRender: _propTypes2.default.func,
+  optionRender: _propTypes2.default.func,
   multiple: _propTypes2.default.bool,
   max: _propTypes2.default.number
 }, _class.defaultProps = {
@@ -14964,8 +14964,8 @@ var Select = (_temp = _class = function (_React$PureComponent) {
   disabled: false,
   title: null,
   popoverClassName: null,
-  renderTitle: null,
-  renderOption: null,
+  titleRender: null,
+  optionRender: null,
   multiple: false,
   max: null
 }, _temp);
@@ -16937,7 +16937,7 @@ var propTypes = {
     title: _propTypes2.default.string
   })),
   onChange: _propTypes2.default.func,
-  renderOption: _propTypes2.default.func,
+  optionRender: _propTypes2.default.func,
   className: _propTypes2.default.string,
   name: _propTypes2.default.string
 };
@@ -16948,7 +16948,7 @@ var defaultProps = {
   onChange: function onChange() {
     return null;
   },
-  renderOption: null,
+  optionRender: null,
   className: null,
   name: null
 };
@@ -16966,7 +16966,7 @@ var RadioGroup = function (_React$PureComponent) {
     value: function render() {
       var _this2 = this;
 
-      var renderOption = this.props.renderOption;
+      var renderOption = this.props.optionRender;
 
 
       return _react2.default.createElement(
