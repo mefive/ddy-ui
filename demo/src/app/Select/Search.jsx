@@ -33,6 +33,7 @@ class Search extends React.PureComponent {
           onChange={value => this.setState({ value })}
           onSearch={this.search}
           showSearch
+          multiple
         />
       </ShowcaseContainer>
     );

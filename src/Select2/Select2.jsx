@@ -105,7 +105,7 @@ class Select extends React.PureComponent {
 
   onSelect(option) {
     if (this.props.multiple) {
-      const value = [...this.props.value];
+      const value = [...(this.props.value || [])];
       const index = value.indexOf(option.value);
 
       if (index === -1) {
@@ -222,6 +222,8 @@ class Select extends React.PureComponent {
   }
 
   render() {
+    const { value } = this.props;
+
     return (
       <Trigger
         getPopoverContainer={this.props.getPopoverContainer}
@@ -271,8 +273,8 @@ class Select extends React.PureComponent {
                       className={classNames(
                         'select-option',
                         {
-                          active: this.props.value === option.value
-                          || (this.props.multiple && this.props.value.indexOf(option.value) !== -1)
+                          active: value === option.value
+                          || (this.props.multiple && value && value.indexOf(option.value) !== -1)
                           || (this.state.keyboardNav
                             && this.state.keyboardNav.value === option.value),
                         },
