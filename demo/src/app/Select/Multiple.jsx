@@ -1,7 +1,7 @@
 import React from 'react';
 import random from 'lodash/random';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
-import Select from '../../../../src/Select2';
+import Select from '../../../../src/Select';
 
 class Single extends React.PureComponent {
   state = {
@@ -15,12 +15,14 @@ class Single extends React.PureComponent {
   render() {
     return (
       <ShowcaseContainer title="Multiple">
-        <Select
-          options={this.state.options}
-          value={this.state.value}
-          onChange={value => this.setState({ value })}
-          multiple
-        />
+        <div style={{ width: 300 }}>
+          <Select
+            options={this.state.options}
+            value={this.state.value}
+            onChange={value => this.setState({ value })}
+            multiple
+          />
+        </div>
       </ShowcaseContainer>
     );
   }

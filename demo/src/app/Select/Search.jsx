@@ -2,7 +2,7 @@ import React from 'react';
 import range from 'lodash/range';
 import debounce from 'lodash/debounce';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
-import Select from '../../../../src/Select2';
+import Select from '../../../../src/Select';
 
 const words = range(500).map(number => `${number}`);
 

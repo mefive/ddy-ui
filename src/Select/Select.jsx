@@ -1,20 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
+import scrollTop from 'dom-helpers/query/scrollTop';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as icons from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import keyCode from 'keycode';
 
 import Trigger from '../Trigger';
-import Popover from '../Popover/index';
 import Clickable from '../Clickable';
+import Popover from '../Popover';
+import Focusable from '../Focusable';
+import Input from '../Input';
+import safeSetState from '../safeSetState';
 
 import './style.scss';
-import Focusable from '../Focusable';
 
+@safeSetState
 class Select extends React.PureComponent {
   static propTypes = {
-    className: PropTypes.string,
     options: PropTypes.arrayOf(PropTypes.shape({
       value: PropTypes.any,
       title: PropTypes.string.isRequired,
@@ -25,245 +29,283 @@ class Select extends React.PureComponent {
       PropTypes.array,
       PropTypes.bool,
     ]),
-    width: PropTypes.number,
-    optionsHeight: PropTypes.number,
-    getPopoverContainer: PropTypes.func,
-    title: PropTypes.string,
-    defaultTitle: PropTypes.string,
     onChange: PropTypes.func,
-    disabled: PropTypes.bool,
+    className: PropTypes.string,
+    defaultTitle: PropTypes.string,
     popoverClassName: PropTypes.string,
-    titleRender: PropTypes.func,
+    popoverHeight: PropTypes.number,
+    getPopoverContainer: PropTypes.func,
     optionRender: PropTypes.func,
+    titleRender: PropTypes.func,
     multiple: PropTypes.bool,
-    max: PropTypes.number,
+    disabled: PropTypes.bool,
+    showSearch: PropTypes.bool,
+    onSearch: PropTypes.func,
+    width: PropTypes.number,
   };
 
   static defaultProps = {
-    width: null,
-    className: null,
-    optionsHeight: 200,
-    defaultTitle: '请选择',
-    onChange: () => null,
-    getPopoverContainer: null,
-    value: null,
     options: [],
-    disabled: false,
-    title: null,
+    value: null,
+    onChange: () => {},
+    className: null,
+    defaultTitle: '请选择',
     popoverClassName: null,
-    renderTitle: null,
-    renderOption: null,
+    popoverHeight: 200,
+    optionRender: ({ title }) => title,
+    titleRender: ({ title }) => title,
+    getPopoverContainer: null,
     multiple: false,
-    max: null,
+    disabled: false,
+    showSearch: false,
+    onSearch: () => {},
+    width: null,
   };
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      active: false,
-      triggerWidth: 0,
-      multipleSelection: [],
-    };
+    this.anchor = React.createRef();
+    this.popover = null;
+    this.optionsContainer = React.createRef();
+
+    this.popoverScrollTop = 0;
+  }
+
+  state = {
+    active: false,
+    width: null,
+    optionCache: {},
+    keyword: null,
+    keyboardNav: null,
+  };
+
+  componentWillMount() {
+    this.setOptionCache(this.props.options);
   }
 
   componentDidMount() {
-    this.setTriggerWidth();
+    this.syncWidth();
+    window.addEventListener('resize', this.syncWidth);
   }
 
-  componentDidUpdate(prevProps, { active }) {
-    if (this.state.active !== active && !this.props.multiple) {
-      if (this.selectedElement) {
-        this.optionsWrapper.scrollTop = this.selectedElement.offsetTop;
-      }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.options !== this.props.options) {
+      this.setOptionCache(nextProps.options);
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.syncWidth);
+  }
+
+  onSelect(option) {
+    if (this.props.multiple) {
+      const value = [...(this.props.value || [])];
+      const index = value.indexOf(option.value);
+
+      if (index === -1) {
+        value.push(option.value);
+      } else {
+        value.splice(index, 1);
+      }
+
+      this.props.onChange(value);
+      this.place();
+    } else {
+      this.props.onChange(option.value);
+      this.setActive(false);
+    }
+  }
+
+  onDocumentKeyDown = (e) => {
+    const code = keyCode(e);
+
+    const { keyboardNav } = this.state;
+
+    if (code === 'down' || code === 'up') {
+      e.stopPropagation();
+      e.preventDefault();
+
+      const { options } = this.props;
+
+      let index = keyboardNav ? options.findIndex(o => o.value === keyboardNav.value) : -1;
+
+      if (code === 'down') {
+        index = Math.min(options.length - 1, index + 1);
+      } else if (code === 'up') {
+        index = Math.max(0, index - 1);
+      }
+
+      this.setState({ keyboardNav: options[index] });
+    }
+
+    if (code === 'enter') {
+      this.onSelect(keyboardNav);
+    }
+
+    if (code === 'esc') {
+      this.setActive(false);
+    }
+  };
+
+  setOptionCache(options = []) {
+    this.setState({
+      optionCache: {
+        ...this.state.optionCache,
+        ...options.reduce((p, c) => ({
+          ...p,
+          [c.value]: c,
+        }), {}),
+      },
+    });
   }
 
   setActive = (active) => {
-    const old = this.state.active;
-
     this.setState({ active }, () => {
-      if (active && !old) {
-        if (this.props.multiple) {
-          this.setState({ multipleSelection: this.props.value || [] });
-        }
-
-        this.setTriggerWidth();
-      }
-    });
-  };
-
-  setTriggerWidth() {
-    this.setState({
-      triggerWidth: this.anchor.offsetWidth,
-    });
-  }
-
-  getTitle() {
-    if (this.props.titleRender) {
-      return this.props.titleRender();
-    }
-
-    const {
-      value, options, multiple, defaultTitle,
-    } = this.props;
-
-    let option;
-    let title;
-
-    if (multiple && value) {
-      option = options.filter(i => value.indexOf(i.value) !== -1);
-
-      title = option.map(i => i.title).join(',');
-    } else {
-      option = options.find(i => i.value === value);
-      title = option ? option.title : '';
-    }
-
-    return title || defaultTitle;
-  }
-
-  select(value) {
-    const { value: old, onChange, multiple } = this.props;
-
-    if (!multiple) {
-      if (value !== old) {
-        onChange(value);
-      }
-
-      this.setActive(false);
-    } else {
-      const multipleSelection = [...this.state.multipleSelection];
-      const index = multipleSelection.indexOf(value);
-
-      if (index === -1) {
-        const { max } = this.props;
-        if (max == null || multipleSelection.length < max) {
-          multipleSelection.push(value);
-        }
+      if (active) {
+        scrollTop(this.optionsContainer.current, this.popoverScrollTop);
+        document.addEventListener('keydown', this.onDocumentKeyDown);
       } else {
-        multipleSelection.splice(index, 1);
+        document.removeEventListener('keydown', this.onDocumentKeyDown);
       }
+    });
 
-      this.setState({ multipleSelection });
+    if (!active) {
+      this.popoverScrollTop = scrollTop(this.optionsContainer.current);
     }
-  }
-
-  confirmSelection = () => {
-    const { multipleSelection } = this.state;
-
-    if (!isEqual(multipleSelection, this.props.value)) {
-      this.props.onChange([...multipleSelection]);
-    }
-
-    this.setState({ multipleSelection: [] });
-    this.setActive(false);
   };
+
+  syncWidth = debounce(() => {
+    this.setState({ width: this.anchor.current.clientWidth });
+  });
+
+  place = debounce(() => {
+    if (this.popover) {
+      this.popover.place();
+    }
+  });
+
+  renderTitle() {
+    let title = null;
+    const { value, titleRender } = this.props;
+    const { optionCache } = this.state;
+
+    if (this.props.multiple) {
+      title = (value && value.length > 0)
+        ? (
+          <div className="select-choice-container">
+            {value.map(v => (
+              <div className="select-choice" key={v}>
+                <span>{titleRender(optionCache[v] || {})}</span>
+
+                {!this.props.disabled && (
+                  <Clickable
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const newValue = [...value];
+                      newValue.splice(value.indexOf(v), 1);
+
+                      this.props.onChange(newValue);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </Clickable>
+                )}
+              </div>
+            ))}
+          </div>
+        )
+        : null;
+    } else {
+      title = titleRender(optionCache[value] || {});
+    }
+
+    return title || this.props.defaultTitle;
+  }
 
   render() {
+    const { value } = this.props;
+
     return (
       <Trigger
-        active={this.state.active}
-        disabled={this.props.disabled}
         getPopoverContainer={this.props.getPopoverContainer}
+        active={this.state.active}
+        onActiveChange={this.setActive}
         enterClassName="slide-down-in"
         leaveClassName="slide-down-out"
-        popover={
+        popover={(
           <Popover
             placement={Popover.placement.BOTTOM}
             offset={5}
             hasArrow={false}
             className={classNames(
-              'select-popup shadow',
+              'select-popover shadow',
               this.props.popoverClassName,
             )}
+            ref={(popover) => { this.popover = popover; }}
           >
-            <div
-              style={{
-                height: this.props.multiple ? this.props.optionsHeight : null,
-                maxHeight: this.props.multiple ? null : this.props.optionsHeight,
-                width: this.state.triggerWidth,
-              }}
-            >
-              <div
-                className="wrapper"
-                style={{
-                  height: this.props.multiple ? this.props.optionsHeight - 32 : null,
-                  maxHeight: this.props.multiple ? null : this.props.optionsHeight,
-                }}
-                ref={(el) => { this.optionsWrapper = el; }}
-              >
-                <div className="selections">
-                  {this.props.options != null && this.props.options.map(i => (
-                    <Clickable
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        this.select(i.value);
-                      }}
-                      key={i.value}
-                    >
-                      <div
-                        className={classNames('selection', {
-                          active: this.props.multiple
-                            ? this.state.multipleSelection.indexOf(i.value) !== -1
-                            : i.value === this.props.value,
-                        })}
-                        ref={(el) => {
-                          if (i.value === this.props.value) {
-                            this.selectedElement = el;
-                          }
-                        }}
-                      >
-                        {this.props.multiple && i.value === this.props.value && (
-                          <FontAwesomeIcon icon={icons.faCheck} />
-                        )}
-
-                        {this.props.optionRender
-                          ? this.props.optionRender(i.value)
-                          : i.title
-                        }
-                      </div>
-                    </Clickable>
-                  ))}
-                </div>
-              </div>
-
-              {this.props.multiple && (
-                <div className="actions">
-                  <Clickable
-                    onClick={this.confirmSelection}
-                  >
-                    <div
-                      className="btn btn-sm btn-primary"
-                    >
-                      确定
-                    </div>
-                  </Clickable>
+            <div>
+              {this.props.showSearch && (
+                <div className="keyword">
+                  <Input
+                    value={this.state.keyword}
+                    onChange={(keyword) => {
+                      this.setState({ keyword });
+                      this.props.onSearch(keyword);
+                    }}
+                    placeholder="请输入关键字"
+                  />
                 </div>
               )}
+
+              <div
+                style={{
+                  width: this.state.width,
+                  maxHeight: this.props.popoverHeight,
+                  overflow: 'auto',
+                }}
+                ref={this.optionsContainer}
+              >
+                {this.props.options.map(option => (
+                  <Clickable
+                    onClick={() => this.onSelect(option)}
+                    key={option.value}
+                  >
+                    <div
+                      className={classNames(
+                        'select-option',
+                        {
+                          active: value === option.value
+                          || (this.props.multiple && value && value.indexOf(option.value) !== -1)
+                          || (this.state.keyboardNav
+                            && this.state.keyboardNav.value === option.value),
+                        },
+                      )}
+                    >
+                      {this.props.optionRender(option)}
+                    </div>
+                  </Clickable>
+                ))}
+              </div>
             </div>
           </Popover>
-        }
-        onActiveChange={this.setActive}
+        )}
       >
-        <div
-          className={classNames(
-            'select',
-            { [this.props.className]: this.props.className != null },
-            { disabled: this.props.disabled },
-          )}
-          style={{ width: this.props.width || null }}
-        >
+        <div>
           <Focusable>
             <div
               className={classNames(
-                'custom-select',
+                this.props.className,
+                'select custom-select',
                 { active: this.state.active },
               )}
-              ref={(el) => { this.anchor = el; }}
-              role="button"
+              ref={this.anchor}
+              style={{
+                minWidth: this.props.width,
+              }}
             >
-              {this.props.title || this.getTitle()}
+              {this.renderTitle()}
             </div>
           </Focusable>
         </div>

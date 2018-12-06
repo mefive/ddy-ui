@@ -1,13 +1,44 @@
 @import "~compass-mixins";
 @import "../style/variables";
 
+.select {
+  height: auto !important;
+
+  .select-choice-container {
+    margin-left: -(map-get($spacers, 0));
+    margin-top: -(map-get($spacers, 0));
+
+    @include clearfix;
+
+    .select-choice {
+      float: left;
+      border: 1px solid $border-color;
+      background-color: #FAFAFA;
+      font-size: $font-size-sm;
+      padding: 0 map-get($spacers, 1);
+      border-radius: $border-radius-sm;
+      margin-left: map-get($spacers, 0);
+      margin-top: map-get($spacers, 0);
+      position: relative;
+
+      & > * {
+        vertical-align: middle;
+      }
+
+      svg {
+        margin-left: map-get($spacers, 0);
+      }
+    }
+  }
+}
+
 .select-popover {
   background-color: $white;
   border: 1px solid $gray-300;
 
   border-radius: $border-radius;
 
-  .selection {
+  .select-option {
     padding: 6px 12px;
     @include ellipsis();
     position: relative;
@@ -36,26 +67,7 @@
     }
   }
 
-  .wrapper {
-    overflow-y: auto;
-  }
-
-  .actions {
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-
-    .btn {
-      width: 100%;
-      padding: 6px;
-    }
-  }
-
-  &.slide-down-out {
-    animation-duration: .25s;
-  }
-
-  &.slide-up-out {
-    animation-duration: .25s;
+  .keyword {
+    padding: map-get($spacers, 1);
   }
 }

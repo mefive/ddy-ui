@@ -1,7 +1,7 @@
 import React from 'react';
 import random from 'lodash/random';
 import ShowcaseContainer from '../ShowcaseContainer/ShowcaseContainer';
-import Select from '../../../../src/Select2';
+import Select from '../../../../src/Select';
 
 class Single extends React.PureComponent {
   state = {
