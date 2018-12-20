@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import padStart from 'lodash/padStart';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 import CalendarData from './CalendarData';
 
@@ -18,6 +20,7 @@ const propTypes = {
   min: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  restrictDaysOfWeek: PropTypes.arrayOf(PropTypes.number),
 };
 
 const defaultProps = {
@@ -26,6 +29,7 @@ const defaultProps = {
   min: '',
   value: moment().format('YYYY-MM-DD'),
   onChange: () => {},
+  restrictDaysOfWeek: null,
 };
 
 class Calendar extends React.PureComponent {
@@ -66,11 +70,12 @@ class Calendar extends React.PureComponent {
   }
 
   isDisable(day) {
-    const date = this.getDate(day);
-    const { max, min } = this.props;
+    const date = moment(this.getDate(day));
+    const { max, min, restrictDaysOfWeek } = this.props;
 
-    return (max && moment(date) > moment(max))
-      || (min && moment(date) < moment(min));
+    return (max && date > moment(max))
+      || (min && date < min)
+      || (restrictDaysOfWeek && restrictDaysOfWeek.indexOf(date.days()) === -1);
   }
 
   render() {
@@ -103,7 +108,7 @@ class Calendar extends React.PureComponent {
                 width={30}
                 onClick={() => this.changeMonth('prev')}
               >
-                <i className="icon icon-angle-left" />
+                <FontAwesomeIcon icon={faAngleLeft} />
               </th>
               <th colSpan={5}>
                 {year}年{padStart(month, 2, '0')}月
@@ -113,7 +118,7 @@ class Calendar extends React.PureComponent {
                 width={30}
                 onClick={() => this.changeMonth('next')}
               >
-                <i className="icon icon-angle-right" />
+                <FontAwesomeIcon icon={faAngleRight} />
               </th>
             </tr>
           </thead>

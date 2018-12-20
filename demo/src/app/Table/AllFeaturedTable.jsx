@@ -3,30 +3,50 @@ import { dailyBasicKeys, dailyBaiscKeyNames, dailyBaiscDataSource } from './rawD
 import ShowcaseContainer from '../ShowcaseContainer';
 import Table from '../../../../src/Table2';
 import Switch from '../../../../src/Switch/Switch';
+import Clickable from '../../../../src/Clickable';
+import EditingInput from './EditingInput';
 
 class AllFeaturedTable extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      columns: [],
-      dataSource: dailyBaiscDataSource,
-      fixedHeight: 500,
-      loading: false,
-      page: null,
-    };
-  }
+  state = {
+    columns: [],
+    dataSource: dailyBaiscDataSource,
+    fixedHeight: 500,
+    loading: false,
+    page: null,
+    editing: null,
+  };
 
   componentWillMount() {
     this.updateColumns();
   }
 
-  updateColumns(fixedCount) {
+  updateColumns = (fixedCount) => {
+    const { editing } = this.state;
+
     this.setState({
       columns: dailyBasicKeys.map((key, index) => ({
         key,
         title: dailyBaiscKeyNames[key],
         fixed: index < fixedCount,
+        render: (record, rowIndex) => ((editing
+          && editing.key === key && editing.rowIndex === rowIndex)
+          ? (
+            <EditingInput
+              autoFocus
+              value={this.state.editing.value}
+              onBlur={() => this.setState({ editing: null }, this.updateColumns)}
+            />
+          )
+          : (
+            <Clickable
+              onClick={() =>
+                this.setState({
+                  editing: { key, rowIndex, value: record[key] },
+                }, this.updateColumns)}
+            >
+              <div>{record[key] || '--'}</div>
+            </Clickable>
+          )),
       })),
     });
   }

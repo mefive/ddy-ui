@@ -37,13 +37,9 @@ class DatePicker extends React.PureComponent {
     onChange: () => null,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      active: false,
-    };
-  }
+  state = {
+    active: false,
+  };
 
   select = (value) => {
     if (value !== this.props.value) {
