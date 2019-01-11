@@ -29,7 +29,7 @@ import SwitchShowCase from './Switch';
 import Sortable from './Sortable';
 import Animate from './Animate';
 import Carousel from './Carousel';
-// import ContextMenu from './ContextMenu';
+import ContextMenu from './ContextMenu';
 // import AutoComplete from './AutoComplete';
 
 const links = [{
@@ -142,7 +142,7 @@ ReactDOM.render(
         <Route exact path="/sortable" component={Sortable} />
         <Route exact path="/animate" component={Animate} />
         <Route exact path="/carousel" component={Carousel} />
-        {/* <Route exact path="/contextMenu" component={ContextMenu} /> */}
+         <Route exact path="/contextMenu" component={ContextMenu} />
         {/* <Route exact path="/autoComplete" component={AutoComplete} /> */}
         <Route exact path="/" component={Port} />
       </Switch>

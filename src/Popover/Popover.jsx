@@ -60,13 +60,10 @@ class Popover extends React.PureComponent {
     hasArrow: true,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      style: null,
-    };
-  }
+  state = {
+    style: null,
+    placement: this.props.placement,
+  };
 
   componentDidMount() {
     this.hasMounted = true;
@@ -80,20 +77,17 @@ class Popover extends React.PureComponent {
 
   onResize = debounce(() => this.place());
 
-  place = () => {
-    if (!this.hasMounted || this.props.container == null || this.props.anchor == null) {
-      return;
-    }
-
+  getPlaceStyleInfo(placement) {
     const containerRect = this.props.container.getBoundingClientRect();
 
     const anchorRect = this.props.anchor.getBoundingClientRect();
     const anchorHeight = anchorRect.height;
     const anchorWidth = anchorRect.width;
 
-    const popoverRect = this.node.getBoundingClientRect();
-    const popoverHeight = popoverRect.height;
-    const popoverWidth = popoverRect.width;
+    const popoverHeight = this.node.offsetHeight;
+    const popoverWidth = this.node.offsetWidth;
+
+    const betterPlacement = [];
 
     let left = 0;
     let top = 0;
@@ -107,8 +101,40 @@ class Popover extends React.PureComponent {
       offset += 10;
     }
 
-    const { placement } = this.props;
     const placements = placement.split('-');
+
+    switch (placements[0]) {
+      case TOP: {
+        if (anchorRect.top - offset - popoverHeight < 0) {
+          betterPlacement[0] = BOTTOM;
+        }
+        break;
+      }
+
+      case BOTTOM: {
+        if (anchorRect.top + offset + popoverHeight > window.innerHeight) {
+          betterPlacement[0] = TOP;
+        }
+        break;
+      }
+
+      case LEFT: {
+        if (anchorRect.left - offset - popoverWidth < 0) {
+          betterPlacement[0] = RIGHT;
+        }
+        break;
+      }
+
+      case RIGHT: {
+        if (anchorRect.left + anchorWidth + offset + popoverWidth > window.innerWidth) {
+          betterPlacement[0] = LEFT;
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
 
     switch (placements[0]) {
       case TOP: {
@@ -162,6 +188,39 @@ class Popover extends React.PureComponent {
     }
 
     // align
+    switch (placements[1]) {
+      case LEFT: {
+        if (anchorRect.left + popoverWidth > window.innerWidth) {
+          betterPlacement[1] = RIGHT;
+        }
+        break;
+      }
+
+      case RIGHT: {
+        if ((anchorRect.left + anchorWidth) - popoverWidth < 0) {
+          betterPlacement[1] = LEFT;
+        }
+        break;
+      }
+
+      case TOP: {
+        if (anchorRect.top + popoverHeight > window.innerHeight) {
+          betterPlacement[1] = BOTTOM;
+        }
+        break;
+      }
+
+      case BOTTOM: {
+        if ((anchorRect.top + anchorHeight) - popoverHeight < 0) {
+          betterPlacement[1] = TOP;
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
+
     switch (placements[0]) {
       case TOP:
       case BOTTOM: {
@@ -214,18 +273,37 @@ class Popover extends React.PureComponent {
       && !Number.isNaN(marginLeft)
       && !Number.isNaN(marginTop)
     ) {
-      this.setState({
+      return {
         style: {
           left, top, marginLeft, marginTop,
         },
-      });
-    } else {
-      console.log('error', this.props.container, this.props.anchor);
+        betterPlacement: placements.map((p, index) => betterPlacement[index] || p).join('-'),
+      };
+    }
+
+    console.log('error', this.props.container, this.props.anchor);
+    return { style: null };
+  }
+
+  place = () => {
+    if (!this.hasMounted || this.props.container == null || this.props.anchor == null) {
+      return;
+    }
+
+    let placeStyleInfo = this.getPlaceStyleInfo(this.props.placement);
+
+    if (placeStyleInfo.betterPlacement !== this.props.placement) {
+      placeStyleInfo = this.getPlaceStyleInfo(placeStyleInfo.betterPlacement);
+      this.setState({ placement: placeStyleInfo.betterPlacement });
+    }
+
+    if (placeStyleInfo.style) {
+      this.setState({ style: placeStyleInfo.style });
     }
   };
 
   render() {
-    const placement = this.props.placement.split('-');
+    const placement = this.state.placement.split('-');
 
     return (
       <div

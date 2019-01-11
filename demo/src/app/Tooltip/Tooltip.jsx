@@ -5,13 +5,16 @@ import Tooltip from '../../../../src/Tooltip/Tooltip';
 import Popover from '../../../../src/Popover';
 
 import './style.scss';
+import Clickable from '../../../../src/Clickable';
 
 const ShowcaseTooltip = () => (
   <ShowcaseContainer title="Tooltip">
     <div className="d-flex flex-wrap ml-n3 mt-n3">
-      <Tooltip title="top">
-        <div className="tooltip-trigger ml-3 mt-3">Top</div>
-      </Tooltip>
+      <Clickable onClick={() => alert(1)}>
+        <Tooltip title="top">
+          <div className="tooltip-trigger ml-3 mt-3">Top</div>
+        </Tooltip>
+      </Clickable>
 
       <Tooltip
         title="bottom"

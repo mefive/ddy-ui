@@ -1,34 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-
 import classNames from 'classnames';
 
-const propTypes = {
-  getContainer: PropTypes.func,
-  children: PropTypes.node,
-  className: PropTypes.string,
-};
-
-const defaultProps = {
-  getContainer: null,
-  children: null,
-  className: null,
-};
+import { PortalContext } from './context';
 
 class Portal extends React.PureComponent {
+  static propTypes = {
+    getContainer: PropTypes.func.isRequired,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    onContainerChange: PropTypes.func,
+  };
+
+  static defaultProps = {
+    children: null,
+    className: null,
+    onContainerChange: () => {},
+  };
+
   constructor(props) {
     super(props);
 
     const container = this.props.getContainer == null ? document.body : this.props.getContainer();
+    this.container = container;
 
-    this.container = document.createElement('div');
+    this.wrapper = document.createElement('div');
 
-    container.appendChild(this.container);
+    container.appendChild(this.wrapper);
+  }
+
+  componentDidMount() {
+    this.props.onContainerChange(this.container);
   }
 
   componentWillUnmount() {
-    this.container.parentNode.removeChild(this.container);
+    this.wrapper.parentNode.removeChild(this.wrapper);
   }
 
   render() {
@@ -36,11 +43,18 @@ class Portal extends React.PureComponent {
 
     return ReactDOM.createPortal(React.cloneElement(child, {
       className: classNames(child.props.className, this.props.className),
-    }), this.container);
+    }), this.wrapper);
   }
 }
 
-Portal.propTypes = propTypes;
-Portal.defaultProps = defaultProps;
-
-export default Portal;
+export default React.forwardRef((props, ref) => (
+  <PortalContext.Consumer>
+    {({ getContainer }) => (
+      <Portal
+        {...props}
+        getContainer={props.getContainer || getContainer}
+        ref={ref}
+      />
+    )}
+  </PortalContext.Consumer>
+));

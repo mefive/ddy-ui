@@ -1,6 +1,16 @@
 @import "~compass-mixins";
+@import "../style/variables";
 
 .popover.context-menu-popup {
   width: 100px;
   @include ellipsis();
+  z-index: $zindex-context-menu;
+  padding: map_get($spacers, 0) map_get($spacers, 1);
+
+  .context-menu {
+    transition: color .2s;
+    &:hover {
+      color: $primary;
+    }
+  }
 }

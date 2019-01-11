@@ -1,60 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import isFunction from 'lodash/isFunction';
+import pick from 'lodash/pick';
 import contains from 'dom-helpers/query/contains';
 
 import Portal from './Portal';
 import Animate from './Animate';
-
-const propTypes = {
-  popover: PropTypes.node,
-  renderPopover: PropTypes.func,
-  defaultActive: PropTypes.bool,
-  active: PropTypes.bool,
-  onActiveChange: PropTypes.func,
-  disabled: PropTypes.bool,
-
-  enterClassName: PropTypes.string,
-  leaveClassName: PropTypes.string,
-  enterDuration: PropTypes.number,
-  leaveDuration: PropTypes.number,
-  enterDelay: PropTypes.number,
-  leaveDelay: PropTypes.number,
-
-  action: PropTypes.string,
-  getPopoverContainer: PropTypes.func,
-  children: PropTypes.node,
-  activeClass: PropTypes.string,
-};
-
-const defaultProps = {
-  popover: null,
-  renderPopover: null,
-  defaultActive: false,
-  active: null,
-  disabled: false,
-
-  enterClassName: 'enter',
-  leaveClassName: 'leave',
-  enterDuration: 200,
-  leaveDuration: 200,
-  enterDelay: null,
-  leaveDelay: null,
-
-  onActiveChange: () => {},
-  getPopoverContainer: null,
-  action: 'click',
-  children: null,
-  activeClass: 'active',
-};
+import { domRelatedProps } from './utils/dom';
 
 class Trigger extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    popover: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    defaultActive: PropTypes.bool,
+    active: PropTypes.bool,
+    onActiveChange: PropTypes.func,
+    disabled: PropTypes.bool,
 
-    this.state = {
-      active: false,
-    };
-  }
+    enterClassName: PropTypes.string,
+    leaveClassName: PropTypes.string,
+    enterDuration: PropTypes.number,
+    leaveDuration: PropTypes.number,
+    enterDelay: PropTypes.number,
+    leaveDelay: PropTypes.number,
+
+    action: PropTypes.string,
+    getPopoverContainer: PropTypes.func,
+    children: PropTypes.node,
+    activeClass: PropTypes.string,
+  };
+
+  static defaultProps = {
+    popover: null,
+    defaultActive: false,
+    active: null,
+    disabled: false,
+
+    enterClassName: 'enter',
+    leaveClassName: 'leave',
+    enterDuration: 200,
+    leaveDuration: 200,
+    enterDelay: null,
+    leaveDelay: null,
+
+    onActiveChange: () => {},
+    getPopoverContainer: null,
+    action: 'click',
+    children: null,
+    activeClass: 'active',
+  };
+
+  state = {
+    active: false,
+    popoverContainer: null,
+  };
 
   componentWillReceiveProps({ active }) {
     if (active !== this.props.active) {
@@ -192,20 +190,28 @@ class Trigger extends React.PureComponent {
   }
 
   render() {
-    const child = React.Children.only(this.props.children);
+    return React.Children.map(this.props.children, (child, index) => {
+      if (index === 0) {
+        const domProps = pick(this.props, domRelatedProps);
 
-    return React.cloneElement(
-      child,
-      {
-        ...this.getEventHandlers(child),
-        ref: (el) => {
-          if (typeof child.ref === 'function') {
-            child.ref(el);
-          }
-          this.anchor = el;
-        },
-      },
-      ...React.Children.toArray(child.props.children),
+        return React.cloneElement(
+          child,
+          {
+            ...domProps,
+            ...this.getEventHandlers(child),
+            ref: (el) => {
+              if (isFunction(child.ref)) {
+                child.ref(el);
+              }
+
+              this.anchor = el;
+            },
+          },
+        );
+      }
+
+      return child;
+    }).concat((
       <Animate
         enterClassName={this.props.enterClassName}
         leaveClassName={this.props.leaveClassName}
@@ -215,22 +221,23 @@ class Trigger extends React.PureComponent {
         onEnter={() => {
           this.popover.place();
         }}
+        key={React.Children.count(this.props.children)}
       >
         {this.getActive() && (
-          <Portal getContainer={this.props.getPopoverContainer}>
+          <Portal
+            getContainer={this.props.getPopoverContainer}
+            onContainerChange={popoverContainer =>
+              this.setState({ popoverContainer }, () => this.popover.place())}
+          >
             {(() => {
               const popover
-                = this.props.renderPopover ? this.props.renderPopover() : this.props.popover;
-
-              const container = this.props.getPopoverContainer == null
-                ? document.body
-                : this.props.getPopoverContainer();
+                = isFunction(this.props.popover) ? this.props.popover() : this.props.popover;
 
               return React.cloneElement(
                 popover,
                 {
                   anchor: this.anchor,
-                  container,
+                  container: this.state.popoverContainer,
                   ref: (el) => {
                     if (typeof popover.ref === 'function') {
                       popover.ref(el);
@@ -242,12 +249,9 @@ class Trigger extends React.PureComponent {
             })()}
           </Portal>
         )}
-      </Animate>,
-    );
+      </Animate>
+    ));
   }
 }
-
-Trigger.propTypes = propTypes;
-Trigger.defaultProps = defaultProps;
 
 export default Trigger;

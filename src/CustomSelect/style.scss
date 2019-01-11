@@ -1,0 +1,8 @@
+@import "../style/variables";
+
+.custom-select {
+  &.custom-indicator {
+    background: none;
+    padding-right: $custom-select-padding-x;
+  }
+}

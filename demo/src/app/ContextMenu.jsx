@@ -1,22 +1,27 @@
 import React from 'react';
 import ShowcaseContainer from './ShowcaseContainer';
 import ContextMenu from '../../../src/ContextMenu/ContextMenu';
+import Tooltip from '../../../src/Tooltip/Tooltip';
 
 class ContextMenuShowcase extends React.PureComponent {
   render() {
     return (
-      <ShowcaseContainer>
+      <ShowcaseContainer title="Context Menu">
         <div>
-          <ContextMenu
-            menus={[{
-              title: '删除',
-              value: 'delete',
-            }]}
-          >
-            <div className="btn btn-primary">
-              Context Menu
+          <Tooltip title="123">
+            <div className="d-inline-block">
+              <ContextMenu
+                menus={[{
+                  title: '删除',
+                  value: 'delete',
+                }]}
+              >
+                <div className="btn btn-primary">
+                  Context Menu
+                </div>
+              </ContextMenu>
             </div>
-          </ContextMenu>
+          </Tooltip>
         </div>
       </ShowcaseContainer>
     );

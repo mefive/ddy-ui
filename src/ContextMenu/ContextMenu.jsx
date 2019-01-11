@@ -1,10 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import scrollTop from 'dom-helpers/query/scrollTop';
+import scrollLeft from 'dom-helpers/query/scrollLeft';
+import pick from 'lodash/pick';
+import isFunction from 'lodash/isFunction';
+
 import Portal from '../Portal';
 import Clickable from '../Clickable';
+import Animate from '../Animate';
+import { PortalContext } from '../context';
+import { domRelatedProps } from '../utils/dom';
 
 import './style.scss';
-import Animate from '../Animate/Animate';
 
 class ContextMenu extends React.PureComponent {
   static propTypes = {
@@ -14,20 +21,19 @@ class ContextMenu extends React.PureComponent {
       value: PropTypes.any,
     })),
     onSelect: PropTypes.func,
+    getPopoverContainer: PropTypes.func.isRequired,
+    forwardedRef: PropTypes.func,
   };
 
   static defaultProps = {
     menus: null,
     onSelect: () => {},
+    forwardedRef: null,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      position: null,
-    };
-  }
+  state = {
+    position: null,
+  };
 
   componentWillUnmount() {
     window.removeEventListener('click', this.onBodyClick);
@@ -36,10 +42,14 @@ class ContextMenu extends React.PureComponent {
   onContextMenu = (e) => {
     if (this.props.menus != null) {
       e.preventDefault();
+      const container = this.props.getPopoverContainer();
+
+      const { left, top } = container.getBoundingClientRect();
+
       this.setState({
         position: {
-          left: e.clientX,
-          top: e.clientY,
+          left: (e.clientX - left) + scrollLeft(container),
+          top: (e.clientY - top) + scrollTop(container),
         },
       });
       window.addEventListener('click', this.onBodyClick);
@@ -58,58 +68,77 @@ class ContextMenu extends React.PureComponent {
   };
 
   render() {
-    const child = React.Children.only(this.props.children);
     const { position } = this.state;
 
-    return (
-      <React.Fragment>
-        {React.cloneElement(
+    return React.Children.map(this.props.children, (child, index) => {
+      if (index === 0) {
+        const domProps = pick(this.props, domRelatedProps);
+
+        return React.cloneElement(
           child,
           {
-            ...child.props,
+            ...domProps,
             onContextMenu: this.onContextMenu,
+            ref: (el) => {
+              if (isFunction(child.ref)) {
+                child.ref(el);
+              }
+            },
           },
-        )}
+        );
+      }
 
-        <Animate
-          enterDuration={0}
-          leaveClassName="fade-out"
-        >
-          {position != null && (
-            <Portal>
-              <div
-                className="popover select-popup context-menu-popup"
-                style={{
-                  left: position.left,
-                  top: position.top,
-                }}
-              >
-                <Clickable onClick={e => e.stopPropagation()}>
+      return child;
+    }).concat((
+      <Animate
+        enterDuration={0}
+        leaveClassName="fade-out"
+        key={React.Children.count(this.props.children)}
+      >
+        {position != null && (
+          <Portal ref={this.portal}>
+            <div
+              className="popover select-popup context-menu-popup"
+              style={{
+                left: position.left,
+                top: position.top,
+              }}
+            >
+              <Clickable onClick={e => e.stopPropagation()}>
+                <div className="context-menu-container">
                   <div>
-                    <ul>
-                      {this.props.menus.map(menu => (
-                        <Clickable
-                          onClick={() => {
-                            this.props.onSelect(menu.value);
-                            this.onClose();
-                          }}
-                          key={menu.value}
-                        >
-                          <li>
-                            {menu.title}
-                          </li>
-                        </Clickable>
-                      ))}
-                    </ul>
+                    {this.props.menus.map(menu => (
+                      <Clickable
+                        onClick={() => {
+                          this.props.onSelect(menu.value);
+                          this.onClose();
+                        }}
+                        key={menu.value}
+                      >
+                        <div className="context-menu">
+                          {menu.title}
+                        </div>
+                      </Clickable>
+                    ))}
                   </div>
-                </Clickable>
-              </div>
-            </Portal>
-          )}
-        </Animate>
-      </React.Fragment>
-    );
+                </div>
+              </Clickable>
+            </div>
+          </Portal>
+        )}
+      </Animate>
+    ));
   }
 }
 
-export default ContextMenu;
+export default React.forwardRef((props, ref) => (
+  <PortalContext.Consumer>
+    {({ getContainer }) => (
+      <ContextMenu
+        {...props}
+        getPopoverContainer={props.getPopoverContainer || getContainer}
+        forwardedRef={ref}
+      />
+    )}
+  </PortalContext.Consumer>
+));
