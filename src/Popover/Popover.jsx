@@ -103,39 +103,7 @@ class Popover extends React.PureComponent {
 
     const placements = placement.split('-');
 
-    switch (placements[0]) {
-      case TOP: {
-        if (anchorRect.top - offset - popoverHeight < 0) {
-          betterPlacement[0] = BOTTOM;
-        }
-        break;
-      }
-
-      case BOTTOM: {
-        if (anchorRect.top + offset + popoverHeight > window.innerHeight) {
-          betterPlacement[0] = TOP;
-        }
-        break;
-      }
-
-      case LEFT: {
-        if (anchorRect.left - offset - popoverWidth < 0) {
-          betterPlacement[0] = RIGHT;
-        }
-        break;
-      }
-
-      case RIGHT: {
-        if (anchorRect.left + anchorWidth + offset + popoverWidth > window.innerWidth) {
-          betterPlacement[0] = LEFT;
-        }
-        break;
-      }
-
-      default:
-        break;
-    }
-
+    // handle offset as margin
     switch (placements[0]) {
       case TOP: {
         marginTop = -offset;
@@ -161,7 +129,7 @@ class Popover extends React.PureComponent {
         break;
     }
 
-    // placement
+    // handle primary placement
     switch (placements[0]) {
       case TOP: {
         top = anchorRect.top - popoverHeight - containerRect.top;
@@ -187,40 +155,7 @@ class Popover extends React.PureComponent {
         break;
     }
 
-    // align
-    switch (placements[1]) {
-      case LEFT: {
-        if (anchorRect.left + popoverWidth > window.innerWidth) {
-          betterPlacement[1] = RIGHT;
-        }
-        break;
-      }
-
-      case RIGHT: {
-        if ((anchorRect.left + anchorWidth) - popoverWidth < 0) {
-          betterPlacement[1] = LEFT;
-        }
-        break;
-      }
-
-      case TOP: {
-        if (anchorRect.top + popoverHeight > window.innerHeight) {
-          betterPlacement[1] = BOTTOM;
-        }
-        break;
-      }
-
-      case BOTTOM: {
-        if ((anchorRect.top + anchorHeight) - popoverHeight < 0) {
-          betterPlacement[1] = TOP;
-        }
-        break;
-      }
-
-      default:
-        break;
-    }
-
+    // handle primary placement align, treat as center alignment
     switch (placements[0]) {
       case TOP:
       case BOTTOM: {
@@ -238,6 +173,7 @@ class Popover extends React.PureComponent {
         break;
     }
 
+    // if has secondary placement, use it to modify alignment
     switch (placements[1]) {
       case LEFT: {
         left -= (0.5 * (anchorWidth - popoverWidth));
@@ -268,6 +204,73 @@ class Popover extends React.PureComponent {
       left += this.props.container.scrollLeft;
     }
 
+    // build a better placement, avoid overflowing of the container's edge
+    switch (placements[0]) {
+      case TOP: {
+        if (top < containerRect.top) {
+          betterPlacement[0] = BOTTOM;
+        }
+        break;
+      }
+
+      case BOTTOM: {
+        if (top + popoverHeight > containerRect.bottom) {
+          betterPlacement[0] = TOP;
+        }
+        break;
+      }
+
+      case LEFT: {
+        if (left < containerRect.left) {
+          betterPlacement[0] = RIGHT;
+        }
+        break;
+      }
+
+      case RIGHT: {
+        if (left + popoverWidth > containerRect.right) {
+          betterPlacement[0] = LEFT;
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
+
+    switch (placements[1]) {
+      case LEFT: {
+        if (left + popoverWidth > containerRect.right) {
+          betterPlacement[1] = RIGHT;
+        }
+        break;
+      }
+
+      case RIGHT: {
+        if (left < containerRect.left) {
+          betterPlacement[1] = LEFT;
+        }
+        break;
+      }
+
+      case TOP: {
+        if (top + popoverHeight > containerRect.bottom) {
+          betterPlacement[1] = BOTTOM;
+        }
+        break;
+      }
+
+      case BOTTOM: {
+        if (top < containerRect.top) {
+          betterPlacement[1] = TOP;
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
+
     if (!Number.isNaN(left)
       && !Number.isNaN(top)
       && !Number.isNaN(marginLeft)
@@ -281,7 +284,7 @@ class Popover extends React.PureComponent {
       };
     }
 
-    console.log('error', this.props.container, this.props.anchor);
+    console.error('placement error: you should not seen these', this.props.container, this.props.anchor);
     return { style: null };
   }
 
@@ -290,15 +293,24 @@ class Popover extends React.PureComponent {
       return;
     }
 
-    let placeStyleInfo = this.getPlaceStyleInfo(this.props.placement);
+    const placeStyleInfo = this.getPlaceStyleInfo(this.props.placement);
+    let betterPlaceStyleInfo = placeStyleInfo;
+    let { betterPlacement } = betterPlaceStyleInfo;
 
-    if (placeStyleInfo.betterPlacement !== this.props.placement) {
-      placeStyleInfo = this.getPlaceStyleInfo(placeStyleInfo.betterPlacement);
-      this.setState({ placement: placeStyleInfo.betterPlacement });
+    if (betterPlacement !== this.props.placement) {
+      betterPlaceStyleInfo = this.getPlaceStyleInfo(placeStyleInfo.betterPlacement);
+
+      if (betterPlaceStyleInfo.betterPlacement !== placeStyleInfo.betterPlacement) {
+        // treat origin placement as better placement, cause neither is fit
+        ({ betterPlacement } = betterPlaceStyleInfo);
+        betterPlaceStyleInfo = placeStyleInfo;
+      }
+
+      this.setState({ placement: betterPlacement });
     }
 
     if (placeStyleInfo.style) {
-      this.setState({ style: placeStyleInfo.style });
+      this.setState({ style: betterPlaceStyleInfo.style });
     }
   };
 
