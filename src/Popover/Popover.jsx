@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
-
+import pick from 'lodash/pick';
+import { domRelatedProps } from '../utils/dom';
 import './style.scss';
 
 const TOP = 'top';
@@ -316,9 +317,11 @@ class Popover extends React.PureComponent {
 
   render() {
     const placement = this.state.placement.split('-');
+    const domProps = pick(this.props, domRelatedProps);
 
     return (
       <div
+        {...domProps}
         className={
           classNames(
             'popover',
