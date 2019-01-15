@@ -4,7 +4,7 @@ import moment from 'moment';
 import padStart from 'lodash/padStart';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 import CalendarData from './CalendarData';
 

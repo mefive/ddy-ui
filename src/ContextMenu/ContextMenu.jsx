@@ -22,13 +22,11 @@ class ContextMenu extends React.PureComponent {
     })),
     onSelect: PropTypes.func,
     getPopoverContainer: PropTypes.func.isRequired,
-    forwardedRef: PropTypes.func,
   };
 
   static defaultProps = {
     menus: null,
     onSelect: () => {},
-    forwardedRef: null,
   };
 
   state = {
@@ -131,14 +129,13 @@ class ContextMenu extends React.PureComponent {
   }
 }
 
-export default React.forwardRef((props, ref) => (
+export default props => (
   <PortalContext.Consumer>
     {({ getContainer }) => (
       <ContextMenu
         {...props}
-        getPopoverContainer={props.getPopoverContainer || getContainer}
-        forwardedRef={ref}
+        getPopoverContainer={getContainer}
       />
     )}
   </PortalContext.Consumer>
-));
+);

@@ -50,7 +50,7 @@ class Tabs extends React.PureComponent {
               )}
               key={`${index + 1}`}
             >
-              {this.props.titleRender != null ? this.props.titleRender(tab) : tab.title}
+              {this.props.renderTitle != null ? this.props.renderTitle(tab) : tab.title}
             </div>
           </Clickable>
         ))}

@@ -11,7 +11,6 @@ import Popover from '../Popover';
 import Trigger from '../Trigger';
 import Clickable from '../Clickable';
 
-import '../Select/style/index.scss';
 import './style.scss';
 import Focusable from '../Focusable';
 

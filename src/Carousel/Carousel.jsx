@@ -56,7 +56,7 @@ class Carousel extends React.PureComponent {
       const hammer = Hammer(this.container.current);
 
       hammer.on('pan', (e) => {
-        this.setState({ panningDelta: e.deltaX, disableTransition: true  });
+        this.setState({ panningDelta: e.deltaX, disableTransition: true });
       });
 
       hammer.on('panend', () => this.setState({ panningDelta: 0, disableTransition: false }));
@@ -200,7 +200,6 @@ class Carousel extends React.PureComponent {
       leadingSlides,
       trailingSlides,
       disableTransition,
-      panningDelta,
     } = this.state;
 
     return (

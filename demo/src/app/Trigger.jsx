@@ -4,45 +4,45 @@ import ShowcaseContainer from './ShowcaseContainer/index';
 
 import Trigger from '../../../src/Trigger';
 import Popover from '../../../src/Popover/Popover';
+import Clickable from '../../../src/Clickable';
 
 class ShowcaseTrigger extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.popoverElements = {};
-  }
+  state = {
+    active: false,
+  };
 
   render() {
+    const { active } = this.state;
+
     return (
       <ShowcaseContainer title="Trigger">
-        {(new Array(1)).fill(0).map((i, index) => (
-          <div key={`${index + 1}`} className="mt-1">
-            <Trigger
-              action="click"
-              enterClassName="move-up-in"
-              leaveClassName="move-up-out"
-              popover={(
-                <Popover
-                  ref={(el) => { this.popoverElements[index] = el; }}
-                >
-                  <div className="popover-header">
-                    Popover Header
-                  </div>
-                  <div className="popover-body">
-                    Popover Content
-                  </div>
-                </Popover>
-              )}
+        <div className="mt-1">
+          <Trigger
+            active={active}
+            enterClassName="move-up-in"
+            leaveClassName="move-up-out"
+            action={Trigger.action.HOVER_HOLD}
+            leaveDelay={300}
+            onActiveChange={a => this.setState({ active: a })}
+            popover={() => (
+              <Popover>
+                <div className="popover-header">
+                  Popover Header
+                </div>
+                <div className="popover-body">
+                  Popover Content
+                </div>
+              </Popover>
+            )}
+          >
+            <div
+              className="btn btn-primary"
+              aria-hidden
             >
-              <div
-                className="btn btn-primary"
-                aria-hidden
-              >
-                Show Popover
-              </div>
-            </Trigger>
-          </div>
-        ))}
+              Show Popover
+            </div>
+          </Trigger>
+        </div>
       </ShowcaseContainer>
     );
   }
