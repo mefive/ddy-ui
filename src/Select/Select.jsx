@@ -15,6 +15,7 @@ import Input from '../Input';
 import safeSetState from '../safeSetState';
 
 import './style.scss';
+import CustomSelect from '../CustomSelect/CustomSelect';
 
 @safeSetState
 class Select extends React.PureComponent {
@@ -177,7 +178,7 @@ class Select extends React.PureComponent {
   };
 
   syncWidth = debounce(() => {
-    this.setState({ width: this.anchor.current.clientWidth });
+    this.setState({ width: this.anchor.current.node.clientWidth });
   });
 
   place = debounce(() => {
@@ -292,11 +293,10 @@ class Select extends React.PureComponent {
           </Popover>
         )}
       >
-        <div>
+        <div className={this.props.className}>
           <Focusable>
-            <div
+            <CustomSelect
               className={classNames(
-                this.props.className,
                 'select custom-select',
                 { active: this.state.active },
               )}
@@ -304,9 +304,10 @@ class Select extends React.PureComponent {
               style={{
                 minWidth: this.props.width,
               }}
+              role="button"
             >
               {this.renderTitle()}
-            </div>
+            </CustomSelect>
           </Focusable>
         </div>
       </Trigger>

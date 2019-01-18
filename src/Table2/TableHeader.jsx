@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import groupBy from 'lodash/groupBy';
 import classNames from 'classnames';
-import { flattenWith } from '../utils/array';
+import memoize from 'memoize-one';
 
 class TableHeader extends React.PureComponent {
   static propTypes = {
@@ -16,6 +16,7 @@ class TableHeader extends React.PureComponent {
     })).isRequired,
     columnsWidth: PropTypes.objectOf(PropTypes.number),
     noWrap: PropTypes.bool,
+    columnRender: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -23,30 +24,45 @@ class TableHeader extends React.PureComponent {
     noWrap: false,
   };
 
-  getColumnLines() {
-    const { columns } = this.props;
+  getFlattenColumns = memoize(columns =>
+    columns.reduce((p, c) => [...p, ...this.buildFlattenColumns(c, [], 1, [])], []));
 
-    const flattenColumns = flattenWith(columns, (col, parentCol, level) => ({
-      level,
+  buildFlattenColumns(col, cols, level, paths) {
+    const column = {
       ...col,
-    }), 'children');
+      level,
+      paths: [...paths, col.key],
+    };
 
-    return groupBy(flattenColumns, ({ level }) => level);
+    return [
+      ...cols,
+      column,
+      ...(col.children || []).reduce((p, c) => [
+        ...p,
+        ...this.buildFlattenColumns(
+          c,
+          cols,
+          level + 1,
+          [...paths, col.key],
+        ),
+      ], []),
+    ];
   }
 
   render() {
     const { columnsWidth, noWrap } = this.props;
-    const lines = this.getColumnLines();
-    const max = Object.keys(lines).length;
+    const flattenColumns = this.getFlattenColumns(this.props.columns);
+    const levelGroupedColumns = groupBy(flattenColumns, ({ level }) => level);
+    const max = Object.keys(levelGroupedColumns).length;
 
     return (
       <thead>
-        {Object.keys(lines).map((level) => {
-          const columns = lines[level];
+        {Object.keys(levelGroupedColumns).map((level) => {
+          const columns = levelGroupedColumns[level];
 
           return (
             <tr key={level}>
-              {columns.map(col => (
+              {columns.map((col, colIndex) => (
                 <th
                   key={col.key}
                   scope="col"
@@ -55,12 +71,15 @@ class TableHeader extends React.PureComponent {
                     minWidth: columnsWidth[col.key] || col.minWidth,
                     textAlign: col.align,
                   }}
-                  colSpan={col.children ? col.children.length : null}
+                  colSpan={col.children
+                    ? flattenColumns.filter(c =>
+                      c.children == null && c.paths[level - 1] === col.key).length
+                    : null}
                   rowSpan={col.children ? null : (max - +level) + 1}
                   data-key={col.key}
                   className={classNames({ 'text-nowrap': noWrap || col.noWrap })}
                 >
-                  {col.title}
+                  {this.props.columnRender(col, colIndex)}
                 </th>
               ))}
             </tr>

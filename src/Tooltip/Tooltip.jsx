@@ -21,6 +21,7 @@ class Tooltip extends React.PureComponent {
     onActiveChange: PropTypes.func,
     renderPopover: PropTypes.func,
     active: PropTypes.bool,
+    offset: PropTypes.number,
   };
 
   static defaultProps = {
@@ -36,6 +37,7 @@ class Tooltip extends React.PureComponent {
     onActiveChange: () => {},
     renderPopover: null,
     active: null,
+    offset: null,
   };
 
   render() {
@@ -52,6 +54,7 @@ class Tooltip extends React.PureComponent {
             className={classNames('popover-tooltip shadow', this.props.className)}
             style={this.props.style}
             placement={this.props.placement}
+            offset={this.props.offset}
           >
             <div className="popover-body">
               {this.props.renderPopover == null

@@ -8,6 +8,7 @@ class TableBody extends React.PureComponent {
     columns: PropTypes.arrayOf(PropTypes.shape({
       key: PropTypes.any,
       render: PropTypes.func,
+      wrapperRender: PropTypes.func,
       align: PropTypes.string,
       noWrap: PropTypes.bool,
     })).isRequired,
@@ -36,8 +37,36 @@ class TableBody extends React.PureComponent {
     return flattenColumns.filter(col => col.children == null);
   }
 
+  renderCell(col, row, rowIndex) {
+    const cell = col.render == null
+      ? row[col.key]
+      : col.render(row, rowIndex);
+
+    if (col.wrapperRender != null) {
+      const wrapper = col.wrapperRender(row, rowIndex);
+
+      return wrapper && React.cloneElement(
+        wrapper,
+        null,
+        cell,
+      );
+    }
+
+    return (
+      <td
+        key={col.key}
+        style={{
+          textAlign: col.align,
+        }}
+        className={classNames({ 'text-nowrap': this.props.noWrap || col.noWrap })}
+      >
+        {cell}
+      </td>
+    );
+  }
+
   render() {
-    const { dataSource, rowKey, noWrap } = this.props;
+    const { dataSource, rowKey } = this.props;
     const columns = this.getLeafColumns();
 
     if (dataSource == null) {
@@ -48,19 +77,7 @@ class TableBody extends React.PureComponent {
       <tbody>
         {dataSource.map((row, index) => (
           <tr key={rowKey === null ? index : row[rowKey]}>
-            {columns.map(col => (
-              <td
-                key={col.key}
-                style={{
-                  textAlign: col.align,
-                }}
-                className={classNames({ 'text-nowrap': noWrap || col.noWrap })}
-              >
-                {col.render == null
-                  ? row[col.key]
-                  : col.render(row, index)}
-              </td>
-            ))}
+            {columns.map(col => this.renderCell(col, row, index))}
           </tr>
         ))}
       </tbody>

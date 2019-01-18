@@ -5,7 +5,7 @@
   text-align: right;
 
   .page-item {
-    margin: 0 5px;
+    margin: 0 map-get($spacers, 0);
     cursor: pointer;
     display: inline-block;
     min-width: 30px;
@@ -14,7 +14,7 @@
     line-height: 30px;
     vertical-align: middle;
 
-    padding: 0 5px;
+    padding: 0 map-get($spacers, 0);
     border-radius: 3px;
     border: 1px solid $border-color;
 

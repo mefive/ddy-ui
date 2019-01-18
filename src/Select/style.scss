@@ -3,6 +3,7 @@
 
 .select {
   height: auto !important;
+  @include ellipsis;
 
   .select-choice-container {
     margin-left: -(map-get($spacers, 0));

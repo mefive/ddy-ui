@@ -10,7 +10,7 @@ class AllFeaturedTable extends React.PureComponent {
   state = {
     columns: [],
     dataSource: dailyBaiscDataSource,
-    fixedHeight: 500,
+    fixedHeight: 300,
     loading: false,
     page: null,
     editing: null,
@@ -49,9 +49,25 @@ class AllFeaturedTable extends React.PureComponent {
           )),
       })),
     });
-  }
+  };
 
   render() {
+    const table = (
+      <Table
+        className="custom-table"
+        columns={this.state.columns}
+        dataSource={this.state.dataSource}
+        noWrap
+        height={this.state.fixedHeight == null ? null : 'flex'}
+        loading={this.state.loading}
+        pagination={this.state.page == null ? null : {
+          page: this.state.page,
+          onChange: page => this.setState({ page }),
+          rowsPerPage: 20,
+        }}
+      />
+    );
+
     return (
       <ShowcaseContainer title="All featured">
         <div className="p-2 ml-n3 mt-n2">
@@ -92,19 +108,13 @@ class AllFeaturedTable extends React.PureComponent {
           </div>
         </div>
 
-        <Table
-          className="custom-table"
-          columns={this.state.columns}
-          dataSource={this.state.dataSource}
-          noWrap
-          height={this.state.fixedHeight}
-          loading={this.state.loading}
-          pagination={this.state.page == null ? null : {
-            page: this.state.page,
-            onChange: page => this.setState({ page }),
-            rowsPerPage: 10,
-          }}
-        />
+        {this.state.fixedHeight == null
+          ? table
+          : (
+            <div style={{ height: this.state.fixedHeight }}>
+              {table}
+            </div>
+          )}
       </ShowcaseContainer>
     );
   }

@@ -1,44 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import addClass from 'dom-helpers/class/addClass';
-import isFunction from 'lodash/isFunction';
 import mimoza from 'mimoza';
 import { isOlderIE } from '../utils/browser';
 
-import Input from '../Input';
-import service from '../utils/service';
-import Alert from '../Alert';
-
-import style from './style/index.scss';
-
-const propTypes = {
-  uploadUrl: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.string]),
-  onChange: PropTypes.func,
-  children: PropTypes.node,
-};
-
-const defaultProps = {
-  value: null,
-  onChange: () => {},
-  children: null,
-};
-
+import style from './style.scss';
 
 class FileUploader extends React.PureComponent {
+  static propTypes = {
+    uploadUrl: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
+    onError: PropTypes.func,
+    onUploadStart: PropTypes.func,
+    onUploadEnd: PropTypes.func,
+    children: PropTypes.node,
+    accept: PropTypes.string,
+    canUpload: PropTypes.func,
+    params: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    onChange: () => {},
+    onError: () => {},
+    onUploadStart: () => {},
+    onUploadEnd: () => {},
+    children: null,
+    accept: null,
+    canUpload: () => true,
+    params: {},
+  };
+
   constructor(props) {
     super(props);
 
-    this.state = {
-      error: null,
-      inputKey: 0,
-    };
-
     this.isOlderIE = isOlderIE();
-    this.onChange = this.onChange.bind(this);
-    this.upload = this.upload.bind(this);
-    this.onFrameLoad = this.onFrameLoad.bind(this);
+    this.fileInput = React.createRef();
   }
+
+  state = {
+    inputKey: 0,
+  };
 
   componentWillUnmount() {
     if (this.clearFrameTimer != null) {
@@ -48,7 +50,7 @@ class FileUploader extends React.PureComponent {
     this.clearFrame();
   }
 
-  onFrameLoad() {
+  onFrameLoad = () => {
     try {
       const { frame } = this;
 
@@ -57,52 +59,75 @@ class FileUploader extends React.PureComponent {
           ? frame.contentWindow.document.body
           : frame.contentDocument.document.body;
 
-        const { data: { url } } = JSON.parse(content.innerHTML || 'null innerHTML');
+        const { data: { url, name } } = JSON.parse(content.innerHTML || 'null innerHTML');
 
-        this.setState({ inputKey: this.state.inputKey += 1 });
-        this.props.onChange(url);
+        this.props.onChange({ url, name });
       }
     } catch (e) {
-      this.setState({ error: JSON.stringify(e) });
+      this.props.onError(JSON.stringify(e));
     } finally {
+      this.setState({ inputKey: this.state.inputKey + 1 });
       this.clearFrame();
+      this.props.onUploadEnd();
     }
-  }
+  };
 
-  onChange(file) {
-    let value;
+  onChange = (e) => {
+    const value = e.target.files[0];
+    let file;
 
-    if (typeof file === 'string') {
+    if (typeof value === 'string') {
       // IE 9
-      value = {
-        name: file,
-        type: mimoza.getMimeType(file),
+      file = {
+        name: value,
+        type: mimoza.getMimeType(value),
       };
     } else {
-      value = file;
+      file = value;
     }
 
-    this.props.onChange(value);
-  }
+    if (this.props.canUpload(file)) {
+      this.upload();
+    }
+  };
 
-  upload() {
+  upload = () => {
+    this.props.onUploadStart();
+
     if (this.isOlderIE) {
       this.uploadIE();
     } else {
       this.uploadHtml5();
     }
-  }
+  };
 
   async uploadHtml5() {
     try {
-      const { url } = await service.postFile(
+      const formData = new FormData();
+
+      const file = this.fileInput.current.files[0];
+
+      formData.append('file', file);
+
+      Object.keys(this.props.params).forEach(key => formData.append(key, this.props.params[key]));
+
+      const data = await axios.post(
         this.props.uploadUrl,
-        this.props.value,
+        formData,
       );
-      this.setState({ inputKey: this.state.inputKey += 1 });
-      this.props.onChange(url);
+
+      this.props.onChange(data);
     } catch (e) {
-      this.setState({ error: JSON.stringify(e) });
+      let message = null;
+
+      if (e.status === 413) {
+        message = '文件过大';
+      }
+
+      this.props.onError(e.message || message || JSON.stringify(e));
+    } finally {
+      this.setState({ inputKey: this.state.inputKey + 1 });
+      this.props.onUploadEnd();
     }
   }
 
@@ -146,60 +171,45 @@ class FileUploader extends React.PureComponent {
           action={this.props.uploadUrl}
           className={style['file-input']}
         >
-          <Input
+          <input
             key={this.state.inputKey}
             type="file"
             onChange={this.onChange}
             name="file"
             className={style['file-input']}
+            style={{ cursor: 'pointer' }}
+            accept={this.props.accept}
+            ref={this.fileInput}
           />
         </form>
       );
     }
 
     return (
-      <Input
+      <input
         key={this.state.inputKey}
         className={style['file-input']}
         type="file"
         onChange={this.onChange}
         name="file"
+        style={{ cursor: 'pointer' }}
+        accept={this.props.accept}
+        ref={this.fileInput}
       />
     );
   }
 
   render() {
-    const child = React.Children.only(this.props.children);
-
     return (
       <div>
-        <div className="position-relative cursor-pointer">
+        <div className="p-relative cursor-pointer">
+          {this.props.children}
+
           {this.renderInput()}
-
-          {child != null && React.cloneElement(child, {
-            ...child.props,
-            ref: (el) => {
-              if (isFunction(child.props.ref)) {
-                child.props.ref(el);
-              }
-
-              this.fake = el;
-            },
-          })}
         </div>
-
-        <Alert
-          visible={this.state.error != null}
-          onClose={() => this.setState({ error: null })}
-        >
-          {this.state.error}
-        </Alert>
       </div>
     );
   }
 }
-
-FileUploader.propTypes = propTypes;
-FileUploader.defaultProps = defaultProps;
 
 export default FileUploader;

@@ -5,7 +5,7 @@ import Animate from '../Animate';
 import Notification from './Notification';
 import Portal from '../Portal';
 
-import './style/index.scss';
+import './style.scss';
 
 class NotificationBar extends React.PureComponent {
   static propTypes = {

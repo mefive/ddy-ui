@@ -67,7 +67,7 @@ class Input extends React.PureComponent {
 
         className={className}
 
-        value={value || ''}
+        value={value == null ? '' : value}
 
         ref={(el) => {
           if (getDom != null) {
@@ -112,7 +112,7 @@ class Input extends React.PureComponent {
 
   render() {
     const className = classNames(
-      ['checkbox', 'radio'].indexOf(this.props.type) !== -1 ? 'form-check-input' : 'form-control',
+      ['checkbox', 'radio'].indexOf(this.props.type) !== -1 ? null : 'form-control',
       this.props.className,
     );
 

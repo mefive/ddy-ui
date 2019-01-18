@@ -27,6 +27,7 @@ class Table extends React.PureComponent {
       noWrap: PropTypes.bool,
       fixed: PropTypes.bool,
     })),
+    columnRender: PropTypes.func,
     dataSource: PropTypes.oneOfType([
       PropTypes.array,
       PropTypes.object,
@@ -50,6 +51,7 @@ class Table extends React.PureComponent {
   static defaultProps = {
     caption: null,
     className: null,
+    columnRender: ({ title }) => title,
     columns: [],
     dataSource: null,
     rowKey: null,
@@ -59,19 +61,11 @@ class Table extends React.PureComponent {
     noWrap: false,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.table = React.createRef();
-    this.tableHeaderFixed = React.createRef();
-    this.tableContainerColumnFixed = React.createRef();
-    this.tableColumnFixed = React.createRef();
-
-    this.state = {
-      columns: [],
-      columnsWidth: {},
-    };
-  }
+  state = {
+    columns: [],
+    columnsWidth: {},
+    verticalScrollbarWidth: 0,
+  };
 
   componentWillMount() {
     this.updateColumns();
@@ -141,6 +135,11 @@ class Table extends React.PureComponent {
     return dataSource.slice(start, start + rowsPerPage);
   }
 
+  table = React.createRef();
+  tableHeaderFixed = React.createRef();
+  tableContainerColumnFixed = React.createRef();
+  tableColumnFixed = React.createRef();
+
   updateColumns = (columns = this.props.columns) => {
     const fixed = [];
     const rest = [];
@@ -171,15 +170,19 @@ class Table extends React.PureComponent {
       };
     });
 
-    this.setState({ columnsWidth });
+    const table = this.table.current;
+
+    const verticalScrollbarWidth = table.offsetWidth - table.clientWidth;
+
+    this.setState({ columnsWidth, verticalScrollbarWidth });
   });
 
   render() {
     const {
-      pagination, loading, height, noWrap,
+      pagination, loading, height, noWrap, columnRender,
     } = this.props;
 
-    const { columns } = this.state;
+    const { columns, verticalScrollbarWidth } = this.state;
 
     let dataSource = this.props.dataSource || [];
 
@@ -188,6 +191,7 @@ class Table extends React.PureComponent {
     }
 
     const columnsFixed = columns.filter(({ fixed }) => fixed);
+    const noData = !loading && dataSource.length === 0;
 
     return (
       <div
@@ -195,29 +199,64 @@ class Table extends React.PureComponent {
           this.props.className,
           'table-container',
           { loading },
+          { 'no-data': noData },
           { 'fixed-header': height != null },
         )}
+        style={{
+          height: height === 'flex' ? '100%' : height,
+        }}
       >
         <div
           className="table-responsive"
-          style={{ height: height === 'flex' ? null : height }}
         >
-          <div className="table-body-scrollable" ref={this.table} onScroll={height && this.onScroll}>
-            <table className="table">
-              {this.props.caption != null && (
-                <caption>{this.props.caption}</caption>
-              )}
+          {(() => {
+            const tableBodyScrollable = (
+              <div className="table-body-scrollable" ref={this.table} onScroll={height && this.onScroll}>
+                <table className="table">
+                  {this.props.caption != null && (
+                    <caption>{this.props.caption}</caption>
+                  )}
 
-              <TableHeader columns={columns} noWrap={noWrap} />
+                  <TableHeader
+                    columns={columns}
+                    noWrap={noWrap}
+                    columnRender={columnRender}
+                  />
 
-              <TableBody columns={columns} dataSource={dataSource} noWrap={noWrap} />
-            </table>
-          </div>
+                  <TableBody columns={columns} dataSource={dataSource} noWrap={noWrap} />
+                </table>
+              </div>
+            );
+
+            if (height != null) {
+              return (
+                <div
+                  className="position-absolute"
+                  style={{
+                    left: 0, right: 0, top: 0, bottom: 0,
+                  }}
+                >
+                  {tableBodyScrollable}
+                </div>
+              );
+            }
+
+            return tableBodyScrollable;
+          })()}
 
           {height != null && (
-            <div className="table-header-fixed" ref={this.tableHeaderFixed}>
+            <div
+              className="table-header-fixed"
+              style={{ right: verticalScrollbarWidth }}
+              ref={this.tableHeaderFixed}
+            >
               <table className="table">
-                <TableHeader columns={columns} columnsWidth={this.state.columnsWidth} />
+                <TableHeader
+                  columns={columns}
+                  noWrap={noWrap}
+                  columnsWidth={this.state.columnsWidth}
+                  columnRender={columnRender}
+                />
               </table>
             </div>
           )}
@@ -226,16 +265,28 @@ class Table extends React.PureComponent {
             <div className="table-column-fixed" ref={this.tableContainerColumnFixed}>
               <div className="table-body-scrollable" ref={this.tableColumnFixed}>
                 <table className="table">
-                  <TableHeader columns={columnsFixed} noWrap={noWrap} />
+                  <TableHeader
+                    columns={columnsFixed}
+                    noWrap={noWrap}
+                    columnRender={columnRender}
+                  />
 
                   <TableBody columns={columnsFixed} dataSource={dataSource} noWrap={noWrap} />
                 </table>
               </div>
 
               {height != null && (
-                <div className="table-header-fixed">
+                <div
+                  className="table-header-fixed"
+                  style={{ right: verticalScrollbarWidth }}
+                >
                   <table className="table">
-                    <TableHeader columns={columnsFixed} columnsWidth={this.state.columnsWidth} />
+                    <TableHeader
+                      columns={columnsFixed}
+                      columnsWidth={this.state.columnsWidth}
+                      columnRender={columnRender}
+                      noWrap={noWrap}
+                    />
                   </table>
                 </div>
               )}
@@ -247,7 +298,7 @@ class Table extends React.PureComponent {
           <Loading>加载中...</Loading>
         )}
 
-        {!loading && dataSource.length === 0 && (
+        {noData && (
           <Loading>
             没有数据
           </Loading>

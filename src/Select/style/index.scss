@@ -1,0 +1,123 @@
+@import "~compass-mixins";
+@import "../../style/variables";
+
+.select-trigger {
+  width: 100%;
+  text-align: left !important;
+  @include ellipsis();
+  padding: 0 34px 0 12px;
+  border: 1px solid $border-color;
+  background-color: $white;
+  border-radius: $border-radius;
+  line-height: 36px;
+
+  .trigger-icon {
+    position: absolute;
+
+    background-color: $white;
+    font-size: 18px;
+    border-radius: 0 2px 2px 0;
+
+    right: 1px;
+    top: 50%;
+    margin-top: -0.5 * 36px;
+
+    .icon {
+      transition: transform .2s;
+    }
+
+    .icon {
+      color: #8797ab;
+      padding: 10px;
+      font-size: 14px;
+    }
+  }
+
+  cursor: pointer;
+  @include user-select(none);
+
+  &.active {
+    .trigger-icon .icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.select {
+  position: relative;
+
+  .select-trigger.active {
+    box-shadow: 0 0 3px 1px rgba(0, 128, 236, 0.34);
+    border-color: $primary;
+  }
+
+  &.disabled {
+    .select-trigger {
+      cursor: not-allowed;
+      background: #eceeef;
+      color: #959ca0;
+    }
+    .trigger-icon {
+      background: #eceeef;
+    }
+  }
+}
+
+.select-popup {
+  background-color: $white;
+  border: 1px solid $border-color;
+
+  border-radius: $border-radius;
+
+  li {
+    padding: 6px 12px;
+    @include ellipsis();
+    position: relative;
+
+    cursor: pointer;
+    transition-property: color, background-color;
+    transition-duration: .1s;
+    text-align: left;
+
+    color: $text-muted;
+
+    &:hover {
+      background-color: $primary;
+      color: $white;
+    }
+
+    &.active {
+      background-color: #F3F8FF;
+      color: $primary;
+    }
+
+    .icon-check {
+      position: absolute;
+      right: 12px;
+      top: 10px;
+    }
+  }
+
+  .wrapper {
+    overflow-y: auto;
+  }
+
+  .actions {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+
+    .btn {
+      width: 100%;
+      padding: 6px;
+    }
+  }
+
+  &.slide-down-out {
+    animation-duration: .25s;
+  }
+
+  &.slide-up-out {
+    animation-duration: .25s;
+  }
+}
