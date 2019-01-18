@@ -83,28 +83,6 @@ class Trigger extends React.PureComponent {
     this.clearTimers();
   }
 
-  setActive(active, force = false) {
-    this.clearTimers();
-
-    if (!force) {
-      if (active && this.props.enterDelay) {
-        this.enterDelayTimer = setTimeout(() => this.setActive(active, true), this.props.enterDelay);
-        return;
-      }
-
-      if (!active && this.props.leaveDelay) {
-        this.leaveDelayTimer = setTimeout(() => this.setActive(active, true), this.props.leaveDelay);
-        return;
-      }
-    }
-
-    if (this.props.active == null) {
-      this.setState({ active });
-    }
-
-    this.props.onActiveChange(active);
-  }
-
   onClick = (e) => {
     const popover = this.popover && this.popover.node;
 
@@ -116,6 +94,30 @@ class Trigger extends React.PureComponent {
   onMouseEnter = () => this.setActive(true);
 
   onMouseLeave = () => this.setActive(false);
+
+  setActive(active, force = false) {
+    this.clearTimers();
+
+    if (!force) {
+      if (active && this.props.enterDelay) {
+        this.enterDelayTimer
+          = setTimeout(() => this.setActive(active, true), this.props.enterDelay);
+        return;
+      }
+
+      if (!active && this.props.leaveDelay) {
+        this.leaveDelayTimer
+          = setTimeout(() => this.setActive(active, true), this.props.leaveDelay);
+        return;
+      }
+    }
+
+    if (this.props.active == null) {
+      this.setState({ active });
+    }
+
+    this.props.onActiveChange(active);
+  }
 
   clearTimers() {
     if (this.enterDelayTimer) {
@@ -188,7 +190,7 @@ class Trigger extends React.PureComponent {
               const events = {};
 
               if (action === HOVER_HOLD) {
-                events.onMouseEnter = this.onMouseEnter;
+                events.onMouseEnter = () => this.setActive(true, true);
                 events.onMouseLeave = this.onMouseLeave;
               }
 
