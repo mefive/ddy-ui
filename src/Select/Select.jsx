@@ -36,8 +36,8 @@ class Select extends React.PureComponent {
     popoverClassName: PropTypes.string,
     popoverHeight: PropTypes.number,
     getPopoverContainer: PropTypes.func,
-    optionRender: PropTypes.func,
-    titleRender: PropTypes.func,
+    renderOption: PropTypes.func,
+    renderTitle: PropTypes.func,
     multiple: PropTypes.bool,
     disabled: PropTypes.bool,
     showSearch: PropTypes.bool,
@@ -53,8 +53,8 @@ class Select extends React.PureComponent {
     defaultTitle: '请选择',
     popoverClassName: null,
     popoverHeight: 200,
-    optionRender: ({ title }) => title,
-    titleRender: ({ title }) => title,
+    renderOption: ({ title }) => title,
+    renderTitle: ({ title }) => title,
     getPopoverContainer: null,
     multiple: false,
     disabled: false,
@@ -189,7 +189,7 @@ class Select extends React.PureComponent {
 
   renderTitle() {
     let title = null;
-    const { value, titleRender } = this.props;
+    const { value, renderTitle } = this.props;
     const { optionCache } = this.state;
 
     if (this.props.multiple) {
@@ -198,7 +198,7 @@ class Select extends React.PureComponent {
           <div className="select-choice-container">
             {value.map(v => (
               <div className="select-choice" key={v}>
-                <span>{titleRender(optionCache[v] || {})}</span>
+                <span>{renderTitle(optionCache[v] || {})}</span>
 
                 {!this.props.disabled && (
                   <Clickable
@@ -219,7 +219,7 @@ class Select extends React.PureComponent {
         )
         : null;
     } else {
-      title = titleRender(optionCache[value] || {});
+      title = renderTitle(optionCache[value] || {});
     }
 
     return title || this.props.defaultTitle;
@@ -284,7 +284,7 @@ class Select extends React.PureComponent {
                         },
                       )}
                     >
-                      {this.props.optionRender(option)}
+                      {this.props.renderOption(option)}
                     </div>
                   </Clickable>
                 ))}

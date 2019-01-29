@@ -27,7 +27,7 @@ class DateRangePicker extends React.PureComponent {
     max: PropTypes.string,
     min: PropTypes.string,
     defaultTitle: PropTypes.string,
-    dateRender: PropTypes.func,
+    renderDate: PropTypes.func,
     onActiveChange: PropTypes.func,
     onCalendarMove: PropTypes.func,
   };
@@ -43,7 +43,7 @@ class DateRangePicker extends React.PureComponent {
     min: null,
     type: Calendar.TYPE_DATE,
     defaultTitle: null,
-    dateRender: null,
+    renderDate: null,
     onActiveChange: () => {},
     onCalendarMove: () => {},
   };
@@ -148,7 +148,7 @@ class DateRangePicker extends React.PureComponent {
                     onChange={start => this.setState({ start })}
                     min={this.props.min}
                     max={this.state.end || this.props.max}
-                    dateRender={this.props.dateRender}
+                    renderDate={this.props.renderDate}
                     onCalendarMove={this.props.onCalendarMove}
                   />
                 </Col>
@@ -161,7 +161,7 @@ class DateRangePicker extends React.PureComponent {
                     onChange={end => this.setState({ end })}
                     min={this.state.start || this.props.min}
                     max={this.props.max}
-                    dateRender={this.props.dateRender}
+                    renderDate={this.props.renderDate}
                     onCalendarMove={this.props.onCalendarMove}
                   />
                 </Col>

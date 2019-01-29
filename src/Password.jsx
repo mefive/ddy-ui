@@ -29,8 +29,9 @@ class Password extends React.PureComponent {
           <span
             className="text-primary position-absolute font-size-sm"
             style={{
-              right: 10,
-              top: 8,
+              right: 20,
+              top: '50%',
+              marginTop: -9,
             }}
           >
             {showPlaintext ? '关闭' : '显示'}明文

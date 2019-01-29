@@ -21,6 +21,7 @@ const propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   restrictDaysOfWeek: PropTypes.arrayOf(PropTypes.number),
+  availableDates: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -30,6 +31,7 @@ const defaultProps = {
   value: moment().format('YYYY-MM-DD'),
   onChange: () => {},
   restrictDaysOfWeek: null,
+  availableDates: null,
 };
 
 class Calendar extends React.PureComponent {
@@ -45,8 +47,8 @@ class Calendar extends React.PureComponent {
 
   getUpdatedYearMonth(value = this.props.value) {
     return {
-      year: moment(value).year(),
-      month: moment(value).month() + 1,
+      year: value == null ? moment().year() : moment(value).year(),
+      month: value == null ? moment().month() + 1 : moment(value).month() + 1,
     };
   }
 
@@ -71,11 +73,14 @@ class Calendar extends React.PureComponent {
 
   isDisable(day) {
     const date = moment(this.getDate(day));
-    const { max, min, restrictDaysOfWeek } = this.props;
+    const {
+      max, min, restrictDaysOfWeek, availableDates,
+    } = this.props;
 
     return (max && date > moment(max))
       || (min && date < min)
-      || (restrictDaysOfWeek && restrictDaysOfWeek.indexOf(date.days()) === -1);
+      || (restrictDaysOfWeek && restrictDaysOfWeek.indexOf(date.days()) === -1)
+      || (availableDates && availableDates.indexOf(date.format('YYYY-MM-DD')) === -1);
   }
 
   render() {

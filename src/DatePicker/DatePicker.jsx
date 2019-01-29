@@ -11,6 +11,7 @@ import Focusable from '../Focusable';
 import Clickable from '../Clickable';
 
 import './style.scss';
+import CustomSelect from '../CustomSelect/CustomSelect';
 
 class DatePicker extends React.PureComponent {
   static propTypes = {
@@ -22,7 +23,11 @@ class DatePicker extends React.PureComponent {
     min: PropTypes.string,
     max: PropTypes.string,
     disabled: PropTypes.bool,
+    disableCursor: PropTypes.bool,
     getPopoverContainer: PropTypes.func,
+    defaultTitle: PropTypes.string,
+    availableDates: PropTypes.arrayOf(PropTypes.string),
+    renderTitle: PropTypes.func,
   };
 
   static defaultProps = {
@@ -32,14 +37,22 @@ class DatePicker extends React.PureComponent {
     min: null,
     max: null,
     disabled: false,
+    disableCursor: false,
     getPopoverContainer: null,
     value: moment().format('YYYY-MM-DD'),
     onChange: () => null,
+    availableDates: null,
+    defaultTitle: '请选择',
+    renderTitle: value => value,
   };
 
-  state = {
-    active: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      active: false,
+    };
+  }
 
   select = (value) => {
     if (value !== this.props.value) {
@@ -94,11 +107,13 @@ class DatePicker extends React.PureComponent {
         )}
         style={{ width: this.props.width }}
       >
-        <Clickable onClick={this.moveBack}>
-          <div className="cursor-move mr-1">
-            <FontAwesomeIcon icon={faAngleLeft} />
-          </div>
-        </Clickable>
+        {!this.props.disableCursor && (
+          <Clickable onClick={this.moveBack}>
+            <div className="cursor-move mr-1">
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </div>
+          </Clickable>
+        )}
 
         <Trigger
           disabled={this.props.disabled}
@@ -117,6 +132,7 @@ class DatePicker extends React.PureComponent {
                 onChange={this.select}
                 min={this.props.min}
                 max={this.props.max}
+                availableDates={this.props.availableDates}
               />
             </Popover>
           )}
@@ -124,23 +140,23 @@ class DatePicker extends React.PureComponent {
         >
           <div className="trigger">
             <Focusable>
-              <div
-                className={classNames(
-                  'custom-select',
-                  { active: this.state.active },
-                )}
+              <CustomSelect
+                className={classNames({ active: this.state.active })}
+                role="button"
               >
-                {this.props.value}
-              </div>
+                {this.props.renderTitle(this.props.value) || this.props.defaultTitle}
+              </CustomSelect>
             </Focusable>
           </div>
         </Trigger>
 
-        <Clickable onClick={this.moveNext}>
-          <div className="cursor-move ml-1">
-            <FontAwesomeIcon icon={faAngleRight} />
-          </div>
-        </Clickable>
+        {!this.props.disableCursor && (
+          <Clickable onClick={this.moveNext}>
+            <div className="cursor-move ml-1">
+              <FontAwesomeIcon icon={faAngleRight} />
+            </div>
+          </Clickable>
+        )}
       </div>
     );
   }

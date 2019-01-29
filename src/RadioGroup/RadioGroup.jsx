@@ -37,22 +37,23 @@ class RadioGroup extends React.PureComponent {
     return (
       <div
         className={classNames(
-          'radio-groups',
+          'radio-group',
           this.props.className,
         )}
       >
         {this.props.options.map(option => (renderOption
           ? renderOption(option)
           : (
-            <div className="form-check" key={option.value}>
-              <Input
-                id={RadioGroup.getId(option.value)}
-                onChange={() => this.props.onChange(option.value)}
-                type="radio"
-                checked={option.value === this.props.value}
-                className="form-check-input"
-                name={this.props.name}
-              />
+            <div className="d-flex align-items-center" key={option.value}>
+              <div>
+                <Input
+                  id={RadioGroup.getId(option.value)}
+                  onChange={() => this.props.onChange(option.value)}
+                  type="radio"
+                  checked={option.value === this.props.value}
+                  name={this.props.name}
+                />
+              </div>
 
               <label
                 htmlFor={RadioGroup.getId(option.value)}

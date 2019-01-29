@@ -78,7 +78,7 @@ const withForm = (WrappedComponent) => {
       this.setState({ errors: omit(this.state.errors, fields) });
     }
 
-    validate(field) {
+    validate = (field) => {
       const errors = pick(this.state.errors, Object.keys(this.rules));
 
       let fields;
@@ -109,21 +109,21 @@ const withForm = (WrappedComponent) => {
         if (rules) {
           let value = this.props.dataSource[name];
 
-          for (let i = 0; i < rules.length; i += 1) {
-            const rule = rules[i];
-
+          rules.forEach((rule) => {
             if (value == null || value === '' || (typeof value === 'string' && value.trim() === '')) {
               if (rule.required) {
                 errors[name] = rule.message || '必填项不能为空';
               }
 
-              break;
+              return;
             }
 
             value = value || '';
 
             if (isFunction(rule.validator)) {
-              if (!rule.validator(value)) {
+              const isValid = rule.validator(value);
+
+              if (!isValid) {
                 addToError(name, rule.message || '不符合自定义规则');
               }
             } else if (rule.maxLength != null && value.length > rule.maxLength) {
@@ -133,14 +133,14 @@ const withForm = (WrappedComponent) => {
             } else if (rule.regex != null && !rule.regex.test(value)) {
               addToError(name, rule.message || '格式不正确');
             }
-          }
+          });
         }
       });
 
       this.setState({ errors });
 
       return Object.keys(errors).length === 0;
-    }
+    };
 
     render() {
       // clear rules at first, let 'getFieldDecorator' start over the adding

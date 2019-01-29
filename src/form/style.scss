@@ -29,6 +29,14 @@
       //}
     }
   }
+
+  .form-control.is-invalid {
+    background: none;
+  }
+
+  .invalid-feedback {
+    display: block;
+  }
   //
   //label {
   //  line-height: $form-line-height;

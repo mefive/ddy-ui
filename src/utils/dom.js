@@ -24,6 +24,8 @@ const domRelatedProps = [
   'onStalled', 'onSuspend', 'onTimeUpdate', 'onVolumeChange', 'onWaiting',
   'onLoad', 'onError', 'onAnimationStart', 'onAnimationEnd',
   'onAnimationIteration', 'onTransitionEnd', 'onToggle',
+
+  'role', 'tabIndex',
 ];
 
 export default domRelatedProps;

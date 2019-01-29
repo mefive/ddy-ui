@@ -1,105 +1,89 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-import TableCell from './TableCell';
-
-const propTypes = {
-  expandedRowRender: PropTypes.func,
-  rowKey: PropTypes.string,
-  rowClassName: PropTypes.func,
-  onRowClick: PropTypes.func,
-  rowsState: PropTypes.shape({}),
-  rowsHeight: PropTypes.shape({}),
-  columns: PropTypes.arrayOf(PropTypes.shape({})),
-  dataSource: PropTypes.arrayOf(PropTypes.any),
-};
-
-const defaultProps = {
-  dataSource: [],
-  onRowClick: () => {},
-  expandedRowRender: null,
-  rowKey: null,
-  rowClassName: null,
-  rowsState: null,
-  rowsHeight: null,
-  columns: null,
-};
+import isFunction from 'lodash/isFunction';
+import { flattenWith } from '../utils/array';
 
 class TableBody extends React.PureComponent {
+  static propTypes = {
+    columns: PropTypes.arrayOf(PropTypes.shape({
+      key: PropTypes.any,
+      render: PropTypes.func,
+      wrapper: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+      align: PropTypes.string,
+      noWrap: PropTypes.bool,
+    })).isRequired,
+    dataSource: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
+    rowKey: PropTypes.string,
+    noWrap: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    dataSource: null,
+    rowKey: null,
+    noWrap: false,
+  };
+
+  getLeafColumns() {
+    const { columns } = this.props;
+
+    const flattenColumns = flattenWith(columns, (col, parentCol, level) => ({
+      level,
+      ...col,
+    }), 'children');
+
+    return flattenColumns.filter(col => col.children == null);
+  }
+
+  renderCell(col, row, rowIndex) {
+    const cell = col.render == null
+      ? row[col.key]
+      : col.render(row, rowIndex);
+
+    if (col.wrapper != null) {
+      const wrapper = isFunction(col.wrapper) ? col.wrapper(row, rowIndex) : col.wrapper;
+
+      return wrapper && React.cloneElement(
+        wrapper,
+        null,
+        cell,
+      );
+    }
+
+    return (
+      <td
+        key={col.key}
+        style={{
+          textAlign: col.align,
+        }}
+        className={classNames({ 'text-nowrap': this.props.noWrap || col.noWrap })}
+      >
+        {cell}
+      </td>
+    );
+  }
+
   render() {
+    const { dataSource, rowKey } = this.props;
+    const columns = this.getLeafColumns();
+
+    if (dataSource == null) {
+      return null;
+    }
+
     return (
       <tbody>
-        {this.props.dataSource
-          && this.props.dataSource.map((record, rowIndex) => {
-          const rowState = this.props.rowsState[`${rowIndex}`];
-
-          const rows = [(
-            <tr
-              key={this.props.rowKey
-                ? record[this.props.rowKey]
-                : rowIndex}
-              className={classNames(
-                'row-container',
-                this.props.rowClassName(record, rowIndex),
-                { expanded: rowState && rowState.expanded },
-                { hover: rowState && rowState.hover },
-              )}
-              onClick={() => this.props.onRowClick(record)}
-              style={{
-                height: this.props.rowsHeight
-                  ? this.props.rowsHeight[rowIndex]
-                  : null,
-              }}
-            >
-              {this.props.columns.map((column, columnIndex) => (
-                column.children
-                  ? column.children.map((child, childColumnIndex) => (
-                    <TableCell
-                      column={child}
-                      record={record}
-                      rowIndex={rowIndex}
-                      key={`${childColumnIndex + 1}`}
-                    />
-                  ))
-                  : (
-                    <TableCell
-                      column={column}
-                      record={record}
-                      rowIndex={rowIndex}
-                      key={`${columnIndex + 1}`}
-                    />
-                  )
-              ))}
-            </tr>
-          )];
-
-          if (this.props.expandedRowRender
-            && rowState
-            && rowState.expanded
-          ) {
-            rows.push((
-              <tr
-                key={`${rowIndex + 1}_detail`}
-              >
-                <td
-                  colSpan={this.props.columns.length}
-                  className="detail-container"
-                >
-                  {this.props.expandedRowRender(record)}
-                </td>
-              </tr>
-            ));
-          }
-
-          return rows;
-        })}
+        {dataSource.map((row, index) => (
+          <tr key={rowKey === null ? index : row[rowKey]}>
+            {columns.map(col => this.renderCell(col, row, index))}
+          </tr>
+        ))}
       </tbody>
     );
   }
 }
-
-TableBody.propTypes = propTypes;
-TableBody.defaultProps = defaultProps;
 
 export default TableBody;

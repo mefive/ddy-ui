@@ -1,7 +1,6 @@
-$body-color: #454545 default;
-
 $theme-colors: (
   'white': #fff,
+  'black': #000,
 );
 
 $theme-color: (
@@ -21,7 +20,7 @@ $spacers: (
 @import "~bootstrap/scss/variables";
 
 $popover-max-width: none;
-$font-family-base: PingFangSC-Regular $font-family-base;
+$font-family-base: PingFangSC-Regular $font-family-sans-serif;
 $zindex-context-menu: 1080;
 $zindex-modal-backdrop: 1090;
 $zindex-modal: 1100;

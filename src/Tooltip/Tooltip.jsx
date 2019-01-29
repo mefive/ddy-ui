@@ -19,9 +19,10 @@ class Tooltip extends React.PureComponent {
     getPopoverContainer: PropTypes.func,
     action: PropTypes.string,
     onActiveChange: PropTypes.func,
-    renderPopover: PropTypes.func,
+    popover: PropTypes.func,
     active: PropTypes.bool,
     offset: PropTypes.number,
+    leaveDelay: PropTypes.number,
   };
 
   static defaultProps = {
@@ -33,15 +34,24 @@ class Tooltip extends React.PureComponent {
     children: null,
     defaultActive: null,
     getPopoverContainer: null,
-    action: 'hover',
+    action: Trigger.action.HOVER,
     onActiveChange: () => {},
-    renderPopover: null,
+    popover: null,
     active: null,
     offset: null,
+    leaveDelay: null,
   };
 
+  popover = null;
+
+  place() {
+    if (this.popover) {
+      this.popover.place();
+    }
+  }
+
   render() {
-    if (this.props.disabled || (!this.props.title && this.props.renderPopover == null)) {
+    if (this.props.disabled || (!this.props.title && this.props.popover == null)) {
       return this.props.children;
     }
 
@@ -49,19 +59,20 @@ class Tooltip extends React.PureComponent {
       <Trigger
         action={this.props.action}
         defaultActive={this.props.defaultActive}
-        popover={(
+        popover={() => (
           <Popover
             className={classNames('popover-tooltip shadow', this.props.className)}
             style={this.props.style}
             placement={this.props.placement}
             offset={this.props.offset}
+            ref={(el) => { this.popover = el; }}
           >
             <div className="popover-body">
-              {this.props.renderPopover == null
+              {this.props.popover == null
                 ? (
                   <span dangerouslySetInnerHTML={{ __html: this.props.title }} />
                 )
-                : this.props.renderPopover()
+                : this.props.popover()
               }
             </div>
           </Popover>
@@ -72,6 +83,7 @@ class Tooltip extends React.PureComponent {
         enterDuration={200}
         leaveDuration={200}
         enterDelay={300}
+        leaveDelay={this.props.leaveDelay}
         getPopoverContainer={this.props.getPopoverContainer}
         active={this.props.active}
         onActiveChange={this.props.onActiveChange}

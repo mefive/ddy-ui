@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import pick from 'lodash/pick';
+import { domRelatedProps } from './utils/dom';
 
 class Image extends React.PureComponent {
   static MODE_STRETCH = 'stretch';
@@ -105,9 +107,12 @@ class Image extends React.PureComponent {
   }
 
   render() {
+    const domProps = pick(this.props, domRelatedProps);
+
     if (this.props.mode === Image.MODE_AUTO) {
       return (
         <img
+          {...domProps}
           className={this.props.className}
           src={this.props.src}
           alt={this.props.alt}
@@ -118,6 +123,7 @@ class Image extends React.PureComponent {
 
     return (
       <div
+        {...domProps}
         style={{
           width: this.props.width,
           height: this.props.height,

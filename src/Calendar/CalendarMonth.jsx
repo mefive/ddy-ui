@@ -10,7 +10,7 @@ const propTypes = {
   onChange: PropTypes.func,
   max: PropTypes.string,
   min: PropTypes.string,
-  dateRender: PropTypes.func,
+  renderDate: PropTypes.func,
   onCalendarMove: PropTypes.func,
 };
 
@@ -19,7 +19,7 @@ const defaultProps = {
   onChange: () => {},
   max: null,
   min: null,
-  dateRender: null,
+  renderDate: null,
   onCalendarMove: () => {},
 };
 
@@ -159,8 +159,8 @@ class CalendarMonth extends React.PureComponent {
                       },
                     )}
                   >
-                    {this.props.dateRender != null
-                      ? this.props.dateRender(monthLang, {
+                    {this.props.renderDate != null
+                      ? this.props.renderDate(monthLang, {
                         year: this.state.year,
                         month: index + 1,
                       })

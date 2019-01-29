@@ -34,7 +34,7 @@ class Modal extends React.PureComponent {
     onEnter: () => {},
     visible: false,
     children: null,
-    width: null,
+    width: 480,
   };
 
   constructor(props) {
@@ -103,9 +103,11 @@ class Modal extends React.PureComponent {
       const dialog = this.dialog.current;
 
       if (dialog) {
+        window.ddd = dialog;
+
         this.setState({
-          marginLeft: -0.5 * dialog.offsetWidth,
-          marginTop: -0.5 * dialog.offsetHeight,
+          marginLeft: -0.5 * dialog.clientWidth,
+          marginTop: -0.5 * dialog.clientHeight,
         });
       }
     }

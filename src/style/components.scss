@@ -1,0 +1,13 @@
+@import "variables";
+
+.alert {
+  font-size: $font-size-sm;
+}
+
+.alert-info {
+  background: #DFF0FF;
+}
+
+.btn-white {
+  @include button-variant($white, $gray-300);
+}

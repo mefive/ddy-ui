@@ -129,13 +129,14 @@ class ContextMenu extends React.PureComponent {
   }
 }
 
-export default props => (
+export default React.forwardRef((props, ref) => (
   <PortalContext.Consumer>
     {({ getContainer }) => (
       <ContextMenu
         {...props}
-        getPopoverContainer={getContainer}
+        getPopoverContainer={props.getPopoverContainer || getContainer}
+        forwardedRef={ref}
       />
     )}
   </PortalContext.Consumer>
-);
+));

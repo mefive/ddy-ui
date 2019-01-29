@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Row, Col } from '../grid';
 
 import './style.scss';
+import Animate from '../Animate/Animate';
 
 const propTypes = {
   label: PropTypes.string,
@@ -13,6 +14,7 @@ const propTypes = {
   required: PropTypes.bool,
   className: PropTypes.string,
   labelClassName: PropTypes.string,
+  wrapperClassName: PropTypes.string,
 
   labelCol: PropTypes.shape({
     alignRight: PropTypes.bool,
@@ -27,6 +29,7 @@ const defaultProps = {
   required: false,
   className: null,
   labelClassName: null,
+  wrapperClassName: null,
 
   labelCol: {
     alignRight: false,
@@ -41,10 +44,17 @@ const defaultProps = {
   },
 };
 
-class FormItem extends React.PureComponent {
+class FormItem extends React.Component {
   getChildrenField(field) {
-    const child = React.Children.only(this.props.children);
-    return child.props[field];
+    let value = null;
+
+    React.Children.forEach(this.props.children, (child) => {
+      if (field in child.props) {
+        value = child.props[field];
+      }
+    });
+
+    return value;
   }
 
   getLabelFor() {
@@ -79,14 +89,22 @@ class FormItem extends React.PureComponent {
           </Col>
         )}
 
-        <Col {...this.props.wrapperCol}>
-          {this.props.children}
+        <Col
+          {...this.props.wrapperCol}
+        >
+          <div className={this.props.wrapperClassName}>
+            {this.props.children}
+          </div>
 
-          {error && (
-            <div className="invalid-feedback">
-              {error}
-            </div>
-          )}
+          <Animate
+            enterClassName="fade-in"
+          >
+            {error && (
+              <div className="invalid-feedback">
+                {error}
+              </div>
+            )}
+          </Animate>
         </Col>
       </Row>
     );

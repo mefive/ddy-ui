@@ -1,0 +1,39 @@
+@import "variables";
+
+.font-size-sm {
+  font-size: $font-size-sm;
+}
+
+.font-size-lg {
+  font-size: $font-size-lg;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.font-weight-bold {
+  font-family: PingFangSC-Semibold $font-family-base;
+}
+
+@each $division in 1, 2, 3, 4, 5 {
+  .flex-#{$division} {
+    flex: $division !important;
+  }
+}
+
+[role="button"] {
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+}
